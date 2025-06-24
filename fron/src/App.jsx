@@ -18,6 +18,7 @@ import TablaGasificadoUva from "./components/TablaGasificadoUva";
 import TablaEsperaUva from "./components/TablaEsperaUva";
 import TablaFrioUva from "./components/TablaFrioUva";
 import TablaOrdenesUva from "./components/TablaOrdenesUva";
+import { use } from "react";
 
 // Mapeo de endpoints
 const endpointMap = {
@@ -118,7 +119,8 @@ const App = () => {
       if (!document.hidden) {
         cargarDatos();
       }
-    };
+      };
+
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
@@ -139,7 +141,7 @@ const App = () => {
       <>
         {/* Mensaje de actualización */}
         {/*  */}
-     
+
         <ComponenteTabla data={data} />
       </>
     ) : null;

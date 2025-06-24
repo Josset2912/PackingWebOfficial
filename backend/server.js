@@ -5,7 +5,7 @@ const os = require("os");
 const db = require("./db");
 
 const app = express();
-const PORT = process.env.PORT || 8643;
+const PORT = process.env.PORT || 8650;
 
 // Middleware
 app.use(express.json());

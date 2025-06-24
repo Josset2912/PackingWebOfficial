@@ -8,6 +8,6 @@ const {
 const router = express.Router();
 
 router.get("/", getGasificadoPreAran);
-router.post("/", addOrden); // Ruta para agregar una orden
+//router.post("/", addOrden); // Ruta para agregar una orden
 
 module.exports = router;
