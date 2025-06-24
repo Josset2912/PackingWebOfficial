@@ -67,6 +67,7 @@ db.connectDB()
           }
         });
       });
+        
     });
   })
   .catch((error) => {
