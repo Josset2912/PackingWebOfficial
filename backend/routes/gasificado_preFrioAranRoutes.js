@@ -1,13 +1,12 @@
 // routes/gasificadoPreAranRoutes.js
 const express = require("express");
-const {
-  getGasificadoPreAran,
-  addOrden,
-} = require("../controllers/gasificado_pre_aranController");
-
 const router = express.Router();
+const {
+  getGasificadoPreFrioAran
+  
+} = require("../controllers/gasificado_preFrioAranController");
 
-router.get("/", getGasificadoPreAran);
+router.get("/", getGasificadoPreFrioAran);
 //router.post("/", addOrden); // Ruta para agregar una orden
 
 module.exports = router;

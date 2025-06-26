@@ -16,15 +16,14 @@ const TablaGasificadoArandano = () => {
 
         // Llamadas paralelas a ambas APIs
         const [resGasificado, resFrio] = await Promise.all([
-          axios.get("http://10.250.200.9:8643/api/gasificado_pre"),
-          axios.get("http://10.250.200.9:8643/api/gasificado_pre_aran"),
+          axios.get("http://10.250.200.9:8650/api/gasificadoPreAran"),
+          axios.get("http://10.250.200.9:8650/api/gasificadoPreFrioAran"),
         ]);
 
-        setDataGasificado(resGasificado.data);
-        setDataFrio(resFrio.data);
+        setDataGasificado(resGasificado.data || []);
+        setDataFrio(resFrio.data || []);
       } catch (err) {
-        console.error("Error fetching data:", err);
-        setError(err.message || "Error al cargar los datos");
+        console.error("Error en la carga (silenciado):", err);
       } finally {
         setLoading(false);
       }

@@ -9,7 +9,13 @@ const PORT = process.env.PORT || 8650;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Conectar a la base de datos antes de iniciar el servidor
 db.connectDB()
@@ -17,42 +23,25 @@ db.connectDB()
     console.log("✅ Conexión establecida con SQL Server");
 
     // Importar rutas ARÁNDANOS
-    const ordenesRoutes = require("./routes/ordenesRoutes");
-    const gasificadoPreRoutes = require("./routes/gasificadoPreRoutes");
-    const esperaRoutes = require("./routes/esperaRoutes");
-    const recepcionRoutes = require("./routes/recepcionRoutes");
-    const frioRoutes = require("./routes/frioRoutes");
-    const segundaTablaRoutes = require("./routes/gasificado_pre_aranRoutes");
-    const frioArandano = require("./routes/frio_arandanoRoutes");
-
-    // Importar rutas UVA
-    const esperaUvaRoutes = require("./routes/esperaUvaRoutes");
-    const recepcionUvaRoutes = require("./routes/recepcionUvaRoutes");
-    const gasificadoUvaRoutes = require("./routes/gasificadoUvaRoutes");
-    const frioUvaRoutes = require("./routes/frioUvaRoutes");
-    const ordenesUvaRoutes = require("./routes/ordenesUvaRoutes");
-    const gasificadoPreUvaRoutes = require("./routes/gasificado_pre_uvaRoutes");
-    const frioUvaDerRoutes = require("./routes/frio_uva_derRoutes");
+    const recepcionAranRoutes = require("./routes/recepcionAranRoutes.js");
+    const gasificadoPreAranRoutes = require("./routes/gasificadoPreAranRoutes.js");
+    const gasificadoPreFrioAranRoutes = require("./routes/gasificado_preFrioAranRoutes.js");
+    
+    const esperaVolcadoAranRoutes = require("./routes/esperaVolcadoAranRoutes.js");
+    const esperaFrioAranRoutes = require("./routes/EsperaFrioAranRoutes.js"); //espera frio arandano
+    const enfriandoAranRoutes = require("./routes/enfriandoAranRoutes.js"); //enfriando  arandano
+    const ordenesPTAranRoutes = require("./routes/ordenesPTAranRoutes.js");
 
     // Registrar rutas ARÁNDANOS
-    app.use("/api/ordenes", ordenesRoutes);
-    app.use("/api/gasificado_pre", gasificadoPreRoutes);
-    app.use("/api/espera", esperaRoutes);
-    app.use("/api/recepcion", recepcionRoutes);
-    app.use("/api/frio", frioRoutes);
-    app.use("/api/gasificado_pre_aran", segundaTablaRoutes);
-    app.use("/api/frio_arandano", frioArandano);
+    app.use("/api/recepcionAran", recepcionAranRoutes);
+    app.use("/api/gasificadoPreAran", gasificadoPreAranRoutes);
+    app.use("/api/gasificadoPreFrioAran", gasificadoPreFrioAranRoutes);
+    app.use("/api/esperaVolcadoAran", esperaVolcadoAranRoutes);
+    app.use("/api/esperaFrioAran", esperaFrioAranRoutes); //espera frio arandano
+    app.use("/api/enfriandoAran", enfriandoAranRoutes); //enfriando arandano
+    app.use("/api/ordenesPTAran", ordenesPTAranRoutes);
 
-    // Registrar rutas UVA
-    app.use("/api/recepcion_uva", recepcionUvaRoutes);
-    app.use("/api/gasificado_uva", gasificadoUvaRoutes);
-    app.use("/api/espera_uva", esperaUvaRoutes);
-    app.use("/api/frio_uva", frioUvaRoutes);
-    app.use("/api/ordenes_uva", ordenesUvaRoutes);
-    app.use("/api/gasificado_pre_uva", gasificadoPreUvaRoutes);
-    app.use("/api/frio_uva_der", frioUvaDerRoutes);
-
-    // Iniciar el servidor escuchando en todas las IPs
+    //-----------------------------------------------------------------//
 
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
@@ -67,7 +56,6 @@ db.connectDB()
           }
         });
       });
-        
     });
   })
   .catch((error) => {

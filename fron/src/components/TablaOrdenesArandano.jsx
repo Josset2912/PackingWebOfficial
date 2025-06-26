@@ -45,32 +45,38 @@ const TablaOrdenesArandano = ({ data }) => {
 
           {/* Scroll vertical aquí */}
           <div className="max-h-[500px] overflow-y-auto">
-            <table className="w-full table-fixed text-xl text-center">
-              <tbody>
-                {ordenesFiltradas.map((row, index) => (
-                  <motion.tr
-                    key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05, duration: 0.3 }}
-                    whileHover={{
-                      scale: 1.02,
-                      backgroundColor: "#f0f9ff",
-                    }}
-                    className="border-b border-gray-300 transition duration-200 hover:shadow-md"
-                  >
-                    <td className="px-4 py-3">{row.ORDEN}</td>
-                    <td className="px-4 py-3">{row.PRIORIDAD}</td>
-                    <td className="px-4 py-3">{row.DESTINO}</td>
-                    <td className="px-4 py-3">{row.PRESENTACION}</td>
-                    <td className="px-4 py-3">{row.EJEC_PROY}</td>
-                    <td className="px-4 py-3">
-                      {formatearFecha(row.F_DESPACHO)}
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
+            {ordenesFiltradas.length === 0 ? (
+              <div className="flex justify-center items-center p-8">
+                <p className="text-2xl text-gray-500">Ningún dato</p>
+              </div>
+            ) : (
+              <table className="w-full table-fixed text-xl text-center">
+                <tbody>
+                  {ordenesFiltradas.map((row, index) => (
+                    <motion.tr
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05, duration: 0.3 }}
+                      whileHover={{
+                        scale: 1.02,
+                        backgroundColor: "#f0f9ff",
+                      }}
+                      className="border-b border-gray-300 transition duration-200 hover:shadow-md"
+                    >
+                      <td className="px-4 py-3">{row.Orden}</td>
+                      <td className="px-4 py-3">{row.Prioridad}</td>
+                      <td className="px-4 py-3">{row.Destino}</td>
+                      <td className="px-4 py-3">{row.Presentacion}</td>
+                      <td className="px-4 py-3">{row.Ejec_Proy}</td>
+                      <td className="px-4 py-3">
+                        {formatearFecha(row.F_Despacho)}
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

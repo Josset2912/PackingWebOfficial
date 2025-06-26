@@ -13,52 +13,52 @@ import TablaFrioArandano from "./components/TablaFrioArandano";
 import TablaOrdenesArandano from "./components/TablaOrdenesArandano";
 
 // Componentes para Uva
-import TablaRecepcionUva from "./components/TablaRecepcionUva";
-import TablaGasificadoUva from "./components/TablaGasificadoUva";
-import TablaEsperaUva from "./components/TablaEsperaUva";
-import TablaFrioUva from "./components/TablaFrioUva";
-import TablaOrdenesUva from "./components/TablaOrdenesUva";
-import { use } from "react";
+//import TablaRecepcionUva from "./components/TablaRecepcionUva";
+//import TablaGasificadoUva from "./components/TablaGasificadoUva";
+//import TablaEsperaUva from "./components/TablaEsperaUva";
+//import TablaFrioUva from "./components/TablaFrioUva";
+//import TablaOrdenesUva from "./components/TablaOrdenesUva";
 
 // Mapeo de endpoints
 const endpointMap = {
-  Arándano: {
-    RECEPCIÓN: "recepcion",
-    "GASIFICADO PRE FRÍO": "gasificado_pre",
-    ESPERA: "espera",
-    FRIO: "frio",
-    "ORDEN PRD": "ordenes",
+  Arandano: {
+    RECEPCIÓN: "recepcionAran",
+    "GASIFICADO PRE FRÍO": "gasificadoPreFrioAran",
+    ESPERA: "esperaVolcadoAran",
+    FRIO: "esperaFrioAran",
+    "ORDEN PRD": "ordenesPTAran",
   },
-  Uva: {
+  /*Uva: {
     RECEPCIÓN: "recepcion_uva",
     "GASIFICADO-VOLCADO": "gasificado_uva",
     ESPERA: "espera_uva",
     FRIO: "frio_uva",
     "ORDEN PRD": "ordenes_uva",
-  },
+  },*/
 };
 
 // Mapeo de componentes de tabla
 const tablaMap = {
-  Arándano: {
+  Arandano: {
     RECEPCIÓN: TablaRecepcionArandano,
     "GASIFICADO PRE FRÍO": TablaGasificadoArandano,
     ESPERA: TablaEsperaArandano,
     FRIO: TablaFrioArandano,
     "ORDEN PRD": TablaOrdenesArandano,
   },
-  Uva: {
+  /*Uva: {
     RECEPCIÓN: TablaRecepcionUva,
-    "GASIFICADO-VOLCADO": TablaGasificadoUva,
-    ESPERA: TablaEsperaUva,
-    FRIO: TablaFrioUva,
-    "ORDEN PRD": TablaOrdenesUva,
+    GASIFICADO: TablaGasificadoUva,
+    //ESPERA: TablaEsperaUva,
+    //FRIO: TablaFrioUva,
+    //"ORDEN PRD": TablaOrdenesUva,
   },
+  */
 };
 
 const App = () => {
   const [mostrarBienvenida, setMostrarBienvenida] = useState(true);
-  const [selectedOption, setSelectedOption] = useState("Arándano"); // Cambiado a valor por defecto
+  const [selectedOption, setSelectedOption] = useState("Arandano"); // Cambiado a valor por defecto
   const [selectedButton, setSelectedButton] = useState("RECEPCIÓN"); // Cambiado a valor por defecto
   const [cargando, setCargando] = useState(false);
   const [data, setData] = useState([]);
@@ -119,8 +119,7 @@ const App = () => {
       if (!document.hidden) {
         cargarDatos();
       }
-      };
-
+    };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {

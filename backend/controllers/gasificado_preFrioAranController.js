@@ -1,7 +1,7 @@
 // controllers/gasificadoPreAranController.js
 const { sql } = require("../db");
 
-const getGasificadoPreAran = async (req, res) => {
+const getGasificadoPreFrioAran = async (req, res) => {
   try {
     const pool = await sql.connect(); // Obtiene el pool conectado (ya está conectado por connectDB)
     const result = await pool
@@ -16,7 +16,7 @@ const getGasificadoPreAran = async (req, res) => {
   }
 };
 
-module.exports = { getGasificadoPreAran };
+module.exports = { getGasificadoPreFrioAran };
 
 {
   /*

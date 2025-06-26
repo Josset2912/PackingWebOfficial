@@ -1,5 +1,5 @@
 const express = require("express");
-const { getGasificadoPre } = require("../controllers/gasificadoPreController"); // 🔥 Verifica que el nombre sea correcto
+const { getGasificadoPre } = require("../controllers/gasificadoPreAranController"); // 🔥 Verifica que el nombre sea correcto
 
 const router = express.Router();
 

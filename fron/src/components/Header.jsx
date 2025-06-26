@@ -93,8 +93,8 @@ const Header = ({
         }}
       >
         <option value="">Seleccionar opción</option>
-        <option value="Arándano">Arándano</option>
-        <option value="Uva">Uva</option>
+        <option value="Arandano">Arandano</option>          
+              
       </select>
     </header>
   );

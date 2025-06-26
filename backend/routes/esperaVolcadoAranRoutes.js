@@ -1,11 +1,11 @@
+const { getEspera } = require("../controllers/esperaVolcadoAranController.js");
 const express = require("express");
-const router = express.Router();
-const { getRecepcion } = require("../controllers/recepcionController");
 
 console.log("📌 Cargando rutas de Recepción..."); // <-- Debug
 
+const router = express.Router();
 router.get("/", (req, res) => {
-  getRecepcion(req, res);
+  getEspera(req, res);
 });
 
 module.exports = router;

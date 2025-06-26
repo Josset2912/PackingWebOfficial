@@ -8,14 +8,14 @@ const BotonSeccion = ({
   if (!selectedOption) return null;
 
   const buttonConfig = {
-    Arándano: [
+    Arandano: [
       "RECEPCIÓN",
       "GASIFICADO PRE FRÍO",
       "ESPERA",
       "FRIO",
       "ORDEN PRD",
     ],
-    Default: ["RECEPCIÓN", "GASIFICADO-VOLCADO", "ESPERA", "FRIO", "ORDEN PRD"],
+    // Uva: ["RECEPCIÓN", "GASIFICADO VOLCADO", "ESPERA", "FRIO", "ORDEN PRD"],
   };
 
   const botones = buttonConfig[selectedOption] || buttonConfig.Default;
