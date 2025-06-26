@@ -5,7 +5,7 @@ const os = require("os");
 const db = require("./db");
 
 const app = express();
-const PORT = process.env.PORT || 8650;
+const PORT = process.env.PORT || 8650; // Cambia el puerto según tu configuración 8650
 
 // Middleware
 app.use(express.json());
@@ -25,8 +25,10 @@ db.connectDB()
     // Importar rutas ARÁNDANOS
     const recepcionAranRoutes = require("./routes/recepcionAranRoutes.js");
     const gasificadoPreAranRoutes = require("./routes/gasificadoPreAranRoutes.js");
+    const gasificadoBatchPreAranRoutes = require("./routes/gasificadoBatchPreAranRoutes.js");
     const gasificadoPreFrioAranRoutes = require("./routes/gasificado_preFrioAranRoutes.js");
-    
+    const gasificadoBatchPreFrioAranRoutes = require("./routes/gasificado_BatchpreFrioAranRoutes.js");
+
     const esperaVolcadoAranRoutes = require("./routes/esperaVolcadoAranRoutes.js");
     const esperaFrioAranRoutes = require("./routes/EsperaFrioAranRoutes.js"); //espera frio arandano
     const enfriandoAranRoutes = require("./routes/enfriandoAranRoutes.js"); //enfriando  arandano
@@ -35,7 +37,12 @@ db.connectDB()
     // Registrar rutas ARÁNDANOS
     app.use("/api/recepcionAran", recepcionAranRoutes);
     app.use("/api/gasificadoPreAran", gasificadoPreAranRoutes);
+    app.use("/api/gasificadoBatchPreAran", gasificadoBatchPreAranRoutes);
     app.use("/api/gasificadoPreFrioAran", gasificadoPreFrioAranRoutes);
+    app.use(
+      "/api/gasificadoBatchPreFrioAran",
+      gasificadoBatchPreFrioAranRoutes
+    );
     app.use("/api/esperaVolcadoAran", esperaVolcadoAranRoutes);
     app.use("/api/esperaFrioAran", esperaFrioAranRoutes); //espera frio arandano
     app.use("/api/enfriandoAran", enfriandoAranRoutes); //enfriando arandano
