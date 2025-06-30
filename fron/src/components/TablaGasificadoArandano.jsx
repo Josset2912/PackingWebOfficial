@@ -2,301 +2,370 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const TablaGasificadoArandano = () => {
-    // Estados para ambas tablas
-    const [dataGasificado, setDataGasificado] = useState([]);
-    const [dataGasificadoBatch, setDataGasificadoBatch] = useState([]);
-    const [dataFrio, setDataFrio] = useState([]);
-    const [dataFrioBatch, setDataFrioBatch] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [fruta, setFruta] = useState("Arandano");
+  const [dataGasificado, setDataGasificado] = useState([]);
+  const [dataGasificadoBatch, setDataGasificadoBatch] = useState([]);
+  const [dataFrio, setDataFrio] = useState([]);
+  const [dataFrioBatch, setDataFrioBatch] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                setError(null);
+  // Move fetchData outside so it's accessible in both useEffects
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const frutaParam = fruta.toLowerCase();
+      /*  const queryParams = `?Cod=''&Camara=''&Cultivo=${frutaParam}`; */
 
-                // Llamadas paralelas a ambas APIs
-                const [resGasificado, resFrio, resGasificadoBatch, resFrioBatch] =
-                    await Promise.all([
-                        /*  axios.get("http://10.51.51.15:8650/api/gasificadoPreAran"),
-                         axios.get("http://10.51.51.15:8650/api/gasificadoPreFrioAran"),
-                         axios.get("http://10.51.51.15:8650/api/gasificadoBatchPreAran"),
-                         axios.get("http://10.51.51.15:8650/api/gasificadoBatchPreFrioAran"), */
+      const [resGasificado, resFrio, resGasificadoBatch, resFrioBatch] =
+          await Promise.all([
+            axios.get(
+                `http://10.250.200.9:8650/api/gasificadoPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+              ),
+              axios.get(
+                `http://10.250.200.9:8650/api/gasificadoPreFrioAran?Cod=''&Camara=''&Cultivo=${frutaParam}`
+              ),
+              axios.get(
+                `http://10.250.200.9:8650/api/gasificadoBatchPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+              ),
+              axios.get(
+                `http://10.250.200.9:8650/api/gasificadoBatchPreFrioAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+              ),
+          /* axios.get(
+            `http://10.51.51.15:8650/api/gasificadoPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+          ),
+          axios.get(
+            `http://10.51.51.15:8650/api/gasificadoPreFrioAran?Cod=''&Camara=''&Cultivo=${frutaParam}`
+          ),
+          axios.get(
+            `http://10.51.51.15:8650/api/gasificadoBatchPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+          ),
+          axios.get(
+            `http://10.51.51.15:8650/api/gasificadoBatchPreFrioAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+          ), */
+        ]);
 
-                        axios.get("http://10.250.200.9:8650/api/gasificadoPreAran"),
-                        axios.get("http://10.250.200.9:8650/api/gasificadoPreFrioAran"),
-                        axios.get("http://10.250.200.9:8650/api/gasificadoBatchPreAran"),
-                        axios.get("http://10.250.200.9:8650/api/gasificadoBatchPreFrioAran"),
-                    ]);
-
-                setDataGasificado(resGasificado.data || []);
-                setDataFrio(resFrio.data || []);
-                setDataGasificadoBatch(resGasificadoBatch.data || []);
-                setDataFrioBatch(resFrioBatch.data || []);
-            } catch (err) {
-                console.error("Error en la carga (silenciado):", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    // Cálculos para cada tabla
-    const cantidadGasificado = dataGasificado.filter(
-        (row) => row.ESPERA > 0
-    ).length;
-    const cantidadFrio = dataFrio.filter((row) => row.ESPERA > 0).length;
-
-    if (loading) {
-        return (
-            <div className="container mx-auto p-4 text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500 mx-auto"></div>
-                <p className="mt-4 text-gray-600">Cargando datos...</p>
-            </div>
-        );
+      setDataGasificado(
+        Array.isArray(resGasificado.data) ? resGasificado.data : []
+      );
+      setDataFrio(Array.isArray(resFrio.data) ? resFrio.data : []);
+      setDataGasificadoBatch(
+        Array.isArray(resGasificadoBatch.data) ? resGasificadoBatch.data : []
+      );
+      setDataFrioBatch(
+        Array.isArray(resFrioBatch.data) ? resFrioBatch.data : []
+      );
+    } catch (err) {
+      console.error("Error en la carga:", err);
+      setError("No se pudieron cargar los datos");
+      setDataGasificado([]);
+      setDataFrio([]);
+      setDataGasificadoBatch([]);
+      setDataFrioBatch([]);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return (
-        <div className="container mx-auto p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                    {/* Tabla Gasificado #1 */}
-                    <div className="w-full max-w-6xl mx-auto bg-white bg-opacity-80 backdrop-blur-lg shadow-xl rounded-2xl p-6">
-                        <h2 className="mb-4 text-center font-bold text-xl md:text-2xl text-gray-700 uppercase tracking-wide">
-                            ESPERA GASIFICADO ARÁNDANO ({cantidadGasificado})
-                        </h2>
-                        <div className="overflow-x-auto">
-                            <table className="w-full border border-gray-300 rounded-xl overflow-hidden">
-                                <thead>
-                                    <tr className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-lg md:text-xl">
-                                        <th className="px-6 py-4 text-center">PALET</th>
-                                        <th className="px-6 py-4 text-center">ESPERA</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {error ? (
-                                        <tr>
-                                            <td
-                                                colSpan="2"
-                                                className="px-6 py-4 text-center text-red-500"
-                                            >
-                                                Error: {error}
-                                            </td>
-                                        </tr>
-                                    ) : dataGasificado.length > 0 ? (
-                                        dataGasificado.map((row, index) => (
-                                            <tr
-                                                key={`gasificado-${index}`}
-                                                className="border-b border-gray-300 hover:bg-indigo-100 transition duration-200 text-lg md:text-xl"
-                                            >
-                                                <td className="px-6 py-4 text-center text-gray-800">
-                                                    {row.PALET || "N/A"}
-                                                </td>
-                                                <td className="px-6 py-4 text-center text-gray-700">
-                                                    {row.ESPERA ?? "N/A"}
-                                                </td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td
-                                                colSpan="2"
-                                                className="px-6 py-4 text-center text-gray-500"
-                                            >
-                                                No hay datos disponibles
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+  useEffect(() => {
+    fetchData();
+  }, [fruta]);
 
-                    {/* Tabla Gasificado 21 */}
-                    <div className="mt-8">
-                        <div className="w-full max-w-6xl mx-auto bg-white bg-opacity-80 backdrop-blur-lg shadow-xl rounded-2xl p-6">
-                            <h2 className="mb-4 text-center font-bold text-xl md:text-2xl text-gray-700 uppercase tracking-wide">
-                                BATCH GASIFICADO
-                                {/* ({cantidadGasificado}) */}
-                            </h2>
-                            <div className="overflow-x-auto">
-                                <table className="w-full border border-gray-300 rounded-xl overflow-hidden">
-                                    <thead>
-                                        <tr className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-lg md:text-xl">
-                                            <th className="px-6 py-4 text-center">BATCH</th>
-                                            <th className="px-6 py-4 text-center">PALETS</th>
-                                            <th className="px-6 py-4 text-center">TIME</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {error ? (
-                                            <tr>
-                                                <td
-                                                    colSpan="2"
-                                                    className="px-6 py-4 text-center text-red-500"
-                                                >
-                                                    Error: {error}
-                                                </td>
-                                            </tr>
-                                        ) : dataGasificadoBatch.length > 0 ? (
-                                            dataGasificadoBatch.map((row, index) => (
-                                                <tr
-                                                    key={`gasificado-${index}`}
-                                                    className="border-b border-gray-300 hover:bg-indigo-100 transition duration-200 text-lg md:text-xl"
-                                                >
-                                                    <td className="px-6 py-4 text-center text-gray-800">
-                                                        {row.BATCH || "N/A"}
-                                                    </td>
-                                                    <td className="px-6 py-4 text-center text-gray-700">
-                                                        {row.PALETS ?? "N/A"}
-                                                    </td>
-                                                    <td className="px-6 py-4 text-center text-gray-700">
-                                                        {row.TIME ?? "N/A"}
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        ) : (
-                                            <tr>
-                                                <td
-                                                    colSpan="2"
-                                                    className="px-6 py-4 text-center text-gray-500"
-                                                >
-                                                    No hay datos disponibles
-                                                </td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Espacio entre tablas */}
-                </div>
+  useEffect(() => {
+    const intervaloId = setInterval(() => {
+      fetchData();
+    }, 10000);
 
-                <div className="">
-                    {/* Tabla Frío */}
-                    <div className="w-full max-w-6xl mx-auto bg-white bg-opacity-80 backdrop-blur-lg shadow-xl rounded-2xl p-6">
-                        <h2 className="mb-4 text-center font-bold text-xl md:text-2xl text-gray-700 uppercase tracking-wide">
-                            ESPERA PRE FRÍO ARÁNDANO ({cantidadFrio})
-                        </h2>
-                        <div className="overflow-x-auto">
-                            <table className="w-full border border-gray-300 rounded-xl overflow-hidden">
-                                <thead>
-                                    <tr className="bg-gradient-to-r from-green-600 to-teal-600 text-white text-lg md:text-xl">
-                                        <th className="px-6 py-4 text-center">PALET</th>
-                                        <th className="px-6 py-4 text-center">ESPERA</th>
-                                        <th className="px-6 py-4 text-center">TOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {error ? (
-                                        <tr>
-                                            <td
-                                                colSpan="3"
-                                                className="px-6 py-4 text-center text-red-500"
-                                            >
-                                                Error: {error}
-                                            </td>
-                                        </tr>
-                                    ) : dataFrio.length > 0 ? (
-                                        dataFrio.map((row, index) => (
-                                            <tr
-                                                key={`frio-${index}`}
-                                                className="border-b border-gray-300 hover:bg-teal-100 transition duration-200 text-lg md:text-xl"
-                                            >
-                                                <td className="px-6 py-4 text-center text-gray-800">
-                                                    {row.PALET || row.PALET || "N/A"}
-                                                </td>
-                                                <td className="px-6 py-4 text-center text-gray-700">
-                                                    {row.ESPERA ?? row.ESPERA ?? "N/A"}
-                                                </td>
-                                                <td className="px-6 py-4 text-center font-bold text-gray-900">
-                                                    {row.TOTAL ?? "N/A"}
-                                                </td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td
-                                                colSpan="3"
-                                                className="px-6 py-4 text-center text-gray-500"
-                                            >
-                                                No hay datos disponibles
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+    return () => clearInterval(intervaloId);
+  }, [fruta]);
 
-                    <div>
-                        <div className="mt-8">
-                            {/* Tabla Frío */}
-                            <div className="w-full max-w-6xl mx-auto bg-white bg-opacity-80 backdrop-blur-lg shadow-xl rounded-2xl p-6">
-                                <h2 className="mb-4 text-center font-bold text-xl md:text-2xl text-gray-700 uppercase tracking-wide">
-                                    BATCH PRE FRIO
-                                    {/*({cantidadFrio})*/}
-                                </h2>
-                                <div className="overflow-x-auto">
-                                    <table className="w-full border border-gray-300 rounded-xl overflow-hidden">
-                                        <thead>
-                                            <tr className="bg-gradient-to-r from-green-600 to-teal-600 text-white text-lg md:text-xl">
-                                                <th className="px-6 py-4 text-center">BATCH</th>
-                                                <th className="px-6 py-4 text-center">PALETS</th>
-                                                <th className="px-6 py-4 text-center">TIME</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {error ? (
-                                                <tr>
-                                                    <td
-                                                        colSpan="3"
-                                                        className="px-6 py-4 text-center text-red-500"
-                                                    >
-                                                        Error: {error}
-                                                    </td>
-                                                </tr>
-                                            ) : dataFrioBatch.length > 0 ? (
-                                                dataFrioBatch.map((row, index) => (
-                                                    <tr
-                                                        key={`frio-${index}`}
-                                                        className="border-b border-gray-300 hover:bg-teal-100 transition duration-200 text-lg md:text-xl"
-                                                    >
-                                                        <td className="px-6 py-4 text-center text-gray-800">
-                                                            {row.BATCH || "N/A"}
-                                                        </td>
-                                                        <td className="px-6 py-4 text-center text-gray-700">
-                                                            {row.PALETS ?? "N/A"}
-                                                        </td>
-                                                        <td className="px-6 py-4 text-center font-bold text-gray-900">
-                                                            {row.TIME ?? "N/A"}
-                                                        </td>
-                                                    </tr>
-                                                ))
-                                            ) : (
-                                                <tr>
-                                                    <td
-                                                        colSpan="3"
-                                                        className="px-6 py-4 text-center text-gray-500"
-                                                    >
-                                                        No hay datos disponibles
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  const cantidadGasificado = dataGasificado.filter(
+    (row) => row.ESPERA > 0
+  ).length;
+  const cantidadFrio = dataFrio.filter((row) => row.ESPERA > 0).length;
+
+  return (
+    <div className="container mx-auto">
+      <div className="mb-0 not-first:mb-0 flex items-center justify-end">
+        <label className="font-bold text-lg mr-2">CULTIVO:</label>
+        <select
+          value={fruta}
+          onChange={(e) => setFruta(e.target.value)}
+          className="p-1 border border-green-600 text-xl font-bold text-green-800 rounded"
+        >
+          <option value="Arandano">ARANDANO</option>
+          <option value="Uva">UVA</option>
+        </select>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Columna Gasificado */}
+        <div className="space-y-6">
+          {/* Tabla Gasificado #1 */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="px-6 py-1 ">
+              <h2 className="text-center font-bold text-xl md:text-2xl text-black uppercase tracking-wider">
+                ESPERA GASIFICADO ARÁNDANO ({cantidadGasificado})
+              </h2>
             </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-indigo-600 text-white">
+                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                      PALET
+                    </th>
+                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                      ESPERA
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {error ? (
+                    <tr>
+                      <td
+                        colSpan="2"
+                        className="px-4 py-3 text-center text-red-500 font-medium"
+                      >
+                        Error: {error}
+                      </td>
+                    </tr>
+                  ) : dataGasificado.length > 0 ? (
+                    dataGasificado.map((row, index) => (
+                      <tr
+                        key={`gasificado-${index}`}
+                        className={`transition-colors ${
+                          index % 2 === 0 ? "bg-white" : "bg-indigo-50"
+                        } hover:bg-indigo-100`}
+                      >
+                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                          {row.PALET || "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center md:text-3xl text-gray-700">
+                          {row.ESPERA ?? "N/A"}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan="2"
+                        className="px-4 py-3 text-center text-gray-500 italic"
+                      >
+                        No hay datos disponibles
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Tabla Gasificado Batch */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="px-6 py-1">
+              <h2 className="text-center font-bold text-xl md:text-2xl text-black uppercase tracking-wider">
+                BATCH GASIFICADO
+              </h2>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-indigo-600 text-white">
+                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                      BATCH
+                    </th>
+                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                      PALETS
+                    </th>
+                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                      TIME
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {error ? (
+                    <tr>
+                      <td
+                        colSpan="3"
+                        className="px-4 py-3 text-center text-red-500 font-medium"
+                      >
+                        Error: {error}
+                      </td>
+                    </tr>
+                  ) : dataGasificadoBatch.length > 0 ? (
+                    dataGasificadoBatch.map((row, index) => (
+                      <tr
+                        key={`gasificado-batch-${index}`}
+                        className={`transition-colors ${
+                          index % 2 === 0 ? "bg-white" : "bg-indigo-50"
+                        } hover:bg-indigo-100`}
+                      >
+                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                          {row.BATCH || "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                          {row.PALETS ?? "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center md:text-3xl text-gray-700">
+                          {row.TIME ?? "N/A"}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan="3"
+                        className="px-4 py-3 text-center text-gray-500 italic"
+                      >
+                        No hay datos disponibles
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-    );
+
+        {/* Columna Frío */}
+        <div className="space-y-6">
+          {/* Tabla Frío */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="px-6 py-1">
+              <h2 className="text-center font-bold text-xl md:text-2xl text-black uppercase tracking-wider">
+                ESPERA PRE FRÍO ARÁNDANO ({cantidadFrio})
+              </h2>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-teal-600 text-white">
+                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                      PALET
+                    </th>
+                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                      ESPERA
+                    </th>
+                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                      TOTAL
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {error ? (
+                    <tr>
+                      <td
+                        colSpan="3"
+                        className="px-4 py-3 text-center text-red-500 font-medium"
+                      >
+                        Error: {error}
+                      </td>
+                    </tr>
+                  ) : dataFrio.length > 0 ? (
+                    dataFrio.map((row, index) => (
+                      <tr
+                        key={`frio-${index}`}
+                        className={`transition-colors ${
+                          index % 2 === 0 ? "bg-white" : "bg-teal-50"
+                        } hover:bg-teal-100`}
+                      >
+                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                          {row.PALET || row.PALET || "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                          {row.ESPERA ?? row.ESPERA ?? "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center md:text-3xl text-gray-700">
+                          {row.TOTAL ?? "N/A"}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan="3"
+                        className="px-4 py-3 text-center text-gray-500 italic"
+                      >
+                        No hay datos disponibles
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Tabla Frío Batch */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="px-6 py-1">
+              <h2 className="text-center font-bold text-xl md:text-2xl text-black uppercase tracking-wider">
+                BATCH PRE FRIO
+              </h2>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-teal-600 text-white">
+                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                      BATCH
+                    </th>
+                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                      PALETS
+                    </th>
+                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                      TIME
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {error ? (
+                    <tr>
+                      <td
+                        colSpan="3"
+                        className="px-4 py-3 text-center text-red-500 font-medium"
+                      >
+                        Error: {error}
+                      </td>
+                    </tr>
+                  ) : dataFrioBatch.length > 0 ? (
+                    dataFrioBatch.map((row, index) => (
+                      <tr
+                        key={`frio-batch-${index}`}
+                        className={`transition-colors ${
+                          index % 2 === 0 ? "bg-white" : "bg-teal-50"
+                        } hover:bg-teal-100`}
+                      >
+                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                          {row.BATCH || "N/A"}
+                        </td>
+                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                          {row.PALETS ?? "N/A"}
+                        </td>
+                        <td className="ppx-4 py-2 text-center md:text-3xl text-gray-800">
+                          {row.TIME ?? "N/A"}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan="3"
+                        className="px-4 py-3 text-center text-gray-500 italic"
+                      >
+                        No hay datos disponibles
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default TablaGasificadoArandano;

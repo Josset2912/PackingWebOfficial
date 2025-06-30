@@ -1,12 +1,17 @@
 const { sql } = require("../db"); // AJUSTA la ruta según tu proyecto
 
 const getRecepcion = async (req, res) => {
+    
+  const { Cod = "", Camara = "", Cultivo = "" } = req.query;
   try {
     const pool = await sql.connect(); // Obtiene el pool conectado (ya está conectado por connectDB)
 
     const result = await pool
       .request()
-      .query(`exec SP_MOSTRAR_PACKING_RECEPCION_TV '', '', 'ARANDANO'`);
+      .input("Cod", sql.VarChar, Cod)
+      .input("Camara", sql.VarChar, Camara)
+      .input("Cultivo", sql.VarChar, Cultivo)
+      .query(`exec SP_MOSTRAR_PACKING_RECEPCION_TV @Cod,@Camara,@Cultivo`);
 
     res.json(result.recordset);
   } catch (err) {

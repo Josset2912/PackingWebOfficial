@@ -20,7 +20,6 @@ app.use(
 // Conectar a la base de datos antes de iniciar el servidor
 db.connectDB()
   .then(() => {
-    console.log("✅ Conexión establecida con SQL Server");
 
     // Importar rutas ARÁNDANOS
     const recepcionAranRoutes = require("./routes/recepcionAranRoutes.js");
@@ -32,6 +31,7 @@ db.connectDB()
     const esperaVolcadoAranRoutes = require("./routes/esperaVolcadoAranRoutes.js");
     const esperaFrioAranRoutes = require("./routes/EsperaFrioAranRoutes.js"); //espera frio arandano
     const enfriandoAranRoutes = require("./routes/enfriandoAranRoutes.js"); //enfriando  arandano
+    const avanceLineaRoutes = require("./routes/avanceLineaRoutes.js"); //avance linea arandano
     const ordenesPTAranRoutes = require("./routes/ordenesPTAranRoutes.js");
 
     // Registrar rutas ARÁNDANOS
@@ -46,6 +46,7 @@ db.connectDB()
     app.use("/api/esperaVolcadoAran", esperaVolcadoAranRoutes);
     app.use("/api/esperaFrioAran", esperaFrioAranRoutes); //espera frio arandano
     app.use("/api/enfriandoAran", enfriandoAranRoutes); //enfriando arandano
+    app.use("/api/avanceLinea", avanceLineaRoutes); //avance linea arandano
     app.use("/api/ordenesPTAran", ordenesPTAranRoutes);
 
     //-----------------------------------------------------------------//
@@ -66,5 +67,5 @@ db.connectDB()
     });
   })
   .catch((error) => {
-    console.error("❌ Error conectando a la base de datos:", error);
+    //console.error("❌ Error conectando a la base de datos:", error);
   });

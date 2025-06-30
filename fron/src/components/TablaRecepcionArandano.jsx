@@ -1,60 +1,102 @@
-const TablaRecepcionArandano = ({ data }) => {
-  // Declara un componente funcional que recibe un prop llamado 'data' (arreglo de datos)
+import { useState, useEffect } from "react";
+
+const TablaRecepcionCultivo = () => {
+  const [cultivo, setCultivo] = useState("ARANDANO"); // Estado para el cultivo seleccionado
+  const [data, setData] = useState([]);
+
+  // Lista de frutas disponibles
+  const frutas = ["ARANDANO", "UVA"];
+
+  // Fetch dinámico usando parámetros
+  const fetchCultivoData = async (tipo) => {
+    try {
+      const endpoint = `http://10.250.200.9:8650/api/recepcionAran?Cod=''&Camara=''&Cultivo=${tipo}`;
+      /* const endpoint = `http://10.51.51.15:8650/api/recepcionAran?Cod=''&Camara=''&Cultivo=${tipo}`; */
+      const res = await fetch(endpoint);
+      const json = await res.json();
+      setData(json);
+    } catch (error) {
+      console.error("Error al obtener datos:", error);
+      setData([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchCultivoData(cultivo);
+  }, [cultivo]);
+
+  useEffect(() => {
+    const intervaloId = setInterval(() => {
+      fetchCultivoData(cultivo);
+    }, 30000);
+
+    return () => clearInterval(intervaloId);
+  }, [cultivo]);
+
   return (
-    <div className="flex justify-center mt-6 px-4">
-      {/* Contenedor padre con flexbox que centra su contenido horizontalmente, con margen superior y padding horizontal */}
+    <div className="container mx-auto p-0 max-w-7xl ">
+      {/* Selector de cultivo arriba de la tabla */}
+      <div className="mb-0.5 not-first:mb-0 flex items-center justify-end">
+        <label className="mr-1 font-bold text-lg  align-sub">CULTIVO:</label>
+        <select
+          value={cultivo}
+          onChange={(e) => setCultivo(e.target.value)}
+          className="p-1 border border-green-600 text-xl font-bold text-green-800 rounded"
+        >
+          {frutas.map((fruta) => (
+            <option key={fruta} value={fruta}>
+              {fruta}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <div className="w-full max-w-2xl overflow-x-auto shadow-md rounded-lg border border-gray-300">
-        {/* Contenedor de la tabla que: 
-              - ocupa todo el ancho disponible ('w-full')
-              - tiene un ancho máximo de 2xl (max-w-2xl, que es 42rem aprox)
-              - permite scroll horizontal si el contenido es muy ancho ('overflow-x-auto')
-              - tiene sombra, bordes redondeados y borde gris */}
-
-        <table className="min-w-full bg-white rounded-lg">
-          {/* Tabla que tiene como mínimo el 100% del ancho del contenedor, fondo blanco y bordes redondeados */}
-
-          <thead>
-            <tr className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-              {/* Fila del encabezado con fondo degradado azul y texto blanco */}
-
-              <th className="px-6 py-3 text-center text-sm font-semibold uppercase tracking-wide ">
-                {/* Celda de encabezado con padding, texto centrado, tamaño pequeño, negrita, mayúsculas y espacio entre letras */}
-                VAR
-              </th>
-              <th className="px-6 py-3 text-center text-sm font-semibold uppercase tracking-wide">
-                EJECUCIÓN
-              </th>
-            </tr>
-          </thead>
-
-          <tbody className="divide-y divide-gray-200">
-            {/* Cuerpo de la tabla que añade una línea divisoria gris entre filas */}
-
-            {data.map((row, index) => (
-              <tr
-                key={index}
-                className={`transition-colors duration-200 ${
-                  index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                } hover:bg-gray-200`}
-                /* Cada fila alterna el color de fondo (gris claro y blanco) para mejorar la legibilidad.
-                     Además, al pasar el mouse cambia el color de fondo con una transición suave */
-              >
-                <td className="px-6 py-4 text-sm font-medium text-gray-900 text-center">
-                  {/* Celda con padding, texto mediano, color gris oscuro y texto centrado */}
-                  {row.VAR}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-800 text-center">
-                  {/* Celda con padding, texto pequeño, color gris más claro y centrado */}
-                  {row.EJEC}
-                </td>
+      {/* Tabla */}
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-blue-600 text-white">
+                <th className="px-4 py-2 text-center font-semibold text-4xl uppercase">
+                  VARIEDAD
+                </th>
+                <th className="px-4 py-2 text-center font-semibold text-4xl uppercase">
+                  EJECUCIÓN
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody className="divide-y divide-gray-200">
+              {data.length > 0 ? (
+                data.map((row, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-gray-50 transition-colors"
+                  >
+                    <td className="px-4 py-2 text-center text-3xl text-gray-800 font-medium">
+                      {row.VAR}
+                    </td>
+                    <td className="px-4 py-2 text-center text-3xl text-gray-800 font-medium">
+                      {row.EJEC || "--"} Kg
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="2"
+                    className="px-6 py-8 text-center text-lg text-gray-500"
+                  >
+                    No hay datos de recepción disponibles
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
 };
 
-export default TablaRecepcionArandano; // Exporta el componente para usarlo en otras partes
+export default TablaRecepcionCultivo;
