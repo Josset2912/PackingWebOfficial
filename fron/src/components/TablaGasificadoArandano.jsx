@@ -19,8 +19,8 @@ const TablaGasificadoArandano = () => {
       /*  const queryParams = `?Cod=''&Camara=''&Cultivo=${frutaParam}`; */
 
       const [resGasificado, resFrio, resGasificadoBatch, resFrioBatch] =
-          await Promise.all([
-            axios.get(
+        await Promise.all([
+          /*  axios.get(
                 `http://10.250.200.9:8650/api/gasificadoPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
               ),
               axios.get(
@@ -31,19 +31,19 @@ const TablaGasificadoArandano = () => {
               ),
               axios.get(
                 `http://10.250.200.9:8650/api/gasificadoBatchPreFrioAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
-              ),
-          /* axios.get(
-            `http://10.51.51.15:8650/api/gasificadoPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+              ), */
+          axios.get(
+            `http://10.250.200.9:8650/api/gasificadoPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
           ),
           axios.get(
-            `http://10.51.51.15:8650/api/gasificadoPreFrioAran?Cod=''&Camara=''&Cultivo=${frutaParam}`
+            `http://10.250.200.9:8650/api/gasificadoPreFrioAran?Cod=''&Camara=''&Cultivo=${frutaParam}`
           ),
           axios.get(
-            `http://10.51.51.15:8650/api/gasificadoBatchPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+            `http://10.250.200.9:8650/api/gasificadoBatchPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
           ),
           axios.get(
-            `http://10.51.51.15:8650/api/gasificadoBatchPreFrioAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
-          ), */
+            `http://10.250.200.9:8650/api/gasificadoBatchPreFrioAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+          ),
         ]);
 
       setDataGasificado(
@@ -80,13 +80,9 @@ const TablaGasificadoArandano = () => {
     return () => clearInterval(intervaloId);
   }, [fruta]);
 
-  const cantidadGasificado = dataGasificado.filter(
-    (row) => row.ESPERA > 0
-  ).length;
-  const cantidadFrio = dataFrio.filter((row) => row.ESPERA > 0).length;
-
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto px-2 xs:px-3 sm:px-4">
+      {/* Selector de cultivo - Ajuste completo para todos los tamaños */}
       <div className="mb-0 not-first:mb-0 flex items-center justify-end">
         <label className="font-bold text-lg mr-2">CULTIVO:</label>
         <select
@@ -98,24 +94,25 @@ const TablaGasificadoArandano = () => {
           <option value="Uva">UVA</option>
         </select>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Columna Gasificado */}
-        <div className="space-y-6">
-          {/* Tabla Gasificado #1 */}
+
+      {/* Grid principal - Ajuste responsivo completo */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
+        {/* Tabla Espera Gasificado */}
+        <div className="space-y-2">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="px-6 py-1 ">
-              <h2 className="text-center font-bold text-xl md:text-2xl text-black uppercase tracking-wider">
-                ESPERA GASIFICADO ARÁNDANO ({cantidadGasificado})
+            <div className="px-3 xs:px-4 sm:px-6 py-1">
+              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
+                ESPERA GASIFICADO
               </h2>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
                 <thead>
                   <tr className="bg-indigo-600 text-white">
-                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       PALET
                     </th>
-                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       ESPERA
                     </th>
                   </tr>
@@ -125,7 +122,7 @@ const TablaGasificadoArandano = () => {
                     <tr>
                       <td
                         colSpan="2"
-                        className="px-4 py-3 text-center text-red-500 font-medium"
+                        className="px-4 py-2 text-center text-red-500 text-sm sm:text-base"
                       >
                         Error: {error}
                       </td>
@@ -138,10 +135,10 @@ const TablaGasificadoArandano = () => {
                           index % 2 === 0 ? "bg-white" : "bg-indigo-50"
                         } hover:bg-indigo-100`}
                       >
-                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
                           {row.PALET || "N/A"}
                         </td>
-                        <td className="px-4 py-2 text-center md:text-3xl text-gray-700">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700">
                           {row.ESPERA ?? "N/A"}
                         </td>
                       </tr>
@@ -150,7 +147,7 @@ const TablaGasificadoArandano = () => {
                     <tr>
                       <td
                         colSpan="2"
-                        className="px-4 py-3 text-center text-gray-500 italic"
+                        className="px-4 py-2 text-center text-gray-500 text-sm sm:text-base italic"
                       >
                         No hay datos disponibles
                       </td>
@@ -163,22 +160,22 @@ const TablaGasificadoArandano = () => {
 
           {/* Tabla Gasificado Batch */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="px-6 py-1">
-              <h2 className="text-center font-bold text-xl md:text-2xl text-black uppercase tracking-wider">
+            <div className="px-3 xs:px-4 sm:px-6 py-1">
+              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
                 BATCH GASIFICADO
               </h2>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
                 <thead>
                   <tr className="bg-indigo-600 text-white">
-                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       BATCH
                     </th>
-                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       PALETS
                     </th>
-                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       TIME
                     </th>
                   </tr>
@@ -188,7 +185,7 @@ const TablaGasificadoArandano = () => {
                     <tr>
                       <td
                         colSpan="3"
-                        className="px-4 py-3 text-center text-red-500 font-medium"
+                        className="px-4 py-2 text-center text-red-500 text-sm sm:text-base"
                       >
                         Error: {error}
                       </td>
@@ -201,13 +198,13 @@ const TablaGasificadoArandano = () => {
                           index % 2 === 0 ? "bg-white" : "bg-indigo-50"
                         } hover:bg-indigo-100`}
                       >
-                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
                           {row.BATCH || "N/A"}
                         </td>
-                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
                           {row.PALETS ?? "N/A"}
                         </td>
-                        <td className="px-4 py-2 text-center md:text-3xl text-gray-700">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700">
                           {row.TIME ?? "N/A"}
                         </td>
                       </tr>
@@ -216,7 +213,7 @@ const TablaGasificadoArandano = () => {
                     <tr>
                       <td
                         colSpan="3"
-                        className="px-4 py-3 text-center text-gray-500 italic"
+                        className="px-4 py-2 text-center text-gray-500 text-sm sm:text-base italic"
                       >
                         No hay datos disponibles
                       </td>
@@ -228,26 +225,26 @@ const TablaGasificadoArandano = () => {
           </div>
         </div>
 
-        {/* Columna Frío */}
-        <div className="space-y-6">
+        {/* Tabla Pre Frío */}
+        <div className="space-y-2">
           {/* Tabla Frío */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="px-6 py-1">
-              <h2 className="text-center font-bold text-xl md:text-2xl text-black uppercase tracking-wider">
-                ESPERA PRE FRÍO ARÁNDANO ({cantidadFrio})
+            <div className="px-3 xs:px-4 sm:px-6 py-1">
+              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
+                ESPERA PRE FRÍO
               </h2>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
                 <thead>
                   <tr className="bg-teal-600 text-white">
-                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       PALET
                     </th>
-                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       ESPERA
                     </th>
-                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       TOTAL
                     </th>
                   </tr>
@@ -257,7 +254,7 @@ const TablaGasificadoArandano = () => {
                     <tr>
                       <td
                         colSpan="3"
-                        className="px-4 py-3 text-center text-red-500 font-medium"
+                        className="px-4 py-2 text-center text-red-500 text-sm sm:text-base"
                       >
                         Error: {error}
                       </td>
@@ -270,13 +267,13 @@ const TablaGasificadoArandano = () => {
                           index % 2 === 0 ? "bg-white" : "bg-teal-50"
                         } hover:bg-teal-100`}
                       >
-                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
-                          {row.PALET || row.PALET || "N/A"}
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3XL text-gray-800 font-medium">
+                          {row.PALET || "N/A"}
                         </td>
-                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
-                          {row.ESPERA ?? row.ESPERA ?? "N/A"}
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3XL text-gray-800 font-medium">
+                          {row.ESPERA ?? "N/A"}
                         </td>
-                        <td className="px-4 py-2 text-center md:text-3xl text-gray-700">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3XL text-gray-700">
                           {row.TOTAL ?? "N/A"}
                         </td>
                       </tr>
@@ -285,7 +282,7 @@ const TablaGasificadoArandano = () => {
                     <tr>
                       <td
                         colSpan="3"
-                        className="px-4 py-3 text-center text-gray-500 italic"
+                        className="px-4 py-2 text-center text-gray-500 text-sm sm:text-base italic"
                       >
                         No hay datos disponibles
                       </td>
@@ -298,23 +295,22 @@ const TablaGasificadoArandano = () => {
 
           {/* Tabla Frío Batch */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="px-6 py-1">
-              <h2 className="text-center font-bold text-xl md:text-2xl text-black uppercase tracking-wider">
+            <div className="px-3 xs:px-4 sm:px-6 py-1">
+              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
                 BATCH PRE FRIO
               </h2>
             </div>
-
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
                 <thead>
                   <tr className="bg-teal-600 text-white">
-                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       BATCH
                     </th>
-                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       PALETS
                     </th>
-                    <th className="px-4 py-2 text-center font-semibold text-4xl md:text-3xl uppercase tracking-wider">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       TIME
                     </th>
                   </tr>
@@ -324,7 +320,7 @@ const TablaGasificadoArandano = () => {
                     <tr>
                       <td
                         colSpan="3"
-                        className="px-4 py-3 text-center text-red-500 font-medium"
+                        className="px-4 py-2 text-center text-red-500 text-sm sm:text-base"
                       >
                         Error: {error}
                       </td>
@@ -337,13 +333,13 @@ const TablaGasificadoArandano = () => {
                           index % 2 === 0 ? "bg-white" : "bg-teal-50"
                         } hover:bg-teal-100`}
                       >
-                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
                           {row.BATCH || "N/A"}
                         </td>
-                        <td className="px-4 py-2 text-center md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
                           {row.PALETS ?? "N/A"}
                         </td>
-                        <td className="ppx-4 py-2 text-center md:text-3xl text-gray-800">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800">
                           {row.TIME ?? "N/A"}
                         </td>
                       </tr>
@@ -352,7 +348,7 @@ const TablaGasificadoArandano = () => {
                     <tr>
                       <td
                         colSpan="3"
-                        className="px-4 py-3 text-center text-gray-500 italic"
+                        className="px-4 py-2 text-center text-gray-500 text-sm sm:text-base italic"
                       >
                         No hay datos disponibles
                       </td>

@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getOrdenesara } = require("../controllers/ordenesPTAranController");
-console.log("📌 Cargando rutas de Ordenesara..."); // <-- Debu
+const { getOrdenesara } = require("../controllers/ordenesPTAranController");// <-- Debu
 // g
 router.get("/", (req, res) => {
   getOrdenesara(req, res);

@@ -65,7 +65,7 @@ const Bienvenida = ({ onStart }) => {
         arándanos, frescos y de sabor único.
       </motion.p>
       <motion.img
-        src="/santa.png"
+        src="../santa.png"
         alt="Santa Azul"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}

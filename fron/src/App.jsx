@@ -162,25 +162,25 @@ const App = () => {
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
       <motion.aside
-        className="bg-gray-900 border-r border-cyan-400/20 flex flex-col shadow-xl"
-        initial={{ width: 256 }}
-        animate={{ width: sidebarOpen ? 256 : 80 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="bg-gray-950/95 border-r border-cyan-400/5 flex flex-col backdrop-blur-sm"
+        initial={{ width: 260 }}
+        animate={{ width: sidebarOpen ? 260 : 80 }}
+        transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {/* Logo/Header */}
-        <div className="p-4 flex items-center justify-between border-b border-gray-700/50">
+        <div className="p-4 pb-3 flex items-center justify-between border-b border-gray-800/50">
           {sidebarOpen ? (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
+              transition={{ delay: 0.15 }}
               className="flex items-center space-x-2"
             >
-              <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-lg flex items-center justify-center shadow-md">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-900 border border-cyan-400/10 shadow-[0_0_12px_-3px_rgba(34,211,238,0.3)]">
                 <svg
-                  className="w-5 h-5 text-white"
+                  className="w-4 h-4 text-cyan-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -193,14 +193,14 @@ const App = () => {
                   />
                 </svg>
               </div>
-              <h2 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-cyan-100 bg-clip-text text-transparent">
-                Packing
+              <h2 className="text-lg font-light text-cyan-50 tracking-widest">
+                PACK<span className="text-cyan-400">ING</span>
               </h2>
             </motion.div>
           ) : (
-            <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-lg flex items-center justify-center shadow-md">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-900 border border-cyan-400/10 shadow-[0_0_12px_-3px_rgba(34,211,238,0.3)]">
               <svg
-                className="w-5 h-5 text-white"
+                className="w-4 h-4 text-cyan-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -216,7 +216,7 @@ const App = () => {
           )}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-cyan-300 hover:text-white transition-all p-1.5 rounded-md hover:bg-gray-700/50 backdrop-blur-sm"
+            className="text-gray-400 hover:text-cyan-300 transition-all p-1 rounded-lg hover:bg-gray-900/50"
             aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
           >
             {sidebarOpen ? (
@@ -229,7 +229,7 @@ const App = () => {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={1.5}
                   d="M15 19l-7-7 7-7"
                 />
               </svg>
@@ -243,7 +243,7 @@ const App = () => {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={1.5}
                   d="M9 5l7 7-7 7"
                 />
               </svg>
@@ -252,21 +252,21 @@ const App = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto py-2 px-1">
+        <nav className="flex-1 overflow-y-auto py-3 px-1">
           {/* Packing Section */}
-          <div className="border-b border-gray-700/50">
+          <div className="mb-6">
             <button
               onClick={() => setPackingExpanded(!packingExpanded)}
-              className={`w-full flex items-center p-3 hover:bg-gray-800/50 text-cyan-100 transition-all duration-200 rounded-md mx-1 ${
+              className={`w-full flex items-center p-2.5 hover:bg-gray-900/50 transition-all duration-200 rounded-lg mx-1 ${
                 sidebarOpen ? "justify-between" : "justify-center"
-              } ${packingExpanded ? "bg-gray-800/30" : ""}`}
+              } ${packingExpanded ? "bg-gray-900/30" : ""}`}
             >
               {sidebarOpen ? (
                 <>
-                  <span className="flex items-center">
-                    <div className="p-1.5 mr-2 rounded-md bg-gray-800/50">
+                  <span className="flex items-center space-x-2">
+                    <div className="p-1 rounded-md bg-gray-900/80 border border-gray-800">
                       <svg
-                        className="w-5 h-5 text-cyan-400"
+                        className="w-4 h-4 text-cyan-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -279,12 +279,14 @@ const App = () => {
                         />
                       </svg>
                     </div>
-                    <span className="font-medium">Packing</span>
+                    <span className="text-sm font-medium text-gray-200">
+                      Packing
+                    </span>
                   </span>
                   <motion.span
                     animate={{ rotate: packingExpanded ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
-                    className="text-cyan-300"
+                    className="text-gray-500"
                   >
                     <svg
                       className="w-4 h-4"
@@ -302,9 +304,9 @@ const App = () => {
                   </motion.span>
                 </>
               ) : (
-                <div className="relative p-1.5 rounded-md bg-gray-800/50">
+                <div className="p-1 rounded-md bg-gray-900/80 border border-gray-800">
                   <svg
-                    className="w-5 h-5 text-cyan-400"
+                    className="w-4 h-4 text-cyan-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -316,9 +318,6 @@ const App = () => {
                       d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                     />
                   </svg>
-                  {packingExpanded && (
-                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400 rounded-full ring-2 ring-gray-900"></span>
-                  )}
                 </div>
               )}
             </button>
@@ -329,8 +328,8 @@ const App = () => {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="bg-gray-800/30 overflow-hidden rounded-md mx-1 my-1"
+                  transition={{ duration: 0.25 }}
+                  className="overflow-hidden rounded-lg mt-1"
                 >
                   {packingSections.map((section) => {
                     const sectionName =
@@ -356,14 +355,14 @@ const App = () => {
                             if (!sidebarOpen) setSidebarOpen(true);
                           }}
                           className={`w-full text-left p-2.5 ${
-                            sidebarOpen ? "pl-11" : "pl-2.5 flex justify-center"
-                          } transition-all rounded-md ${
+                            sidebarOpen ? "pl-10" : "pl-2.5 flex justify-center"
+                          } transition-all rounded-md text-sm ${
                             isSelected
-                              ? "bg-gradient-to-r from-cyan-500/10 to-cyan-600/10 text-white border-l-2 border-cyan-400"
-                              : "text-cyan-100/90 hover:text-white"
+                              ? "text-cyan-300 bg-gray-900/60 border-l border-cyan-400"
+                              : "text-gray-400 hover:text-gray-200 hover:bg-gray-900/40"
                           }`}
                           whileHover={{
-                            backgroundColor: "rgba(55, 65, 81, 0.5)",
+                            backgroundColor: "rgba(17, 24, 39, 0.5)",
                           }}
                           whileTap={{ scale: 0.98 }}
                         >
@@ -375,10 +374,10 @@ const App = () => {
                                   animate={{
                                     rotate: expandedVolcado ? 180 : 0,
                                   }}
-                                  className="text-cyan-300"
+                                  className="text-gray-500"
                                 >
                                   <svg
-                                    className="w-4 h-4"
+                                    className="w-3.5 h-3.5"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -406,23 +405,23 @@ const App = () => {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: "auto" }}
                             exit={{ opacity: 0, height: 0 }}
-                            className="bg-gray-800/20 ml-6"
+                            className="ml-6 border-l border-gray-800/50"
                           >
                             {section.submenus.map((submenu) => (
                               <motion.button
                                 key={submenu.key}
                                 onClick={() => setSelectedButton(submenu.key)}
-                                className={`w-full text-left p-2 pl-8 text-sm rounded-md ${
+                                className={`w-full text-left p-2 pl-8 text-xs rounded-md ${
                                   selectedButton === submenu.key
-                                    ? "text-cyan-300 bg-gray-700/30"
-                                    : "text-cyan-100/70 hover:text-cyan-200"
+                                    ? "text-cyan-300"
+                                    : "text-gray-500 hover:text-gray-300"
                                 }`}
                                 whileHover={{
-                                  backgroundColor: "rgba(55, 65, 81, 0.3)",
+                                  backgroundColor: "rgba(17, 24, 39, 0.3)",
                                 }}
                                 whileTap={{ scale: 0.98 }}
                               >
-                                {submenu.name}
+                                → {submenu.name}
                               </motion.button>
                             ))}
                           </motion.div>
@@ -437,13 +436,13 @@ const App = () => {
         </nav>
 
         {/* Sidebar footer */}
-        <div className="p-3 border-t border-gray-700/50">
+        <div className="p-3 border-t border-gray-800/50">
           {sidebarOpen ? (
-            <div className="flex items-center justify-between text-sm text-gray-400">
+            <div className="flex items-center justify-between text-xs text-gray-500">
               <span>v1.0.0</span>
-              <button className="hover:text-cyan-300 transition-colors">
+              <button className="hover:text-cyan-300 transition-colors p-1 rounded-md hover:bg-gray-900/50">
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -454,20 +453,14 @@ const App = () => {
                     strokeWidth={1.5}
                     d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
                   />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
                 </svg>
               </button>
             </div>
           ) : (
             <div className="flex justify-center">
-              <button className="text-gray-400 hover:text-cyan-300 transition-colors p-1">
+              <button className="text-gray-500 hover:text-cyan-300 transition-colors p-1 rounded-md hover:bg-gray-900/50">
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

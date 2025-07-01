@@ -6,8 +6,8 @@
 //const baseURL = "http://10.51.51.15:8643";
 //const baseURL = "http://10.250.200.9:8643"; // producción en IIS con tu IP y puerto `${baseURL}/api/${endpoint}`
 
-//const BASE_URL = "http://10.51.51.15:8650/api/";
 const BASE_URL = "http://10.250.200.9:8650/api/";
+/* const BASE_URL = "http://10.250.200.9:8650/api/"; */
 
 export const fetchData = async (endpoint) => {
   try {
