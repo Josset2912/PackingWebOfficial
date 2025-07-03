@@ -1,17 +1,14 @@
 const { sql } = require("../db"); // AJUSTA la ruta según tu proyecto
 
-const getRecepcion = async (req, res) => {
-  const { Cod = "", Sede = "", Cultivo = "", Id = "" } = req.query;
+const getMaquina = async (req, res) => {
+  const { Cultivo = "" } = req.query;
   try {
     const pool = await sql.connect(); // Obtiene el pool conectado (ya está conectado por connectDB)
 
     const result = await pool
       .request()
-      .input("Cod", sql.VarChar, Cod)
-      .input("Sede", sql.VarChar, Sede)
       .input("Cultivo", sql.VarChar, Cultivo)
-      .input("Id", sql.Int, Id)
-      .query(`exec SP_MOSTRAR_PACKING_RECEPCION_TV @Cod,@Sede,@Cultivo,@Id`);
+      .query(`exec  SP_LISTAR_MAQUINA_CULTIVO_PACKING @Cultivo`);
 
     res.json(result.recordset);
   } catch (err) {
@@ -19,4 +16,4 @@ const getRecepcion = async (req, res) => {
   }
 };
 
-module.exports = { getRecepcion };
+module.exports = { getMaquina };

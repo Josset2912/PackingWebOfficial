@@ -2,16 +2,16 @@
 const { sql } = require("../db");
 
 const getGasificadoPreFrioAran = async (req, res) => {
-  const { Cod = "", Camara = "", Cultivo = "" } = req.query;
+  const { Cod = "", Sede = "", Cultivo = "" } = req.query;
 
   try {
     const pool = await sql.connect(); // Obtiene el pool conectado (ya está conectado por connectDB)
     const result = await pool
       .request()
       .input("Cod", sql.VarChar, Cod)
-      .input("Camara", sql.VarChar, Camara)
+      .input("Sede", sql.VarChar, Sede)
       .input("Cultivo", sql.VarChar, Cultivo)
-      .query(`exec SP_MOSTRAR_PACKING_PREFRIO_TV @Cod,@Camara,@Cultivo`); // Ajusta la consulta si es necesario
+      .query(`exec SP_MOSTRAR_PACKING_PREFRIO_TV @Cod,@Sede,@Cultivo`); // Ajusta la consulta si es necesario
     res.json(result.recordset);
   } catch (error) {
     console.error("❌ Error obteniendo datos de gasificado_pre_aran:", error);

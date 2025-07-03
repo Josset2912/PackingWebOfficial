@@ -1,5 +1,5 @@
-const express = require("express");
 const { getFrio } = require("../controllers/EsperaFrioAranController");
+const express = require("express");
 
 //console.log("📌 Cargando rutas de Recepción..."); // <-- Debug
 

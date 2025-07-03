@@ -1,11 +1,7 @@
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 export const GaugeChart = ({ value, max = 100, colors = {} }) => {
-  const {
-    progress = "#4CAF50",
-    remaining = "#F0F0F0",
-    needle = "#FF5722",
-  } = colors;
+  const { progress = "#4CAF50", remaining = "#F0F0F0" } = colors;
 
   const adjustedValue = Math.min(Math.max(value, 0), max);
   const data = [

@@ -1,7 +1,6 @@
-// gasificadoPreController.js
 const { sql } = require("../db");
 
-const getGasificadoBatchPre = async (req, res) => {
+const getEnfriandoBatch = async (req, res) => {
   const { Cod = "", Sede = "", Cultivo = "" } = req.query;
   try {
     const pool = await sql.connect(); // Obtiene el pool conectado (ya está conectado por connectDB)
@@ -10,15 +9,14 @@ const getGasificadoBatchPre = async (req, res) => {
       .input("Cod", sql.VarChar, Cod)
       .input("Sede", sql.VarChar, Sede)
       .input("Cultivo", sql.VarChar, Cultivo)
-      .query(
-        `exec SP_MOSTRAR_PACKING_GASIFICADO_BATCH_TV @Cod,@Sede,@Cultivo`
-      );
-    // Ajusta la consulta si es necesario
+      .query(`exec SP_MOSTRAR_PACKING_ENFRIANDO_BATCH_TV @Cod,@Sede,@Cultivo`); // Ajusta la consulta si es necesario
     res.json(result.recordset);
   } catch (error) {
-    console.error("❌ Error obteniendo datos de gasificado_pre:", error);
-    res.status(500).json({ error: "Error al obtener datos de gasificado_pre" });
+    console.error("❌ Error obteniendo datos de gasificado_pre_aran:", error);
+    res
+      .status(500)
+      .json({ error: "Error al obtener datos de gasificado_pre_aran" });
   }
 };
 
-module.exports = { getGasificadoBatchPre };
+module.exports = { getEnfriandoBatch };

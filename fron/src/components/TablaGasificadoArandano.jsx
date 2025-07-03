@@ -2,11 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const TablaGasificadoArandano = () => {
-  const [fruta, setFruta] = useState("Arandano");
   const [dataGasificado, setDataGasificado] = useState([]);
   const [dataGasificadoBatch, setDataGasificadoBatch] = useState([]);
   const [dataFrio, setDataFrio] = useState([]);
   const [dataFrioBatch, setDataFrioBatch] = useState([]);
+
+  const [fruta, setFruta] = useState("ARANDANO");
+  const [dataCultivo, setDataCultivo] = useState([]);
+
+  const [dataSedes, setDataSede] = useState([]);
+  const [sedes, setSedes] = useState("TODOS");
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -16,11 +22,19 @@ const TablaGasificadoArandano = () => {
       setLoading(true);
       setError(null);
       const frutaParam = fruta.toLowerCase();
+      const sedeParam = sedes.toLowerCase();
+
       /*  const queryParams = `?Cod=''&Camara=''&Cultivo=${frutaParam}`; */
 
-      const [resGasificado, resFrio, resGasificadoBatch, resFrioBatch] =
-        await Promise.all([
-          /*  axios.get(
+      const [
+        resGasificado,
+        resFrio,
+        resGasificadoBatch,
+        resFrioBatch,
+        resSede,
+        resCultivo,
+      ] = await Promise.all([
+        /*  axios.get(
                 `http://10.250.200.9:8650/api/gasificadoPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
               ),
               axios.get(
@@ -32,19 +46,41 @@ const TablaGasificadoArandano = () => {
               axios.get(
                 `http://10.250.200.9:8650/api/gasificadoBatchPreFrioAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
               ), */
-          axios.get(
-            `http://10.250.200.9:8650/api/gasificadoPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
-          ),
-          axios.get(
-            `http://10.250.200.9:8650/api/gasificadoPreFrioAran?Cod=''&Camara=''&Cultivo=${frutaParam}`
-          ),
-          axios.get(
-            `http://10.250.200.9:8650/api/gasificadoBatchPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
-          ),
-          axios.get(
-            `http://10.250.200.9:8650/api/gasificadoBatchPreFrioAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
-          ),
-        ]);
+        axios.get("http://10.250.200.9:8650/api/gasificadoPreAran", {
+          params: {
+            Cod: "",
+            Sede: sedeParam,
+            Cultivo: frutaParam,
+          },
+        }),
+        axios.get("http://10.250.200.9:8650/api/gasificadoPreFrioAran", {
+          params: {
+            Cod: "",
+            Sede: sedeParam,
+            Cultivo: frutaParam,
+          },
+        }),
+        axios.get("http://10.250.200.9:8650/api/gasificadoBatchPreAran", {
+          params: {
+            Cod: "",
+            Sede: sedeParam,
+            Cultivo: frutaParam,
+          },
+        }),
+        axios.get("http://10.250.200.9:8650/api/gasificadoBatchPreFrioAran", {
+          params: {
+            Cod: "",
+            Sede: sedeParam,
+            Cultivo: frutaParam,
+          },
+        }),
+        axios.get("http://10.250.200.9:8650/api/sede", {
+          params: {
+            Emp: "",
+          },
+        }),
+        axios.get("http://10.250.200.9:8650/api/cultivo", {}),
+      ]);
 
       setDataGasificado(
         Array.isArray(resGasificado.data) ? resGasificado.data : []
@@ -56,6 +92,8 @@ const TablaGasificadoArandano = () => {
       setDataFrioBatch(
         Array.isArray(resFrioBatch.data) ? resFrioBatch.data : []
       );
+      setDataSede(Array.isArray(resSede.data) ? resSede.data : []);
+      setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
     } catch (err) {
       console.error("Error en la carga:", err);
       setError("No se pudieron cargar los datos");
@@ -63,6 +101,8 @@ const TablaGasificadoArandano = () => {
       setDataFrio([]);
       setDataGasificadoBatch([]);
       setDataFrioBatch([]);
+      setDataSede([]);
+      setDataCultivo([]);
     } finally {
       setLoading(false);
     }
@@ -70,7 +110,7 @@ const TablaGasificadoArandano = () => {
 
   useEffect(() => {
     fetchData();
-  }, [fruta]);
+  }, [sedes, fruta]);
 
   useEffect(() => {
     const intervaloId = setInterval(() => {
@@ -78,36 +118,71 @@ const TablaGasificadoArandano = () => {
     }, 10000);
 
     return () => clearInterval(intervaloId);
-  }, [fruta]);
+  }, [sedes, fruta]);
 
   return (
-    <div className="container mx-auto px-2 xs:px-3 sm:px-4">
+    <div className="">
       {/* Selector de cultivo - Ajuste completo para todos los tamaños */}
-      <div className="mb-0 not-first:mb-0 flex items-center justify-end">
-        <label className="font-bold text-lg mr-2">CULTIVO:</label>
-        <select
-          value={fruta}
-          onChange={(e) => setFruta(e.target.value)}
-          className="p-1 border border-green-600 text-xl font-bold text-green-800 rounded"
-        >
-          <option value="Arandano">ARANDANO</option>
-          <option value="Uva">UVA</option>
-        </select>
+      <div className="mb-0.5 flex flex-wrap gap-1 justify-end items-center">
+        {/* SEDE */}
+        <div className="flex items-center gap-2 min-w-[160px]">
+          <label className="font-bold text-sm sm:text-lg text-nowrap">
+            SEDE:
+          </label>
+          <select
+            value={sedes}
+            onChange={(e) => setSedes(e.target.value)}
+            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
+          >
+            <option value="TODOS">TODOS</option>
+            {dataSedes.length > 0 ? (
+              dataSedes.map((row, index) => (
+                <option key={index} value={row.Sede}>
+                  {row.Sede}
+                </option>
+              ))
+            ) : (
+              <option disabled></option>
+            )}
+          </select>
+        </div>
+        {/* CULTIVO */}
+        <div className="flex items-center gap-2 min-w-[160px]">
+          <label className="font-bold text-sm sm:text-lg text-nowrap">
+            CULTIVO:
+          </label>
+          <select
+            value={fruta}
+            onChange={(e) => setFruta(e.target.value)}
+            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
+          >
+            {dataCultivo.length > 0 ? (
+              dataCultivo.map((row, index) => (
+                <option key={index} value={row.Cultivo}>
+                  {row.Cultivo}
+                </option>
+              ))
+            ) : (
+              <option disabled></option>
+            )}
+          </select>
+        </div>
       </div>
 
       {/* Grid principal - Ajuste responsivo completo */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
-        {/* Tabla Espera Gasificado */}
-        <div className="space-y-2">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        {/*Gasificado */}
+        <div className="overflow-y-auto max-h-[calc(100vh-100px)] ">
+          {/*tabla Gasificado */}
+          <div className="mb-1 bg-white rounded-xl shadow-lg overflow-hidden overflow-y-auto max-h-[calc(60vh-70px)]">
             <div className="px-3 xs:px-4 sm:px-6 py-1">
               <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
                 ESPERA GASIFICADO
               </h2>
             </div>
-            <div className="overflow-x-auto">
+            <div className="overflow-y-auto ">
               <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
-                <thead>
+                <thead className="sticky top-0 z-10">
                   <tr className="bg-indigo-600 text-white">
                     <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       PALET
@@ -159,16 +234,16 @@ const TablaGasificadoArandano = () => {
           </div>
 
           {/* Tabla Gasificado Batch */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden overflow-y-auto max-h-[calc(40vh-35px)]">
             <div className="px-3 xs:px-4 sm:px-6 py-1">
               <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
                 BATCH GASIFICADO
               </h2>
             </div>
-            <div className="overflow-x-auto">
+            <div className="overflow-y-auto ">
               <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
-                <thead>
-                  <tr className="bg-indigo-600 text-white">
+                <thead className="sticky top-0 z-10">
+                  <tr className="bg-gradient-to-r bg-indigo-600 text-white">
                     <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       BATCH
                     </th>
@@ -225,16 +300,18 @@ const TablaGasificadoArandano = () => {
           </div>
         </div>
 
-        {/* Tabla Pre Frío */}
-        <div className="space-y-2">
-          {/* Tabla Frío */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* Espacio entre tablas Gasificado y Frío */}
+
+        {/*  Pre Frío */}
+        <div className="overflow-y-auto max-h-[calc(100vh-100px)] ">
+          {/* Tabla Pre Frío */}
+          <div className="mb-1 bg-white rounded-xl shadow-lg overflow-hidden overflow-y-auto max-h-[calc(60vh-70px)]">
             <div className="px-3 xs:px-4 sm:px-6 py-1">
               <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
                 ESPERA PRE FRÍO
               </h2>
             </div>
-            <div className="overflow-x-auto">
+            <div className="overflow-y-auto">
               <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
                 <thead>
                   <tr className="bg-teal-600 text-white">
@@ -293,14 +370,14 @@ const TablaGasificadoArandano = () => {
             </div>
           </div>
 
-          {/* Tabla Frío Batch */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          {/* Tabla Pre Frío Batch */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden overflow-y-auto max-h-[calc(40vh-35px)]">
             <div className="px-3 xs:px-4 sm:px-6 py-1">
               <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
                 BATCH PRE FRIO
               </h2>
             </div>
-            <div className="overflow-x-auto">
+            <div className="overflow-y-auto">
               <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
                 <thead>
                   <tr className="bg-teal-600 text-white">
@@ -360,6 +437,7 @@ const TablaGasificadoArandano = () => {
           </div>
         </div>
       </div>
+      {/*  */}
     </div>
   );
 };
