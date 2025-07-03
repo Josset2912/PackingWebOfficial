@@ -22,7 +22,7 @@ const TablaOrdenesArandano = () => {
 
       const [resOrdenPRD, resSede, resCultivo] = await Promise.all([
         /*  axios.get(
-                `http://10.250.200.9:8650/api/esperaVolcadoAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+                `http://10.250.200.9 :8650/api/esperaVolcadoAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
               ), */
         axios.get("http://10.250.200.9:8650/api/ordenesPTAran", {
           params: {

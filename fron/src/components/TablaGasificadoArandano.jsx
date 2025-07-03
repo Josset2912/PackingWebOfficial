@@ -35,16 +35,16 @@ const TablaGasificadoArandano = () => {
         resCultivo,
       ] = await Promise.all([
         /*  axios.get(
-                `http://10.250.200.9:8650/api/gasificadoPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+                `http://10.250.200.9 :8650/api/gasificadoPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
               ),
               axios.get(
-                `http://10.250.200.9:8650/api/gasificadoPreFrioAran?Cod=''&Camara=''&Cultivo=${frutaParam}`
+                `http://10.250.200.9 :8650/api/gasificadoPreFrioAran?Cod=''&Camara=''&Cultivo=${frutaParam}`
               ),
               axios.get(
-                `http://10.250.200.9:8650/api/gasificadoBatchPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+                `http://10.250.200.9 :8650/api/gasificadoBatchPreAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
               ),
               axios.get(
-                `http://10.250.200.9:8650/api/gasificadoBatchPreFrioAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
+                `http://10.250.200.9 :8650/api/gasificadoBatchPreFrioAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
               ), */
         axios.get("http://10.250.200.9:8650/api/gasificadoPreAran", {
           params: {
@@ -311,6 +311,7 @@ const TablaGasificadoArandano = () => {
                 ESPERA PRE FRÍO
               </h2>
             </div>
+
             <div className="overflow-y-auto">
               <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
                 <thead>
@@ -344,13 +345,13 @@ const TablaGasificadoArandano = () => {
                           index % 2 === 0 ? "bg-white" : "bg-teal-50"
                         } hover:bg-teal-100`}
                       >
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3XL text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700">
                           {row.PALET || "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3XL text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700">
                           {row.ESPERA ?? "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3XL text-gray-700">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700">
                           {row.TOTAL ?? "N/A"}
                         </td>
                       </tr>

@@ -4,10 +4,10 @@
 //const baseURL = "5000";
 // desarrollo local
 //const baseURL = "http://10.51.51.15:8643";
-//const baseURL = "http://10.250.200.9:8643"; // producción en IIS con tu IP y puerto `${baseURL}/api/${endpoint}`
+//const baseURL = "http://10.250.200.9 :8643"; // producción en IIS con tu IP y puerto `${baseURL}/api/${endpoint}`
 
 const BASE_URL = "http://10.250.200.9:8650/api/";
-/* const BASE_URL = "http://10.250.200.9:8650/api/"; */
+/* const BASE_URL = "http://10.250.200.9 :8650/api/"; */
 
 export const fetchData = async (endpoint) => {
   try {
@@ -27,7 +27,7 @@ export const fetchData = async (endpoint) => {
     
     export const fetchData = async (endpoint) => {
   try {
-    const response = await fetch(`http://10.250.200.9:8643/api/${endpoint}`);
+    const response = await fetch(`http://10.250.200.9 :8643/api/${endpoint}`);
     if (!response.ok) {
       throw new Error(`Error en la petición: ${response.status}`);
     }

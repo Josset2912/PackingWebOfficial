@@ -12,11 +12,13 @@ import TablaEsperaArandano from "./components/TablaEsperaArandano";
 import TablaLineaVolcadoArandano from "./components/TablaLineaVolcadoArandano";
 import TablaFrioArandano from "./components/TablaFrioArandano";
 import TablaOrdenesArandano from "./components/TablaOrdenesArandano";
+import TablaRecepcionNisiraArandano from "./components/TablaRecepcionNisiraArandano";
 
 // Mapeo de endpoints actualizado
 const endpointMap = {
   Arandano: {
     RECEPCIÓN: "recepcionAran",
+    "RECEPCION NISIRA": "recepcionNisiraAran",
     "GASIFICADO PRE FRÍO": "gasificadoPreFrioAran",
     "VOLCADO/ESPERA": "esperaVolcadoAran",
     "VOLCADO/LÍNEA": "avanceLinea",
@@ -29,6 +31,7 @@ const endpointMap = {
 const tablaMap = {
   Arandano: {
     RECEPCIÓN: TablaRecepcionArandano,
+    "RECEPCION NISIRA": TablaRecepcionNisiraArandano,
     "GASIFICADO PRE FRÍO": TablaGasificadoArandano,
     "VOLCADO/ESPERA": TablaEsperaArandano,
     "VOLCADO/LÍNEA": TablaLineaVolcadoArandano,
@@ -53,6 +56,7 @@ const App = () => {
   // Secciones de packing con estructura jerárquica
   const packingSections = [
     "RECEPCIÓN",
+    "RECEPCION NISIRA",
     "GASIFICADO PRE FRÍO",
     {
       name: "VOLCADO",

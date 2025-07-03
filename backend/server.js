@@ -38,6 +38,7 @@ db.connectDB()
     const enfriandoAranRoutes = require("./routes/enfriandoAranRoutes.js"); //enfriando  arandano
     const enfriandoBachRoutes = require("./routes/frio_BatchEsperaEnfriandoAranRoutes.js"); //avance linea arandano
     const avanceLineaRoutes = require("./routes/avanceLineaRoutes.js"); //avance linea arandano
+    const recepcionNisiraAranRoutes = require("./routes/recepcionNisiraAranRoutes.js");
     const ordenesPTAranRoutes = require("./routes/ordenesPTAranRoutes.js");
 
     // Registrar rutas Lista Maestros
@@ -61,7 +62,7 @@ db.connectDB()
     app.use("/api/enfriandoBatchPreFrioAran", enfriandoBachRoutes); //enfriando Batch linea arandano
     app.use("/api/avanceLinea", avanceLineaRoutes); //avance linea arandano
     app.use("/api/ordenesPTAran", ordenesPTAranRoutes);
-
+    app.use("/api/recepcionNisiraAran", recepcionNisiraAranRoutes);
     //-----------------------------------------------------------------//
 
     app.listen(PORT, "0.0.0.0", () => {
