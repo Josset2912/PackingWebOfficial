@@ -13,26 +13,28 @@ import {
 
 // Componentes para Arándano
 import TablaRecepcionArandano from "./components/TablaRecepcionArandano";
+import TablaRecepcionNisiraArandano from "./components/TablaRecepcionNisiraArandano";
 import TablaGasificadoArandano from "./components/TablaGasificadoArandano";
+import TablaCalidad from "./components/TablaCalidad"; // Asumiendo que TablaCalidad es genérica
 import TablaEsperaArandano from "./components/TablaEsperaArandano";
 import TablaLineaVolcadoArandano from "./components/TablaLineaVolcadoArandano";
 import TablaFrioArandano from "./components/TablaFrioArandano";
 import TablaOrdenesArandano from "./components/TablaOrdenesArandano";
-import TablaRecepcionNisiraArandano from "./components/TablaRecepcionNisiraArandano";
 
-/* // Mapeo de endpoints actualizado
+// Mapeo de endpoints actualizado
 const endpointMap = {
   Arandano: {
     RECEPCIÓN: "recepcion",
-  // otros endpoints...
+    // otros endpoints...
   },
 };
- */
+
 // Mapeo de componentes de tabla actualizado
 const tablaMap = {
   Arandano: {
     RECEPCIÓN: TablaRecepcionArandano,
     "RECEPCION NISIRA": TablaRecepcionNisiraArandano,
+    /* "CALIDAD": TablaCalidad, // Asumiendo que la tabla de calidad es la misma que recepción */
     "GASIFICADO PRE FRÍO": TablaGasificadoArandano,
     "VOLCADO/ESPERA": TablaEsperaArandano,
     "VOLCADO/LÍNEA": TablaLineaVolcadoArandano,
@@ -59,6 +61,7 @@ const App = () => {
     "RECEPCIÓN",
     "RECEPCION NISIRA",
     "GASIFICADO PRE FRÍO",
+    /* "CALIDAD", */
     {
       name: "VOLCADO",
       submenus: [

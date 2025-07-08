@@ -1,47 +1,34 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { fetchCultivos, fetchSedes, fetchEspera } from "../utils/api";
 
 const TablaEsperaArandano = () => {
   const [fruta, setFruta] = useState("ARANDANO");
-  const [dataCultivo, setDataCultivo] = useState([]);
   const [sedes, setSedes] = useState("FUNDO SANTA AZUL");
+
+  const [dataCultivo, setDataCultivo] = useState([]);
   const [dataSedes, setDataSedes] = useState([]);
   const [dataEsperaVolcado, setDataEsperaVolcado] = useState([]);
 
   // Move fetchData outside so it's accessible in both useEffects
   const fetchData = async () => {
     try {
-      const frutaParam = fruta.toLowerCase();
-      const sedeParam = sedes.toLowerCase();
-      /*  const queryParams = `?Cod=''&Camara=''&Cultivo=${frutaParam}`; */
+      // Convertir valores a minúsculas para la API si lo requiere
+      const frutaLower = fruta.toLowerCase();
+      const sedeParam = sedes === "TODOS" ? "" : sedes;
 
-      const [resEsperaVolcado, resSede, resCultivo] = await Promise.all([
-        /*  axios.get(
-                      `http://10.250.200.9 :8650/api/esperaVolcadoAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
-                    ), */
-        axios.get("http://10.250.200.9:8650/api/esperaVolcadoAran", {
-          params: {
-            Cod: "",
-            Turno: sedeParam,
-            Cultivo: frutaParam,
-          },
-        }),
-        axios.get("http://10.250.200.9:8650/api/sede", {
-          params: {
-            Emp: "",
-          },
-        }),
-        axios.get("http://10.250.200.9:8650/api/cultivo", {}),
+      // Llamadas paralelas
+      const [resEspera, resSede, resCultivo] = await Promise.all([
+        fetchEspera(sedeParam, frutaLower),
+        fetchSedes(),
+        fetchCultivos(),
       ]);
 
-      setDataEsperaVolcado(
-        Array.isArray(resEsperaVolcado.data) ? resEsperaVolcado.data : []
-      );
+      // Las respuestas de axios ya traen el objeto data
+      setDataEsperaVolcado(Array.isArray(resEspera.data) ? resEspera.data : []);
       setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
       setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
     } catch (err) {
-      console.error("Error en la carga:", err);
-
+      console.error("Error fetching data:", err);
       setDataEsperaVolcado([]);
       setDataSedes([]);
       setDataCultivo([]);
@@ -77,8 +64,8 @@ const TablaEsperaArandano = () => {
             <option value="TODOS">TODOS</option>
             {dataSedes.length > 0 ? (
               dataSedes.map((row, index) => (
-                <option key={index} value={row.Sede}>
-                  {row.Sede}
+                <option key={index} value={row.sede}>
+                  {row.sede}
                 </option>
               ))
             ) : (
@@ -98,8 +85,8 @@ const TablaEsperaArandano = () => {
           >
             {dataCultivo.length > 0 ? (
               dataCultivo.map((row, index) => (
-                <option key={index} value={row.Cultivo}>
-                  {row.Cultivo}
+                <option key={index} value={row.cultivo}>
+                  {row.cultivo}
                 </option>
               ))
             ) : (
@@ -136,13 +123,13 @@ const TablaEsperaArandano = () => {
                     } hover:bg-cyan-50`}
                   >
                     <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                      {row.PALET}
+                      {row.palet}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                      {row.ESPERA}
+                      {row.espera}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700">
-                      {row.TOTAL}
+                      {row.total}
                     </td>
                   </tr>
                 ))

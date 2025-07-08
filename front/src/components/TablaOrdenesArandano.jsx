@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { fetchOrdenes, fetchSedes, fetchCultivos } from "../utils/api";
 
 const TablaOrdenesArandano = () => {
   const [dataOrdenPRD, setDataOrdenPRD] = useState([]);
@@ -10,45 +10,30 @@ const TablaOrdenesArandano = () => {
   const [sedes, setSedes] = useState("FUNDO SANTA AZUL");
   const [dataSedes, setDataSedes] = useState([]);
 
-  const [loading, setLoading] = useState(true);
-
   // Move fetchData outside so it's accessible in both useEffects
+  // Función para cargar todos los datos
   const fetchData = async () => {
     try {
-      setLoading(true);
-      const frutaParam = fruta.toLowerCase();
-      const sedeParam = sedes.toLowerCase();
-      /*  const queryParams = `?Cod=''&Camara=''&Cultivo=${frutaParam}`; */
+      // Convertir valores a minúsculas para la API si lo requiere
+      const frutaLower = fruta.toLowerCase();
+      const sedeParam = sedes === "TODOS" ? "" : sedes;
 
-      const [resOrdenPRD, resSede, resCultivo] = await Promise.all([
-        /*  axios.get(
-                `http://10.250.200.9 :8650/api/esperaVolcadoAran?Cod=''&Turno=''&Cultivo=${frutaParam}`
-              ), */
-        axios.get("http://10.250.200.9:8650/api/ordenesPTAran", {
-          params: {
-            Cod: "",
-            Sede: sedeParam,
-            Cultivo: frutaParam,
-          },
-        }),
-        axios.get("http://10.250.200.9:8650/api/sede", {
-          params: {
-            Emp: "",
-          },
-        }),
-        axios.get("http://10.250.200.9:8650/api/cultivo", {}),
+      // Llamadas paralelas
+      const [resOrdenes, resSede, resCultivo] = await Promise.all([
+        fetchOrdenes(sedeParam, frutaLower),
+        fetchSedes(),
+        fetchCultivos(),
       ]);
 
-      setDataOrdenPRD(Array.isArray(resOrdenPRD.data) ? resOrdenPRD.data : []);
-      setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
+      // Las respuestas de axios ya traen el objeto data
+      setDataOrdenPRD(Array.isArray(resOrdenes.data) ? resOrdenes.data : []);
       setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
+      setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
     } catch (err) {
-      console.error("Error en la carga:", err);
+      console.error("Error fetching data:", err);
       setDataOrdenPRD([]);
-      setDataCultivo([]);
       setDataSedes([]);
-    } finally {
-      setLoading(false);
+      setDataCultivo([]);
     }
   };
 
@@ -79,8 +64,8 @@ const TablaOrdenesArandano = () => {
             <option value="TODOS">TODOS</option>
             {dataSedes.length > 0 ? (
               dataSedes.map((row, index) => (
-                <option key={index} value={row.Sede}>
-                  {row.Sede}
+                <option key={index} value={row.sede}>
+                  {row.sede}
                 </option>
               ))
             ) : (
@@ -100,8 +85,8 @@ const TablaOrdenesArandano = () => {
           >
             {dataCultivo.length > 0 ? (
               dataCultivo.map((row, index) => (
-                <option key={index} value={row.Cultivo}>
-                  {row.Cultivo}
+                <option key={index} value={row.cultivo}>
+                  {row.cultivo}
                 </option>
               ))
             ) : (
@@ -144,22 +129,22 @@ const TablaOrdenesArandano = () => {
                     } hover:bg-cyan-50`}
                   >
                     <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-800 font-medium">
-                      {row.ORDEN}
+                      {row.orden}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-800 font-medium">
-                      {row.PRIORIDAD}
+                      {row.prioridad}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
-                      {row.DESTINO}
+                      {row.destino}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
-                      {row.PRESENTACION}
+                      {row.presentacion}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
-                      {row.EJEC_PROY}
+                      {row.ejec_proy}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
-                      {row.F_DESPACHO}
+                      {row.f_despacho}
                     </td>
                   </tr>
                 ))

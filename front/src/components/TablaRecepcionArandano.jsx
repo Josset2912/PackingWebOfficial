@@ -101,8 +101,6 @@ const TablaRecepcionArandano = () => {
         </div>
       </div>
 
-      {/* Mostrar spinner o mensaje si carga */}
-
       <div className="flex flex-col md:flex-row gap-4 w-full px-2">
         {/* Tabla Variedad */}
         <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">

@@ -1,11 +1,18 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import {
+  fetchCultivos,
+  fetchSedes,
+  fetchEsperaFrio,
+  fetchEnfriando,
+  fetchBatchEnfriando,
+} from "../utils/api";
 
 const TablaFrioArandano = () => {
   // Estados principales
   const [fruta, setFruta] = useState("Arandano");
+  const [sedes, setSede] = useState("FUNDO SANTA AZUL");
+
   const [dataCultivo, setDataCultivo] = useState([]);
-  const [sedes, setSedes] = useState("FUNDO SANTA AZUL");
   const [dataSedes, setDataSedes] = useState([]);
   const [dataFrio, setDataFrio] = useState([]);
   const [dataEnfriando, setDataEnfriando] = useState([]);
@@ -14,56 +21,44 @@ const TablaFrioArandano = () => {
   // Función memoizada para obtener los datos (no se recrea en cada render)
   const fetchData = async () => {
     try {
+      // Convertir valores a minúsculas para la API si lo requiere
       const frutaLower = fruta.toLowerCase();
-      const sedeLower = sedes.toLowerCase();
+      const sedeParam = sedes === "TODOS" ? "" : sedes;
 
-      const [resFrio, resEnfriando, resBatchEnfriando, resSede, resCultivo] =
-        await Promise.all([
-          axios.get("http://10.250.200.9:8650/api/esperaFrioAran", {
-            params: {
-              fruta: frutaLower,
-              sede: sedeLower,
-              Cultivo: frutaLower,
-            },
-          }),
-          axios.get("http://10.250.200.9:8650/api/enfriandoAran", {
-            params: {
-              fruta: frutaLower,
-              sede: sedeLower,
-              Cultivo: frutaLower,
-            },
-          }),
-          axios.get("http://10.250.200.9:8650/api/enfriandoBatchPreFrioAran", {
-            params: {
-              Cod: "",
-              Sede: sedeLower,
-              Cultivo: frutaLower,
-            },
-          }),
-          axios.get("http://10.250.200.9:8650/api/sede", {
-            params: { Emp: "" },
-          }),
-          axios.get("http://10.250.200.9:8650/api/cultivo"),
-        ]);
+      // Llamadas paralelas
+      const [
+        resSede,
+        resCultivo,
+        resEsperaFrio,
+        resEnfriando,
+        resBatchEnfriando,
+      ] = await Promise.all([
+        fetchSedes(),
+        fetchCultivos(),
+        fetchEsperaFrio(sedeParam, frutaLower),
+        fetchEnfriando(sedeParam, frutaLower),
+        fetchBatchEnfriando(sedeParam, frutaLower),
+      ]);
 
-      setDataFrio(Array.isArray(resFrio.data) ? resFrio.data : []);
+      // Las respuestas de axios ya traen el objeto data
+      setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
+      setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
+      setDataFrio(Array.isArray(resEsperaFrio.data) ? resEsperaFrio.data : []);
       setDataEnfriando(
         Array.isArray(resEnfriando.data) ? resEnfriando.data : []
       );
       setDataBatchEnfriando(
         Array.isArray(resBatchEnfriando.data) ? resBatchEnfriando.data : []
       );
-      setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
-      setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
     } catch (err) {
       console.error("Error fetching data:", err);
+      setDataSedes([]);
+      setDataCultivo([]);
       setDataFrio([]);
       setDataEnfriando([]);
       setDataBatchEnfriando([]);
-      setDataCultivo([]);
-      setDataSedes([]);
     }
-  }; // ← sin dependencias
+  };
 
   // Actualizamos los refs cuando cambian los filtros
   useEffect(() => {
@@ -90,14 +85,14 @@ const TablaFrioArandano = () => {
           </label>
           <select
             value={sedes}
-            onChange={(e) => setSedes(e.target.value)}
+            onChange={(e) => setSede(e.target.value)}
             className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
           >
             <option value="TODOS">TODOS</option>
             {dataSedes.length > 0 &&
               dataSedes.map((row, index) => (
-                <option key={index} value={row.Sede}>
-                  {row.Sede}
+                <option key={index} value={row.sede}>
+                  {row.sede}
                 </option>
               ))}
           </select>
@@ -115,8 +110,8 @@ const TablaFrioArandano = () => {
           >
             {dataCultivo.length > 0 &&
               dataCultivo.map((row, index) => (
-                <option key={index} value={row.Cultivo}>
-                  {row.Cultivo}
+                <option key={index} value={row.cultivo}>
+                  {row.cultivo}
                 </option>
               ))}
           </select>
@@ -158,11 +153,11 @@ const TablaFrioArandano = () => {
                             index % 2 === 0 ? "bg-white" : "bg-indigo-50"
                           } hover:bg-indigo-100`}
                         >
-                          <td className="px-4 py-2 text-center text-sm sm:text-xl text-gray-800 font-medium">
-                            {row.PALET || "N/A"}
+                          <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                            {row.palet || "N/A"}
                           </td>
-                          <td className="px-4 py-2 text-center text-sm sm:text-xl text-gray-700">
-                            {row.ESPERA || "N/A"}
+                          <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                            {row.espera || "N/A"}
                           </td>
                         </tr>
                       ))
@@ -218,14 +213,14 @@ const TablaFrioArandano = () => {
                             index % 2 === 0 ? "bg-white" : "bg-teal-50"
                           } hover:bg-teal-100`}
                         >
-                          <td className="px-4 py-2 text-center text-sm sm:text-xl text-gray-800 font-medium">
-                            {row.PALET || "N/A"}
+                          <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                            {row.palet || "N/A"}
                           </td>
-                          <td className="px-4 py-2 text-center text-sm sm:text-xl text-gray-700">
-                            {row.ENFRIANDO || "N/A"}
+                          <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                            {row.enfriando || "N/A"}
                           </td>
-                          <td className="px-4 py-2 text-center text-sm sm:text-xl text-teal-800">
-                            {row.TOTAL || "N/A"}
+                          <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                            {row.total || "N/A"}
                           </td>
                         </tr>
                       ))
@@ -277,13 +272,13 @@ const TablaFrioArandano = () => {
                         } hover:bg-teal-100`}
                       >
                         <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
-                          {row.BATCH || "N/A"}
+                          {row.batch || "N/A"}
                         </td>
                         <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
-                          {row.PALETS ?? "N/A"}
+                          {row.palets ?? "N/A"}
                         </td>
                         <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800">
-                          {row.TIME ?? "N/A"}
+                          {row.time ?? "N/A"}
                         </td>
                       </tr>
                     ))

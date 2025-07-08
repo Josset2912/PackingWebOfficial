@@ -1,8 +1,16 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import GaugeChart from "./Medidor";
+import {
+  fetchSedes,
+  fetchCultivos,
+  fetchMaquina,
+  fetchTurno,
+  fetchEsperaLineaProg,
+  fetchEsperaLineaSgtePalet,
+  fetchEsperaLineaPorcentaje,
+} from "../utils/api"; // Asegúrate de que estas funciones estén definidas en utils/api.js
 
-const TablaEsperaArandano = () => {
+const TablaLineaVolcadoArandano = () => {
   /* ----------------------- estados ----------------------- */
   const [dataLineaVolcado, setDataLineaVolcado] = useState([]);
   const [dataSgtePalet, setDataSgtePalet] = useState([]);
@@ -26,110 +34,83 @@ const TablaEsperaArandano = () => {
   const [fecha, setFecha] = useState(
     () => new Date().toISOString().split("T")[0]
   );
-
-  /* ---------------------- fetchData ---------------------- */
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     try {
-      setLoading(true);
-      setError(null);
+      // Convertir valores a minúsculas para la API si lo requiere
+      const frutaLower = fruta.toLowerCase();
+      const sedeParam = sede === "TODOS" ? "" : sede;
+      const maquinaParam = maquina === "UNITEC" ? "" : maquina;
 
-      const frutaParam = fruta.toLowerCase();
-      const maquinaParam = maquina.toLowerCase();
-      const sedeParam = sede.toLowerCase();
-      const turnoParam = turno.toLowerCase();
-
+      // Llamadas paralelas
       const [
-        resLineaVolcado,
-        resSgtePalet,
-        resPorcentaje,
+        resLineaVolcadoProg,
+        resLineaVolcadoSgtePalet,
+        resLineaVolcadoPorcentaje,
         resSedes,
         resCultivo,
         resMaquina,
         resTurno,
       ] = await Promise.all([
-        axios.get("http://10.250.200.9:8650/api/avanceLinea", {
-          params: {
-            Fecha: fecha,
-            Sede: sedeParam,
-            Cultivo: frutaParam,
-            Turno: turnoParam,
-            Maquina: maquinaParam,
-            Id: 1,
-          },
-        }),
-        axios.get("http://10.250.200.9:8650/api/avanceLinea", {
-          params: {
-            Fecha: fecha,
-            Sede: sedeParam,
-            Cultivo: frutaParam,
-            Turno: turnoParam,
-            Maquina: maquinaParam,
-            Id: 2,
-          },
-        }),
-        axios.get("http://10.250.200.9:8650/api/avanceLinea", {
-          params: {
-            Fecha: fecha,
-            Sede: sedeParam,
-            Cultivo: frutaParam,
-            Turno: turnoParam,
-            Maquina: maquinaParam,
-            Id: 3,
-          },
-        }),
-        axios.get("http://10.250.200.9:8650/api/sede", { params: { Emp: "" } }),
-        axios.get("http://10.250.200.9:8650/api/cultivo"),
-        axios.get("http://10.250.200.9:8650/api/maquina", {
-          params: { Cultivo: frutaParam },
-        }),
-        axios.get("http://10.250.200.9:8650/api/turno"),
+        fetchEsperaLineaProg(fecha, sedeParam, frutaLower, maquinaParam, turno),
+        fetchEsperaLineaSgtePalet(
+          fecha,
+          sedeParam,
+          frutaLower,
+          maquinaParam,
+          turno
+        ),
+        fetchEsperaLineaPorcentaje(
+          fecha,
+          sedeParam,
+          frutaLower,
+          maquinaParam,
+          turno
+        ),
+        fetchSedes(),
+        fetchCultivos(),
+        fetchMaquina(frutaLower),
+        fetchTurno(),
       ]);
 
+      // Las respuestas de axios ya traen el objeto data
       setDataLineaVolcado(
-        Array.isArray(resLineaVolcado.data) ? resLineaVolcado.data : []
+        Array.isArray(resLineaVolcadoProg.data) ? resLineaVolcadoProg.data : []
       );
       setDataSgtePalet(
-        Array.isArray(resSgtePalet.data) ? resSgtePalet.data : []
+        Array.isArray(resLineaVolcadoSgtePalet.data)
+          ? resLineaVolcadoSgtePalet.data
+          : []
       );
       setDataPorcentaje(
-        Array.isArray(resPorcentaje.data) ? resPorcentaje.data : []
+        Array.isArray(resLineaVolcadoPorcentaje.data)
+          ? resLineaVolcadoPorcentaje.data
+          : []
       );
-      setDataSedes(Array.isArray(resSedes.data) ? resSedes.data : []);
-      setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
       setDataMaquina(Array.isArray(resMaquina.data) ? resMaquina.data : []);
       setDataTurno(Array.isArray(resTurno.data) ? resTurno.data : []);
-
-      const pct = parseFloat(resPorcentaje.data?.[0]?.PORCENTAJE);
-      setProgressValue(!isNaN(pct) ? pct : 0);
+      setDataSedes(Array.isArray(resSedes.data) ? resSedes.data : []);
+      setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
     } catch (err) {
-      console.error("Error en la carga:", err);
+      console.error("Error fetching data:", err);
 
       setDataLineaVolcado([]);
       setDataSgtePalet([]);
       setDataPorcentaje([]);
-      setDataCultivo([]);
-      setDataSedes([]);
       setDataMaquina([]);
-      setDataTurno([]);
-    } finally {
-      setLoading(false);
+      setDataSedes([]);
+      setDataCultivo([]);
     }
-  }, [fruta, sede, maquina, fecha, turno]); // << dependencias reales
-
-  /* -------------- un sólo useEffect con intervalo -------- */
-  const intervalRef = useRef(null);
-
+  };
   useEffect(() => {
-    // 1️⃣  primer fetch inmediato
-    fetchData();
+    fetchData(); // Llamada inicial
 
-    // 2️⃣  reinicia el intervalo si cambia algún filtro
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(fetchData, 10_000);
+    const intervaloId = setInterval(() => {
+      fetchData(); // Actualización cada 10 segundos
+    }, 10000);
 
-    // 3️⃣  cleanup al desmontar
-    return () => clearInterval(intervalRef.current);
-  }, [fetchData]); // 🔑  depende del fetchData memoizado
+    return () => clearInterval(intervaloId); // Limpieza del intervalo
+  }, [fruta, sede, maquina, turno, fecha]);
+
   //
   return (
     <div className="container mx-auto px-2 sm:px-4">
@@ -147,8 +128,8 @@ const TablaEsperaArandano = () => {
             <option value="TODOS">TODOS</option>
             {dataSedes.length > 0 ? (
               dataSedes.map((row, index) => (
-                <option key={index} value={row.Sede}>
-                  {row.Sede}
+                <option key={index} value={row.sede}>
+                  {row.sede}
                 </option>
               ))
             ) : (
@@ -168,8 +149,8 @@ const TablaEsperaArandano = () => {
             className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
           >
             {dataCultivo.map((row, index) => (
-              <option key={index} value={row.Cultivo}>
-                {row.Cultivo}
+              <option key={index} value={row.cultivo}>
+                {row.cultivo}
               </option>
             ))}
           </select>
@@ -186,8 +167,8 @@ const TablaEsperaArandano = () => {
             className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
           >
             {dataMaquina.map((row, index) => (
-              <option key={index} value={row.Maquina}>
-                {row.Maquina}
+              <option key={index} value={row.maquina}>
+                {row.maquina}
               </option>
             ))}
           </select>
@@ -203,8 +184,8 @@ const TablaEsperaArandano = () => {
             className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
           >
             {dataTurno.map((row, index) => (
-              <option key={index} value={row.Turno}>
-                {row.Turno}
+              <option key={index} value={row.turno}>
+                {row.turno}
               </option>
             ))}
           </select>
@@ -268,16 +249,16 @@ const TablaEsperaArandano = () => {
                         } hover:bg-indigo-100`}
                       >
                         <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                          {row.VAR || "0"}
+                          {row.var || "0"}
                         </td>
                         <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700">
-                          {row.PROY || "0"}
+                          {row.prog || "0"}
                         </td>
                         <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700">
-                          {row.EJEC || "0"}
+                          {row.ejec || "0"}
                         </td>
                         <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700">
-                          {row.PORCENTAJE || "0"} %
+                          {row.porcentaje || "0"} %
                         </td>
                       </tr>
                     ))
@@ -324,7 +305,7 @@ const TablaEsperaArandano = () => {
                         } hover:bg-teal-100`}
                       >
                         <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                          {row.PALET || "N/A"}
+                          {row.palet || "N/A"}
                         </td>
                       </tr>
                     ))
@@ -373,4 +354,4 @@ const TablaEsperaArandano = () => {
   );
 };
 
-export default TablaEsperaArandano;
+export default TablaLineaVolcadoArandano;
