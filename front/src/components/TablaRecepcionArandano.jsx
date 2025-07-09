@@ -35,6 +35,7 @@ const TablaRecepcionArandano = () => {
         fetchSedes(),
         fetchCultivos(),
       ]);
+        // Verificar si las respuestas son válidas y asignar los datos
 
       // Las respuestas de axios ya traen el objeto data
       setDataVariedad(Array.isArray(resVariedad.data) ? resVariedad.data : []);
