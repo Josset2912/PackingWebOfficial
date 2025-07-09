@@ -59,9 +59,9 @@ const TablaRecepcionNisiraArandano = () => {
   return (
     <div className="container mx-auto px-2 sm:px-4 max-w-7xl">
       {/* Selector de cultivo y sede */}
-      <div className="mb-0.5 flex flex-wrap gap-1 justify-end items-center">
+      <div className="mb-0.5 flex flex-wrap gap-2 justify-center sm:justify-end items-center">
         {/* SEDE */}
-        <div className="flex items-center gap-2 min-w-[160px]">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 w-full sm:min-w-[160px] sm:w-auto">
           <label className="font-bold text-sm sm:text-lg text-nowrap">
             SEDE:
           </label>
@@ -82,8 +82,9 @@ const TablaRecepcionNisiraArandano = () => {
             )}
           </select>
         </div>
+
         {/* CULTIVO */}
-        <div className="flex items-center gap-2 min-w-[160px]">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 w-full sm:min-w-[160px] sm:w-auto">
           <label className="font-bold text-sm sm:text-lg text-nowrap">
             CULTIVO:
           </label>
@@ -109,7 +110,7 @@ const TablaRecepcionNisiraArandano = () => {
         {/* Tabla Variedad */}
         <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
           <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
-            <table className="w-full min-w-[300px] border-collapse">
+            <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
               <thead>
                 <tr className="bg-blue-600 text-white">
                   <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
@@ -144,7 +145,7 @@ const TablaRecepcionNisiraArandano = () => {
                 ) : (
                   <tr>
                     <td
-                      colSpan="2"
+                      colSpan="3"
                       className="px-4 py-6 text-center text-sm sm:text-base text-gray-500"
                     >
                       No hay datos de recepción disponibles
@@ -159,7 +160,7 @@ const TablaRecepcionNisiraArandano = () => {
         {/* Tabla cabezal */}
         <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
           <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
-            <table className="w-full min-w-[300px] border-collapse">
+            <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
               <thead>
                 <tr className="bg-blue-600 text-white">
                   <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
@@ -194,7 +195,7 @@ const TablaRecepcionNisiraArandano = () => {
                 ) : (
                   <tr>
                     <td
-                      colSpan="2"
+                      colSpan="3"
                       className="px-4 py-6 text-center text-sm sm:text-base text-gray-500"
                     >
                       No hay datos de recepción disponibles

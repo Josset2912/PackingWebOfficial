@@ -51,20 +51,20 @@ const TablaLineaVolcadoArandano = () => {
         resMaquina,
         resTurno,
       ] = await Promise.all([
-        fetchEsperaLineaProg(fecha, sedeParam, frutaLower, maquinaParam, turno),
+        fetchEsperaLineaProg(fecha, sedeParam, frutaLower, turno, maquinaParam),
         fetchEsperaLineaSgtePalet(
           fecha,
           sedeParam,
           frutaLower,
-          maquinaParam,
-          turno
+          turno,
+          maquinaParam
         ),
         fetchEsperaLineaPorcentaje(
           fecha,
           sedeParam,
           frutaLower,
-          maquinaParam,
-          turno
+          turno,
+          maquinaParam
         ),
         fetchSedes(),
         fetchCultivos(),
@@ -90,6 +90,9 @@ const TablaLineaVolcadoArandano = () => {
       setDataTurno(Array.isArray(resTurno.data) ? resTurno.data : []);
       setDataSedes(Array.isArray(resSedes.data) ? resSedes.data : []);
       setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
+
+      const pct = parseFloat(resLineaVolcadoPorcentaje.data?.[0]?.porcentajetotal);
+      setProgressValue(!isNaN(pct) ? pct : 0);
     } catch (err) {
       console.error("Error fetching data:", err);
 
@@ -109,7 +112,7 @@ const TablaLineaVolcadoArandano = () => {
     }, 10000);
 
     return () => clearInterval(intervaloId); // Limpieza del intervalo
-  }, [fruta, sede, maquina, turno, fecha]);
+  }, [fecha, sede, fruta, turno, maquina]);
 
   //
   return (

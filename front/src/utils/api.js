@@ -144,8 +144,8 @@ export const fetchEsperaLineaProg = (fecha, sede, cultivo, turno, maquina) => {
   return axios.get(`${BASE_URL}/packing/esperalinea`, {
     params: {
       fecha: fechaValida,
-      cultivo: cultivoValido,
       sede: sedeValida,
+      cultivo: cultivoValido,
       turno: turnoValido,
       maquina: maquinaValida,
       id: 1,
@@ -163,8 +163,8 @@ export const fetchEsperaLineaSgtePalet = (fecha, sede, cultivo, turno, maquina) 
   return axios.get(`${BASE_URL}/packing/esperalinea`, {
     params: {
       fecha: fechaValida,
-      cultivo: cultivoValido,
       sede: sedeValida,
+      cultivo: cultivoValido,
       turno: turnoValido,
       maquina: maquinaValida,
       id: 2,
@@ -182,8 +182,8 @@ export const fetchEsperaLineaPorcentaje = (fecha, sede, cultivo, turno, maquina)
   return axios.get(`${BASE_URL}/packing/esperalinea`, {
     params: {
       fecha: fechaValida,
-      cultivo: cultivoValido,
       sede: sedeValida,
+      cultivo: cultivoValido,
       turno: turnoValido,
       maquina: maquinaValida,
       id: 3,

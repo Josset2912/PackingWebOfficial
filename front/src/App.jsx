@@ -34,7 +34,7 @@ const tablaMap = {
   Arandano: {
     RECEPCIÓN: TablaRecepcionArandano,
     "RECEPCION NISIRA": TablaRecepcionNisiraArandano,
-    /* "CALIDAD": TablaCalidad, // Asumiendo que la tabla de calidad es la misma que recepción */
+    CALIDAD: TablaCalidad, // Asumiendo que la tabla de calidad es la misma que recepción
     "GASIFICADO PRE FRÍO": TablaGasificadoArandano,
     "VOLCADO/ESPERA": TablaEsperaArandano,
     "VOLCADO/LÍNEA": TablaLineaVolcadoArandano,
@@ -61,7 +61,7 @@ const App = () => {
     "RECEPCIÓN",
     "RECEPCION NISIRA",
     "GASIFICADO PRE FRÍO",
-    /* "CALIDAD", */
+    "CALIDAD",
     {
       name: "VOLCADO",
       submenus: [

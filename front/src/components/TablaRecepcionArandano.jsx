@@ -66,9 +66,9 @@ const TablaRecepcionArandano = () => {
   return (
     <div className="container mx-auto px-2 sm:px-4 max-w-7xl">
       {/* Selectores de filtro */}
-      <div className="mb-2 flex flex-wrap gap-1 justify-end items-center">
+      <div className="mb-2 flex flex-wrap gap-2 justify-center sm:justify-end items-center">
         {/* SEDE */}
-        <div className="flex items-center gap-2 min-w-[160px]">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 w-full sm:min-w-[160px] sm:w-auto">
           <label className="font-bold text-sm sm:text-lg">SEDE:</label>
           <select
             value={sede}
@@ -85,7 +85,7 @@ const TablaRecepcionArandano = () => {
         </div>
 
         {/* CULTIVO */}
-        <div className="flex items-center gap-2 min-w-[160px]">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 w-full sm:min-w-[160px] sm:w-auto">
           <label className="font-bold text-sm sm:text-lg">CULTIVO:</label>
           <select
             value={fruta}
@@ -105,7 +105,7 @@ const TablaRecepcionArandano = () => {
         {/* Tabla Variedad */}
         <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
           <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
-            <table className="w-full min-w-[300px] border-collapse">
+            <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
               <thead>
                 <tr className="bg-blue-600 text-white">
                   <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase">
@@ -149,7 +149,7 @@ const TablaRecepcionArandano = () => {
         {/* Tabla cabezal */}
         <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
           <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
-            <table className="w-full min-w-[300px] border-collapse">
+            <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
               <thead>
                 <tr className="bg-blue-600 text-white">
                   <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase">
