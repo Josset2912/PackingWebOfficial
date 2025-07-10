@@ -26,10 +26,10 @@ const TablaCalidad = () => {
   const [sede, setSedes] = useState("FUNDO SANTA AZUL"); //sede
   const [dataSedes, setDataSedes] = useState([]);
 
-  const [maquina, setMaquina] = useState("UNITEC"); //maquina
+  const [maquina, setMaquina] = useState("SELECCIONE"); //maquina
   const [dataMaquina, setDataMaquina] = useState([]);
 
-  const [filer, setFiler] = useState("F1");
+  const [filer, setFiler] = useState("SELECCIONE");
   const [dataFiler, setDataFiler] = useState([]);
 
   const [dataCalidadRango, setDataCalidadRango] = useState([]);
