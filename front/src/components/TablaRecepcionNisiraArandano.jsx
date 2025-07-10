@@ -117,6 +117,9 @@ const TablaRecepcionNisiraArandano = () => {
                     VAR
                   </th>
                   <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
+                    CABEZAL
+                  </th>
+                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
                     EMPAQUE
                   </th>
                   <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
@@ -133,6 +136,9 @@ const TablaRecepcionNisiraArandano = () => {
                     >
                       <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
                         {row.var}
+                      </td>
+                      <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
+                        {row.cabezal}
                       </td>
                       <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
                         {row.empaque || ""}
@@ -158,7 +164,7 @@ const TablaRecepcionNisiraArandano = () => {
         </div>
 
         {/* Tabla cabezal */}
-        <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
+        {/*<div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
           <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
             <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
               <thead>
@@ -205,8 +211,10 @@ const TablaRecepcionNisiraArandano = () => {
               </tbody>
             </table>
           </div>
+              </div>
+              */}
         </div>
-      </div>
+          
     </div>
   );
 };
