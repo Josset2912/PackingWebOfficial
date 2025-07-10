@@ -25,7 +25,7 @@ export const fetchMaquina = (cultivo) => {
     params: { cultivo: cultivoValido },
   });
 };
-//API FILTER
+//API FILTER-FILTRO
 export const fetchFiler = (maquina) => {
   const maquinaValida = maquina?.trim() || "UNITEC";
   return axios.get(`${BASE_URL}/packing/filer`, {
@@ -76,7 +76,7 @@ export const fetchCalidad = (sede, cultivo, maquina, linea) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
   const maquinaValida = maquina?.trim() || "UNITEC";
-  const lineaValida = linea?.trim() || "1";
+  const lineaValida = linea?.trim() || "F1";
 
   return axios.get(`${BASE_URL}/packing/calidad`, {
     params: {
@@ -89,11 +89,11 @@ export const fetchCalidad = (sede, cultivo, maquina, linea) => {
   });
 };
 //API CALIDAD CABEZAL NISIRA
-/* export const fetchCalidadCabezal = (sede, cultivo, maquina, linea) => {
+export const fetchCalidadRango = (sede, cultivo, maquina, linea) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
   const maquinaValida = maquina?.trim() || "UNITEC";
-  const lineaValida = linea?.trim() || "1";
+  const lineaValida = linea?.trim() || "F1";
 
   return axios.get(`${BASE_URL}/packing/calidad`, {
     params: {
@@ -104,7 +104,7 @@ export const fetchCalidad = (sede, cultivo, maquina, linea) => {
       id: 2,
     },
   });
-}; */
+};
 //===========================//
 
 //API  ESPERA GASIFICADO
@@ -278,7 +278,7 @@ export default {
   fetchVariedadNisira,
   fetchCabezalNisira,
   fetchCalidad,
-  /* fetchCalidadCabezal, */
+  fetchCalidadRango,
   fetchEsperaGasificado,
   fetchEsperaBatchGasificado,
   fetchEsperaPreFrio,

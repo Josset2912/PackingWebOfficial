@@ -8,22 +8,53 @@ import {
   CartesianGrid,
   ResponsiveContainer,
   Legend,
+  LabelList,
 } from "recharts";
 
-export default function LineChartDual({ data, label1, key1, label2, key2 }) {
+const colores = [
+  "#FF6B6B",
+  "#4ECDC4",
+  "#1E90FF",
+  "#FFA500",
+  "#8A2BE2",
+  "#20B2AA",
+  "#FF69B4",
+];
+
+export default function LineChartDual({ data }) {
+  const keys =
+    data.length > 0
+      ? Object.keys(data[0]).filter((key) => key !== "rango")
+      : [];
+
   return (
-    <div style={{ width: "100%", height: 300 }}>
-      <ResponsiveContainer>
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey={key1} name={label1} stroke="#8884d8" />
-          <Line type="monotone" dataKey={key2} name={label2} stroke="#82ca9d" />
-        </LineChart>
-      </ResponsiveContainer>
+    <div style={{ overflowX: "auto", width: "100%" }}>
+      <div style={{ width: Math.max(data.length * 100, 600) }}>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={data}
+            margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="rango" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {keys.map((key, index) => (
+              <Line
+                key={key}
+                type="monotone"
+                dataKey={key}
+                name={`% ${key}`}
+                stroke={colores[index % colores.length]}
+                strokeWidth={2}
+              >
+                <LabelList dataKey={key} position="top" fontSize={10} />
+              </Line>
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
