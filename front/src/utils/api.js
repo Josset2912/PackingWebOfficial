@@ -226,6 +226,32 @@ export const fetchEsperaLineaPorcentaje = (
   });
 };
 
+export const fetchEsperaLineaRatio = (
+  fecha,
+  sede,
+  cultivo,
+  turno,
+  maquina
+) => {
+  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
+  const sedeValida = sede?.trim() || "todos";
+  const cultivoValido = cultivo?.trim() || "arandano";
+  const turnoValido = turno?.trim() || "TARDE";
+  const maquinaValida = maquina?.trim() || "UNITEC";
+
+  return axios.get(`${BASE_URL}/packing/esperalinea`, {
+    params: {
+      fecha: fechaValida,
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      turno: turnoValido,
+      maquina: maquinaValida,
+      id: 4,
+    },
+  });
+};
+
+
 //==============================//
 //API ESPERA FRIO
 export const fetchEsperaFrio = (sede, cultivo) => {
@@ -287,6 +313,7 @@ export default {
   fetchEsperaLineaProg,
   fetchEsperaLineaSgtePalet,
   fetchEsperaLineaPorcentaje,
+  fetchEsperaLineaRatio,
   fetchEsperaFrio,
   fetchEnfriando,
   fetchBatchEnfriando,
