@@ -51,7 +51,7 @@ const App = () => {
   const [data, setData] = useState([]);
   const [, setUltimaActualizacion] = useState(null);
   const intervaloRef = useRef(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [packingExpanded, setPackingExpanded] = useState(true);
   const [expandedVolcado, setExpandedVolcado] = useState(false);
   const hoverTimeoutRef = useRef(null);

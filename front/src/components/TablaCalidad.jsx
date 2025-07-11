@@ -43,9 +43,7 @@ const TablaCalidad = () => {
   const tiposFiler = Array.isArray(dataCalidadRangoFiler)
     ? [
         ...new Set(
-          dataCalidadRangoFiler.map((row) =>
-            row.filer?.trim().toUpperCase()
-          )
+          dataCalidadRangoFiler.map((row) => row.filer?.trim().toUpperCase())
         ),
       ]
     : [];
@@ -282,7 +280,7 @@ const TablaCalidad = () => {
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 w-full px-2">
-        {/* Tabla Variedad */}
+        {/* TABLA VARIEDAD - IZQUIERDA */}
         <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
           <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
             <table className="w-full min-w-[300px] border-collapse">
@@ -326,7 +324,7 @@ const TablaCalidad = () => {
                 ) : (
                   <tr>
                     <td
-                      colSpan="2"
+                      colSpan="4"
                       className="px-4 py-6 text-center text-sm sm:text-base text-gray-500"
                     >
                       No hay datos de recepción disponibles
@@ -338,84 +336,94 @@ const TablaCalidad = () => {
           </div>
         </div>
 
-        {/* //rango(columna X),
-              // tipo_peso (leyenda),
-              // porcentajetotal (columna y)*/}
-        <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
-          <div className="p-1 bg-blue-500 rounded-t-xl">
-            <h2 className="text-center text-lg sm:text-2xl font-bold mb-1 uppercase text-white">
-              Porcentaje por rango de hora
-            </h2>
+        {/* GRAFICOS - DERECHA */}
+        {/* GRAFICOS - DERECHA */}
+        <div className="flex-1 flex flex-col gap-2 min-h-0 lg:max-h-[calc(100vh-100px)] overflow-y-auto">
+          {/* Gráfico 1 */}
+          <div className="flex-1 min-h-0 overflow-hidden rounded-xl shadow-lg">
+            <div className="p-0 bg-blue-500 rounded-t-xl">
+              <h2 className="text-center text-lg sm:text-2xl font-bold mb-1 uppercase text-white">
+                Porcentaje por rango de hora
+              </h2>
+            </div>
+            <div className="h-full min-h-[300px] sm:min-h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={dataAgrupada}
+                  margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="rango" />
+                  <YAxis tick={false} />
+                  <Tooltip formatter={(value) => `${value} %`} />
+                  <Legend />
+                  {tiposPeso.map((tipo) => (
+                    <Line
+                      key={tipo}
+                      type="monotone"
+                      dataKey={tipo}
+                      stroke={colores[tipo] || "#000000"}
+                      dot={true}
+                      label={({ x, y, value }) => (
+                        <text
+                          x={x}
+                          y={y - 10}
+                          fill="#000"
+                          fontSize={12}
+                          textAnchor="middle"
+                        >
+                          {`${value} %`}
+                        </text>
+                      )}
+                    />
+                  ))}
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart
-              data={dataAgrupada}
-              margin={{ top: 10, right: 0, left: -35, bottom: 0 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="rango" />
-              <YAxis tick={false} />
-              <Tooltip formatter={(value) => `${value} %`} />
-              <Legend />
-              {tiposPeso.map((tipo) => (
-                <Line
-                  key={tipo}
-                  type="monotone"
-                  dataKey={tipo}
-                  stroke={colores[tipo] || "#000000"}
-                  dot={true}
-                  label={({ x, y, value }) => (
-                    <text
-                      x={x}
-                      y={y - 10} // ajusta para que no choque con el punto
-                      fill="#000"
-                      fontSize={12}
-                      textAnchor="middle"
-                    >
-                      {`${value} %`}
-                    </text>
-                  )}
-                />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
-          <div className="p-1 bg-blue-500 rounded-t-xl">
-            <h2 className="text-center text-lg sm:text-2xl font-bold mb-1 uppercase text-white">
-              Porcentaje por filer
-            </h2>
+
+          {/* Gráfico 2 */}
+          <div className="flex-1 min-h-0 overflow-hidden rounded-xl shadow-lg">
+            <div className="bg-blue-500 rounded-t-xl">
+              <h2 className="text-center text-lg sm:text-2xl font-bold mb-1 uppercase text-white">
+                Porcentaje por filer
+              </h2>
+            </div>
+            <div className="h-full min-h-[300px] sm:min-h-[200px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={dataAgrupadaFiler}
+                  margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="rangofiler" />
+                  <YAxis tick={false} />
+                  <Tooltip formatter={(value) => `${value} %`} />
+                  <Legend />
+                  {tiposFiler.map((tipo) => (
+                    <Line
+                      key={tipo}
+                      type="monotone"
+                      dataKey={tipo}
+                      stroke={colores[tipo] || "#000"}
+                      dot={true}
+                      label={({ x, y, value }) => (
+                        <text
+                          x={x}
+                          y={y - 10}
+                          fill="#000"
+                          fontSize={12}
+                          textAnchor="middle"
+                        >
+                          {`${value} %`}
+                        </text>
+                      )}
+                    />
+                  ))}
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-          <ResponsiveContainer width="100%" height={350}>
-            <LineChart
-              data={dataAgrupadaFiler}
-              margin={{ top: 10, right: 0, left: -35, bottom: 0 }} // Mover a la izquierda
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="rangofiler" />
-              <YAxis tick={false} />
-              <Tooltip formatter={(value) => `${value} %`} />
-              <Legend />
-              {tiposFiler.map((tipo) => (
-                <Line
-                  key={tipo}
-                  type="monotone"
-                  dataKey={tipo}
-                  stroke={colores[tipo] || "#000"} // ← CORREGIDO
-                  dot={true}
-                  label={({ x, y, value }) => (
-                    <text
-                      x={x}
-                      y={y - 10}
-                      fill="#000"
-                      fontSize={12}
-                      textAnchor="middle"
-                    >
-                      {`${value} %`}
-                    </text>
-                  )}
-                />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
         </div>
       </div>
     </div>
