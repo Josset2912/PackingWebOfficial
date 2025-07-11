@@ -11,7 +11,7 @@ const TablaRecepcionNisiraArandano = () => {
   const [fruta, setFruta] = useState("ARANDANO"); // Fruta por defecto
   const [dataCultivo, setDataCultivo] = useState([]);
 
-  const [sede, setSedes] = useState("FUNDO SANTA AZUL");
+  const [sede, setSedes] = useState("TODOS");
   const [dataSedes, setDataSedes] = useState([]);
 
   const [dataVariedad, setDataVariedad] = useState([]);
@@ -57,7 +57,7 @@ const TablaRecepcionNisiraArandano = () => {
   }, [fruta, sede]);
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 max-w-7xl">
+    <div className="">
       {/* Selector de cultivo y sede */}
       <div className="mb-0.5 flex flex-wrap gap-2 justify-center sm:justify-end items-center">
         {/* SEDE */}
@@ -213,8 +213,7 @@ const TablaRecepcionNisiraArandano = () => {
           </div>
               </div>
               */}
-        </div>
-          
+      </div>
     </div>
   );
 };

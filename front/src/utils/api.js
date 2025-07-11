@@ -105,6 +105,24 @@ export const fetchCalidadRango = (sede, cultivo, maquina, linea) => {
     },
   });
 };
+//API CALIDAD RANGO FILER
+export const fetchCalidadRangoFiler = (sede, cultivo, maquina, linea) => {
+  const sedeValida = sede?.trim() || "todos";
+  const cultivoValido = cultivo?.trim() || "arandano";
+  const maquinaValida = maquina?.trim() || "UNITEC";
+  const lineaValida = linea?.trim() || "F1";
+
+  return axios.get(`${BASE_URL}/packing/calidad`, {
+    params: {
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      maquina: maquinaValida,
+      linea: lineaValida,
+      id: 3, // CAMBIAR A 3
+    },
+  });
+};
+
 //===========================//
 
 //API  ESPERA GASIFICADO
@@ -226,13 +244,7 @@ export const fetchEsperaLineaPorcentaje = (
   });
 };
 
-export const fetchEsperaLineaRatio = (
-  fecha,
-  sede,
-  cultivo,
-  turno,
-  maquina
-) => {
+export const fetchEsperaLineaRatio = (fecha, sede, cultivo, turno, maquina) => {
   const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
@@ -250,7 +262,6 @@ export const fetchEsperaLineaRatio = (
     },
   });
 };
-
 
 //==============================//
 //API ESPERA FRIO
@@ -304,6 +315,7 @@ export default {
   fetchVariedadNisira,
   fetchCabezalNisira,
   fetchCalidad,
+  fetchCalidadRangoFiler,
   fetchCalidadRango,
   fetchEsperaGasificado,
   fetchEsperaBatchGasificado,

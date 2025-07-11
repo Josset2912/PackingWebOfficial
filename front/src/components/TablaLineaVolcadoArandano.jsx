@@ -30,7 +30,7 @@ const TablaLineaVolcadoArandano = () => {
     const [dataPorcentaje, setDataPorcentaje] = useState([]);
     const [progressValue, setProgressValue] = useState(0);
 
-    const [maquina, setMaquina] = useState("UNITEC");
+    const [maquina, setMaquina] = useState("SELECCIONE");
     const [dataMaquina, setDataMaquina] = useState([]);
 
     const [fruta, setFruta] = useState("ARANDANO");
@@ -39,7 +39,7 @@ const TablaLineaVolcadoArandano = () => {
     const [sede, setSede] = useState("FUNDO SANTA AZUL");
     const [dataSedes, setDataSedes] = useState([]);
 
-    const [turno, setTurno] = useState("TARDE");
+    const [turno, setTurno] = useState("SELECCIONE");
     const [dataTurno, setDataTurno] = useState([]);
 
     const [dataLineaRango, setDataLineaRango] = useState([]);
@@ -83,13 +83,26 @@ const TablaLineaVolcadoArandano = () => {
         });
     });
 
-    const colores = {
-        "UNITEC": "#1f77b4",
-        "DUAL KATO 1": "#ff7f0e",
-        "DUAL KATO 2": "#0aa73eff",
-        "DUAL KATO 3": "#17cce4ff",
-    };
+    const colores = {};
 
+    const coloresBase = [
+      "#1f77b4",
+      "#ff7f0e",
+      "#2ca02c",
+      "#d62728",
+      "#9467bd",
+      "#8c564b",
+      "#e377c2",
+      "#7f7f7f",
+      "#bcbd22",
+      "#17becf",
+      "#ffbb78",
+      "#98df8a",
+    ];
+
+    tiposPeso.forEach((maquina, index) => {
+      colores[maquina] = coloresBase[index % coloresBase.length];
+    });
     const fetchData = async () => {
         try {
             // Convertir valores a minúsculas para la API si lo requiere
@@ -186,287 +199,288 @@ const TablaLineaVolcadoArandano = () => {
 
     //
     return (
-        <div className="container mx-auto px-2 sm:px-4">
-            <div className="mb-0.5 flex flex-wrap gap-1 justify-end items-center">
-                {/* SEDE */}
-                <div className="flex items-center gap-2 min-w-[160px]">
-                    <label className="font-bold text-sm sm:text-lg text-nowrap">
-                        SEDE:
-                    </label>
-                    <select
-                        value={sede}
-                        onChange={(e) => setSede(e.target.value)}
-                        className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-                    >
-                        <option value="TODOS">TODOS</option>
-                        {dataSedes.length > 0 ? (
-                            dataSedes.map((row, index) => (
-                                <option key={index} value={row.sede}>
-                                    {row.sede}
-                                </option>
-                            ))
-                        ) : (
-                            <option disabled></option>
-                        )}
-                    </select>
-                </div>
+      <div className="">
+        <div className="mb-0.5 flex flex-wrap gap-1 justify-end items-center">
+          {/* SEDE */}
+          <div className="flex items-center gap-2 min-w-[160px]">
+            <label className="font-bold text-sm sm:text-lg text-nowrap">
+              SEDE:
+            </label>
+            <select
+              value={sede}
+              onChange={(e) => setSede(e.target.value)}
+              className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
+            >
+              <option value="TODOS">TODOS</option>
+              {dataSedes.length > 0 ? (
+                dataSedes.map((row, index) => (
+                  <option key={index} value={row.sede}>
+                    {row.sede}
+                  </option>
+                ))
+              ) : (
+                <option disabled></option>
+              )}
+            </select>
+          </div>
 
-                {/* CULTIVO */}
-                <div className="flex items-center gap-2 min-w-[160px]">
-                    <label className="font-bold text-sm sm:text-lg text-nowrap">
-                        CULTIVO:
-                    </label>
-                    <select
-                        value={fruta}
-                        onChange={(e) => setFruta(e.target.value)}
-                        className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-                    >
-                        {dataCultivo.map((row, index) => (
-                            <option key={index} value={row.cultivo}>
-                                {row.cultivo}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+          {/* CULTIVO */}
+          <div className="flex items-center gap-2 min-w-[160px]">
+            <label className="font-bold text-sm sm:text-lg text-nowrap">
+              CULTIVO:
+            </label>
+            <select
+              value={fruta}
+              onChange={(e) => setFruta(e.target.value)}
+              className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
+            >
+              {dataCultivo.map((row, index) => (
+                <option key={index} value={row.cultivo}>
+                  {row.cultivo}
+                </option>
+              ))}
+            </select>
+          </div>
 
-                {/* MAQUINA */}
-                <div className="flex items-center gap-2 min-w-[160px]">
-                    <label className="font-bold text-sm sm:text-lg text-nowrap">
-                        MAQUINA:
-                    </label>
-                    <select
-                        value={maquina}
-                        onChange={(e) => setMaquina(e.target.value)}
-                        className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-                    >
-                        {dataMaquina.map((row, index) => (
-                            <option key={index} value={row.maquina}>
-                                {row.maquina}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                {/* TURNO */}
-                <div className="flex items-center gap-2 min-w-[160px]">
-                    <label className="font-bold text-sm sm:text-lg text-nowrap">
-                        TURNO:
-                    </label>
-                    <select
-                        value={turno}
-                        onChange={(e) => setTurno(e.target.value)}
-                        className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-                    >
-                        {dataTurno.map((row, index) => (
-                            <option key={index} value={row.turno}>
-                                {row.turno}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+          {/* MAQUINA */}
+          <div className="flex items-center gap-2 min-w-[160px]">
+            <label className="font-bold text-sm sm:text-lg text-nowrap">
+              MAQUINA:
+            </label>
+            <select
+              value={maquina}
+              onChange={(e) => setMaquina(e.target.value)}
+              className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
+            >
+              {dataMaquina.map((row, index) => (
+                <option key={index} value={row.maquina}>
+                  {row.maquina}
+                </option>
+              ))}
+            </select>
+          </div>
+          {/* TURNO */}
+          <div className="flex items-center gap-2 min-w-[160px]">
+            <label className="font-bold text-sm sm:text-lg text-nowrap">
+              TURNO:
+            </label>
+            <select
+              value={turno}
+              onChange={(e) => setTurno(e.target.value)}
+              className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
+            >
+              {dataTurno.map((row, index) => (
+                <option key={index} value={row.turno}>
+                  {row.turno}
+                </option>
+              ))}
+            </select>
+          </div>
 
-                {/* FECHA */}
-                <div className="flex items-center gap-2 min-w-[160px]">
-                    <label className=" font-bold text-sm sm:text-lg text-nowrap    ">
-                        FECHA:
-                    </label>
-                    <input
-                        type="date"
-                        value={fecha}
-                        onChange={(e) => setFecha(e.target.value)}
-                        className="p-1 border border-green-600 text-sm sm:text-xl font-bold text-green-800 rounded"
-                    />
-                </div>
-            </div>
-
-            {/* Error */}
-            {error && (
-                <div className="text-center py-4 text-sm sm:text-xl font-semibold text-red-600 mb-4">
-                    {error}
-                </div>
-            )}
-            {/* Tabla kg proy vs ejec y sgte palet */}
-            <div className="flex flex-col lg:flex-row gap-6">
-                {/* Tabla Línea Avance */}
-                <div className="flex-1 bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div className="px-6 py-1">
-                        <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider">
-                            KG PROG VS EJEC
-                        </h2>
-                    </div>
-                    <div className="overflow-x-auto">
-                        <div className="max-h-[calc(100vh-130px)] overflow-y-auto">
-                            <table className="w-full">
-                                <thead className="sticky top-0 z-10">
-                                    <tr className="bg-indigo-600 text-white">
-                                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
-                                            VAR
-                                        </th>
-                                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
-                                            PROG
-                                        </th>
-                                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
-                                            EJEC
-                                        </th>
-                                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
-                                            %
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {dataLineaVolcado.length > 0 ? (
-                                        dataLineaVolcado.map((row, index) => (
-                                            <tr
-                                                key={`lineaAvance-${index}`}
-                                                className={`transition-colors ${index % 2 === 0 ? "bg-white" : "bg-indigo-50"
-                                                    } hover:bg-indigo-100`}
-                                            >
-                                                <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                                                    {row.var || "0"}
-                                                </td>
-                                                <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700">
-                                                    {row.prog || "0"}
-                                                </td>
-                                                <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700">
-                                                    {row.ejec || "0"}
-                                                </td>
-                                                <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700">
-                                                    {row.porcentaje || "0"} %
-                                                </td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td
-                                                colSpan="4"
-                                                className="px-4 py-3 text-center text-sm sm:text-base text-gray-500 italic"
-                                            >
-                                                Ningún dato disponible
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Tabla Próximo Palet */}
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div className="px-6 py-1">
-                        <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider">
-                            SGTE PALET
-                        </h2>
-                    </div>
-                    <div className="overflow-x-auto">
-                        <div className="max-h-[calc(100vh-100px)] overflow-y-auto">
-                            <table className="w-full">
-                                <thead className="sticky top-0 z-10">
-                                    <tr className="bg-teal-600 text-white">
-                                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
-                                            PALET
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {dataSgtePalet.length > 0 ? (
-                                        dataSgtePalet.map((row, index) => (
-                                            <tr
-                                                key={`proximoPalet-${index}`}
-                                                className={`transition-colors ${index % 2 === 0 ? "bg-white" : "bg-teal-50"
-                                                    } hover:bg-teal-100`}
-                                            >
-                                                <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                                                    {row.palet || "N/A"}
-                                                </td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td
-                                                colSpan="1"
-                                                className="px-4 py-3 text-center text-sm sm:text-base text-gray-500 italic"
-                                            >
-                                                Ningún dato disponible
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div>
-                        <div
-                            style={{
-                                overflowX: "auto",
-                                textAlign: "center",
-                                padding: "0px",
-                                margin: "0px",
-                                display: "flex",
-                                justifyContent: "center",  // Centrar horizontalmente
-                                alignItems: "center",      // Centrar verticalmente
-                                maxWidth: "300px", // Constrain width for better proportions
-                                // Center the chart
-                            }}
-                        >
-                            <GaugeChart
-                                value={progressValue}
-                                colors={{
-                                    progress: progressValue > 80 ? "#4CAF50" : "#FFC107", // Green if >80%, yellow otherwise
-                                    remaining: "#F5F5F5", // Lighter background
-                                    needle: "#E91E63", // Pink needle
-                                    text: progressValue > 80 ? "#4CAF50" : "#FFC107", // Match text color to progress
-                                    labelColor: "#757575", // Gray label
-                                }}
-                                label="Progress" // Add descriptive label
-                                fontSize="24px" // Slightly larger text
-                                thickness="65%" // Optimal thickness
-                            />
-
-                        </div>
-
-                        <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
-                            <div className="p-1 bg-blue-500 rounded-t-xl">
-                                <h2 className="text-center text-lg sm:text-2xl font-bold mb-1 uppercase text-white">
-                                    AVANCE TN POR HORA
-                                </h2>
-                            </div>
-                            <ResponsiveContainer width="100%" height={200}>
-                                <LineChart data={dataAgrupada}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="rango" />
-                                    <YAxis tick={false} />
-                                    <Tooltip formatter={(value) => `${value} `} />
-                                    <Legend />
-                                    {tiposPeso.map((tipo) => (
-                                        <Line
-                                            key={tipo}
-                                            type="monotone"
-                                            dataKey={tipo}
-                                            stroke={colores[tipo] || "#000000"}
-                                            dot={true}
-                                            label={({ x, y, value }) => (
-                                                <text
-                                                    x={x}
-                                                    y={y - 10} // ajusta para que no choque con el punto
-                                                    fill="#000"
-                                                    fontSize={12}
-                                                    textAnchor="middle"
-                                                >
-                                                    {`${value} `}
-                                                </text>
-                                            )}
-                                        />
-                                    ))}
-                                </LineChart>
-                            </ResponsiveContainer>
-
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
+          {/* FECHA */}
+          <div className="flex items-center gap-2 min-w-[160px]">
+            <label className=" font-bold text-sm sm:text-lg text-nowrap    ">
+              FECHA:
+            </label>
+            <input
+              type="date"
+              value={fecha}
+              onChange={(e) => setFecha(e.target.value)}
+              className="p-1 border border-green-600 text-sm sm:text-xl font-bold text-green-800 rounded"
+            />
+          </div>
         </div>
+
+        {/* Error */}
+        {error && (
+          <div className="text-center py-4 text-sm sm:text-xl font-semibold text-red-600 mb-4">
+            {error}
+          </div>
+        )}
+        {/* Tabla kg proy vs ejec y sgte palet */}
+        <div className="flex flex-col lg:flex-row gap-3">
+          {/* Tabla Línea Avance */}
+          <div className="flex-1 bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="px-6 py-1">
+              <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider">
+                KG PROG VS EJEC
+              </h2>
+            </div>
+            <div className="overflow-x-auto">
+              <div className="max-h-[calc(100vh-130px)] overflow-y-auto">
+                <table className="w-full">
+                  <thead className="sticky top-0 z-10">
+                    <tr className="bg-indigo-600 text-white">
+                      <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                        VAR
+                      </th>
+                      <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                        PROG
+                      </th>
+                      <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                        EJEC
+                      </th>
+                      <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                        %
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {dataLineaVolcado.length > 0 ? (
+                      dataLineaVolcado.map((row, index) => (
+                        <tr
+                          key={`lineaAvance-${index}`}
+                          className={`transition-colors ${
+                            index % 2 === 0 ? "bg-white" : "bg-indigo-50"
+                          } hover:bg-indigo-100`}
+                        >
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
+                            {row.var || "0"}
+                          </td>
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700">
+                            {row.prog || "0"}
+                          </td>
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700">
+                            {row.ejec || "0"}
+                          </td>
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700">
+                            {row.porcentaje || "0"} %
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="4"
+                          className="px-4 py-3 text-center text-sm sm:text-base text-gray-500 italic"
+                        >
+                          Ningún dato disponible
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          {/* Tabla Próximo Palet */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="px-12 py-1">
+              <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider">
+                SGTE PALET
+              </h2>
+            </div>
+            <div className="overflow-x-auto">
+              <div className="max-h-[calc(100vh-100px)] overflow-y-auto">
+                <table className="w-full">
+                  <thead className="sticky top-0 z-10">
+                    <tr className="bg-teal-600 text-white">
+                      <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                        PALET
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {dataSgtePalet.length > 0 ? (
+                      dataSgtePalet.map((row, index) => (
+                        <tr
+                          key={`proximoPalet-${index}`}
+                          className={`transition-colors ${
+                            index % 2 === 0 ? "bg-white" : "bg-teal-50"
+                          } hover:bg-teal-100`}
+                        >
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
+                            {row.palet || "N/A"}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="1"
+                          className="px-4 py-3 text-center text-sm sm:text-base text-gray-500 italic"
+                        >
+                          Ningún dato disponible
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <div
+                style={{
+                  overflowX: "auto",
+                  textAlign: "center",
+                  padding: "0px",
+                  margin: "0px",
+                  display: "flex",
+                  justifyContent: "center", // Centrar horizontalmente
+                  alignItems: "center", // Centrar verticalmente
+                  maxWidth: "300px", // Constrain width for better proportions
+                  // Center the chart
+                }}
+              >
+                <GaugeChart
+                  value={progressValue}
+                  colors={{
+                    progress: progressValue > 80 ? "#4CAF50" : "#FFC107", // Green if >80%, yellow otherwise
+                    remaining: "#F5F5F5", // Lighter background
+                    needle: "#E91E63", // Pink needle
+                    text: progressValue > 80 ? "#4CAF50" : "#FFC107", // Match text color to progress
+                    labelColor: "#757575", // Gray label
+                  }}
+                  label="Progress" // Add descriptive label
+                  fontSize="24px" // Slightly larger text
+                  thickness="65%" // Optimal thickness
+                />
+              </div>
+
+              <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
+                <div className="p-1 bg-blue-500 rounded-t-xl">
+                  <h2 className="text-center text-lg sm:text-2xl font-bold mb-1 uppercase text-white">
+                    AVANCE TN POR HORA
+                  </h2>
+                </div>
+                <ResponsiveContainer width="100%" height={200}>
+                  <LineChart
+                    data={dataAgrupada}
+                    margin={{ top: 15, right: 0, left: -35, bottom: 0 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="rango" />
+                    <YAxis tick={false} />
+                    <Tooltip formatter={(value) => `${value} `} />
+                    <Legend />
+                    {tiposPeso.map((tipo) => (
+                      <Line
+                        key={tipo}
+                        type="monotone"
+                        dataKey={tipo}
+                        stroke={colores[tipo] || "#000000"}
+                        dot={true}
+                        label={({ x, y, value }) => (
+                          <text
+                            x={x}
+                            y={y - 10} // ajusta para que no choque con el punto
+                            fill="#000"
+                            fontSize={12}
+                            textAnchor="middle"
+                          >
+                            {`${value} `}
+                          </text>
+                        )}
+                      />
+                    ))}
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
 };
 

@@ -19,7 +19,7 @@ const TablaGasificadoArandano = () => {
   const [dataCultivo, setDataCultivo] = useState([]);
 
   const [dataSedes, setDataSede] = useState([]);
-  const [sedes, setSedes] = useState("TODOS");
+  const [sedes, setSedes] = useState("FUNDO SANTA AZUL");
 
   const [, setLoading] = useState(true);
   const [error, setError] = useState(null);
