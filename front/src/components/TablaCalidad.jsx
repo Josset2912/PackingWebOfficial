@@ -192,6 +192,7 @@ const TablaCalidad = () => {
 
     return (
         <div className="">
+            
             {/* Selector de cultivo y sede */}
             <div className="mb-0.5 flex flex-wrap gap-1 justify-end items-center">
                 {/* SEDE */}
