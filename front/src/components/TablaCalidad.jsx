@@ -337,16 +337,15 @@ const TablaCalidad = () => {
         </div>
 
         {/* GRAFICOS - DERECHA */}
-        {/* GRAFICOS - DERECHA */}
-        <div className="flex-1 flex flex-col gap-2 min-h-0 lg:max-h-[calc(100vh-100px)] overflow-y-auto">
+        <div className="flex-1 flex flex-col gap-2 h-auto lg:h-[calc(100vh-100px)] lg:overflow-hidden">
           {/* Gráfico 1 */}
-          <div className="flex-1 min-h-0 overflow-hidden rounded-xl shadow-lg">
-            <div className="p-0 bg-blue-500 rounded-t-xl">
-              <h2 className="text-center text-lg sm:text-2xl font-bold mb-1 uppercase text-white">
+          <div className="rounded-xl shadow-lg bg-white h-[300px] sm:h-[400px] lg:h-[50%]">
+            <div className="bg-blue-500 rounded-t-xl">
+              <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-2xl font-bold mb-1 uppercase text-white">
                 Porcentaje por rango de hora
               </h2>
             </div>
-            <div className="h-full min-h-[300px] sm:min-h-[200px]">
+            <div className="h-[calc(100%-40px)]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={dataAgrupada}
@@ -362,14 +361,14 @@ const TablaCalidad = () => {
                       key={tipo}
                       type="monotone"
                       dataKey={tipo}
-                      stroke={colores[tipo] || "#000000"}
+                      stroke={colores[tipo] || "#000"}
                       dot={true}
                       label={({ x, y, value }) => (
                         <text
                           x={x}
                           y={y - 10}
                           fill="#000"
-                          fontSize={12}
+                          fontSize={10}
                           textAnchor="middle"
                         >
                           {`${value} %`}
@@ -383,13 +382,13 @@ const TablaCalidad = () => {
           </div>
 
           {/* Gráfico 2 */}
-          <div className="flex-1 min-h-0 overflow-hidden rounded-xl shadow-lg">
+          <div className="rounded-xl shadow-lg bg-white h-[300px] sm:h-[400px] lg:h-[50%]">
             <div className="bg-blue-500 rounded-t-xl">
-              <h2 className="text-center text-lg sm:text-2xl font-bold mb-1 uppercase text-white">
+              <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-2xl font-bold mb-1 uppercase text-white">
                 Porcentaje por filer
               </h2>
             </div>
-            <div className="h-full min-h-[300px] sm:min-h-[200px]">
+            <div className="h-[calc(100%-40px)]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={dataAgrupadaFiler}
@@ -412,7 +411,7 @@ const TablaCalidad = () => {
                           x={x}
                           y={y - 10}
                           fill="#000"
-                          fontSize={12}
+                          fontSize={10}
                           textAnchor="middle"
                         >
                           {`${value} %`}
