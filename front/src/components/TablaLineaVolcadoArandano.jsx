@@ -436,7 +436,7 @@ const TablaLineaVolcadoArandano = () => {
                           key={`proximoPalet-${index}`}
                           className={`transition-colors border-y-4 ${
                             index === 0
-                              ? "animate-blink text-red"
+                              ? "animate-blink text-red-500"
                               : "border-transparent"
                           }`}
                         >
@@ -444,7 +444,7 @@ const TablaLineaVolcadoArandano = () => {
                             {row.palet || "N/A"}
                           </td>
                           <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
-                            {row.varsgt || "N/A"}
+                            {row.varsgt || "N/A"}   
                           </td>
                           <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
                             {row.cabsgt || "N/A"}
