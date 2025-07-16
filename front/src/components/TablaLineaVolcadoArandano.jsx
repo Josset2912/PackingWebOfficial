@@ -421,6 +421,12 @@ const TablaLineaVolcadoArandano = () => {
                       <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
                         PALET
                       </th>
+                      <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                        VAR
+                      </th>
+                      <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                        CAB
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
@@ -428,12 +434,20 @@ const TablaLineaVolcadoArandano = () => {
                       dataSgtePalet.map((row, index) => (
                         <tr
                           key={`proximoPalet-${index}`}
-                          className={`transition-colors ${
-                            index % 2 === 0 ? "bg-white" : "bg-teal-50"
-                          } hover:bg-teal-100`}
+                          className={`transition-colors border-y-4 ${
+                            index === 0
+                              ? "animate-blink text-red"
+                              : "border-transparent"
+                          }`}
                         >
-                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
                             {row.palet || "N/A"}
+                          </td>
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
+                            {row.varsgt || "N/A"}
+                          </td>
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
+                            {row.cabsgt || "N/A"}
                           </td>
                         </tr>
                       ))
@@ -441,7 +455,7 @@ const TablaLineaVolcadoArandano = () => {
                       <tr>
                         <td
                           colSpan="1"
-                          className="px-4 py-3 text-center text-sm sm:text-base text-gray-500 italic"
+                          className="px-4 py-3 text-center text-sm sm:text-base text-red-500 italic"
                         >
                           Ningún dato disponible
                         </td>
