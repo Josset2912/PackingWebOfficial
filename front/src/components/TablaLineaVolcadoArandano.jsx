@@ -22,7 +22,7 @@ import {
   fetchEsperaLineaPorcentaje,
   fetchEsperaLineaRatio,
 } from "../utils/api"; // Asegúrate de que estas funciones estén definidas en utils/api.js
-
+//insertando nuevas tablas
 const TablaLineaVolcadoArandano = () => {
   /* ----------------------- estados ----------------------- */
   const [dataLineaVolcado, setDataLineaVolcado] = useState([]);
