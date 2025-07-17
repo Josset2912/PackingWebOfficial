@@ -19,7 +19,7 @@ export default function Sidebar({
     <motion.aside
       className="bg-gray-950/95 border-r border-cyan-400/5 flex flex-col backdrop-blur-sm"
       initial={{ width: 260 }}
-      animate={{ width: sidebarOpen ? 260 : 80 }}
+      animate={{ width: sidebarOpen ? 260 : 35 }} //reduccion de ancho para pantalla grande
       transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -86,7 +86,7 @@ export default function Sidebar({
       </div>
 
       {/* Navegación Packing */}
-      <nav className="flex-1 overflow-y-auto py-3 px-1">
+      <nav className="flex-1 overflow-y-auto  px-2">
         <div className="mb-6">
           <button
             onClick={() => setPackingExpanded(!packingExpanded)}
@@ -126,7 +126,7 @@ export default function Sidebar({
                 </motion.span>
               </>
             ) : (
-              <div className="p-1 rounded-md bg-gray-900/80 border border-gray-800">
+              <div className="p-0 rounded-md bg-gray-900/80 border border-gray-800">
                 <svg
                   className="w-4 h-4 text-cyan-400"
                   fill="none"
@@ -145,7 +145,7 @@ export default function Sidebar({
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                className="overflow-hidden rounded-lg mt-1"
+                className="overflow-hidden rounded-lg "
               >
                 {packingSections.map((section) => {
                   const sectionName =
@@ -170,7 +170,7 @@ export default function Sidebar({
                           }
                           if (!sidebarOpen) setSidebarOpen(true);
                         }}
-                        className={`w-full text-left p-2.5 ${
+                        className={`w-full text-left p-2 ${
                           sidebarOpen ? "pl-10" : "pl-2.5 flex justify-center"
                         } transition-all rounded-md text-sm ${
                           isSelected
@@ -210,7 +210,7 @@ export default function Sidebar({
                             <motion.button
                               key={submenu.key}
                               onClick={() => setSelectedButton(submenu.key)}
-                              className={`w-full text-left p-2 pl-8 text-xs rounded-md ${
+                              className={`w-full text-left p-1 pl-2 text-xs rounded-md ${
                                 selectedButton === submenu.key
                                   ? "text-cyan-300"
                                   : "text-gray-500 hover:text-gray-300"
@@ -229,11 +229,6 @@ export default function Sidebar({
           </AnimatePresence>
         </div>
       </nav>
-
-      {/* Footer */}
-      <div className="p-3 border-t border-gray-800/50 text-xs text-gray-500 text-center">
-        {sidebarOpen ? <span>v1.0.0</span> : <span>v1</span>}
-      </div>
     </motion.aside>
   );
 }
