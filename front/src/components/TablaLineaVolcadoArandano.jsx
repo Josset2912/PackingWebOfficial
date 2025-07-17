@@ -435,7 +435,7 @@ const TablaLineaVolcadoArandano = () => {
                           key={`proximoPalet-${index}`}
                           className={`transition-colors  ${
                             index === 0
-                              ? "animate-blink text-red-500"
+                              ? "animate-blink text-green-700"
                               : "border-transparent"
                           }`}
                         >

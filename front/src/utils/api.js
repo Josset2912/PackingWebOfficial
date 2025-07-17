@@ -2,8 +2,14 @@
 // utils/api.js
 import axios from "axios";
 
+//=======================================================
 const BASE_URL = "http://190.119.200.124:45490";
-
+//=======================================================
+//API CLUNCH
+export const fetchClunch = () =>
+  axios.get(`${BASE_URL}/packing/clunch`, {
+    params: { cod: "1" },
+  });
 //API TURNO
 export const fetchTurno = () =>
   axios.get(`${BASE_URL}/packing/turno`, {
@@ -305,6 +311,7 @@ export const fetchOrdenes = (sede, cultivo) => {
   });
 };
 export default {
+  fetchClunch,
   fetchFiler,
   fetchTurno,
   fetchCultivos,
