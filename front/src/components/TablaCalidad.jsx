@@ -199,7 +199,9 @@ const TablaCalidad = () => {
           <label className="font-bold text-sm sm:text-lg text-nowrap">
             SEDE:
           </label>
-          <select
+                  <select
+                      
+                      //mensahe
             value={sede}
             onChange={(e) => setSedes(e.target.value)}
             className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
