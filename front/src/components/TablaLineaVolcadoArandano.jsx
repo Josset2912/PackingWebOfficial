@@ -43,7 +43,6 @@ const TablaLineaVolcadoArandano = () => {
   const [dataTurno, setDataTurno] = useState([]);
 
   const [dataLineaRango, setDataLineaRango] = useState([]);
-  const [dataLinea, setDataLinea] = useState([]);
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
