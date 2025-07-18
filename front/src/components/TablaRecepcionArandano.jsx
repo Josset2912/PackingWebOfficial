@@ -16,7 +16,6 @@ import {
   fetchSedes,
   fetchVariedad,
   fetchCabezal,
-  fetchCalidadRangoFiler,
 } from "../utils/api";
 
 const TablaRecepcionArandano = () => {
@@ -30,64 +29,11 @@ const TablaRecepcionArandano = () => {
   const [dataVariedad, setDataVariedad] = useState([]);
   const [dataCabezal, setDataCabezal] = useState([]);
 
-  const [dataCalidadRangoFiler, setDataCalidadRangoFiler] = useState([]);
 
-  const [, setLoading] = useState(false);
-  const tiposFiler = Array.isArray(dataCalidadRangoFiler)
-    ? [
-        ...new Set(
-          dataCalidadRangoFiler.map((row) => row.filer?.trim().toUpperCase())
-        ),
-      ]
-    : [];
-
-  const dataAgrupadaFiler = [];
-
-  dataCalidadRangoFiler.forEach(({ rangofiler, filer, avance }) => {
-    const tipo = filer?.trim().toUpperCase();
-    if (!rangofiler || !tipo) return;
-    let existente = dataAgrupadaFiler.find(
-      (item) => item.rangofiler === rangofiler
-    );
-    if (!existente) {
-      existente = { rangofiler };
-      dataAgrupadaFiler.push(existente);
-    }
-    existente[tipo] = avance;
-  });
-  dataAgrupadaFiler.forEach((item) => {
-    tiposFiler.forEach((tipo) => {
-      if (!(tipo in item)) {
-        item[tipo] = 0;
-      }
-    });
-  });
-
-  const colores = {};
-
-  const coloresBase = [
-    "#1f77b4",
-    "#ff7f0e",
-    "#2ca02c",
-    "#d62728",
-    "#9467bd",
-    "#8c564b",
-    "#e377c2",
-    "#7f7f7f",
-    "#bcbd22",
-    "#17becf",
-    "#ffbb78",
-    "#98df8a",
-  ];
-
-  tiposFiler.forEach((filer, index) => {
-    colores[filer] = coloresBase[index % coloresBase.length];
-  });
-
+  
   // Función para cargar todos los datos
   const fetchData = async () => {
     try {
-      setLoading(true);
 
       // Convertir valores a minúsculas para la API si lo requiere
       const frutaLower = fruta.toLowerCase();
@@ -99,18 +45,11 @@ const TablaRecepcionArandano = () => {
         resCabezal,
         resSede,
         resCultivo,
-        resCalidadRangoFiler,
       ] = await Promise.all([
         fetchVariedad(sedeParam, frutaLower),
         fetchCabezal(sedeParam, frutaLower),
         fetchSedes(),
         fetchCultivos(),
-        fetchCalidadRangoFiler(
-          sedeParam,
-          frutaLower,
-          "SELECCIONE",
-          "SELECCIONE"
-        ),
       ]);
       // Verificar si las respuestas son válidas y asignar los datos
       // si no, asignar un array vacío
@@ -120,21 +59,14 @@ const TablaRecepcionArandano = () => {
       setDataCabezal(Array.isArray(resCabezal.data) ? resCabezal.data : []);
       setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
       setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
-      setDataCalidadRangoFiler(
-        Array.isArray(resCalidadRangoFiler.data)
-          ? resCalidadRangoFiler.data
-          : []
-      );
+      
     } catch (err) {
       console.error("Error fetching data:", err);
       setDataVariedad([]);
       setDataCabezal([]);
       setDataSedes([]);
       setDataCultivo([]);
-      setDataCalidadRangoFiler([]);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   // Ejecutar fetchData cuando cambie fruta o sede

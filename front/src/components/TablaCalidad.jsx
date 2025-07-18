@@ -15,9 +15,10 @@ import {
   fetchCultivos,
   fetchMaquina,
   fetchFiler,
+  fetchPresentacion,
   fetchCalidad,
   fetchCalidadRango,
-  fetchCalidadRangoFiler, // Cambiado a fetchCalidadRango
+  fetchCalidadRangoFiler,
 } from "../utils/api";
 
 const TablaCalidad = () => {
@@ -32,6 +33,9 @@ const TablaCalidad = () => {
 
   const [filer, setFiler] = useState("SELECCIONE");
   const [dataFiler, setDataFiler] = useState([]);
+
+  const [presentacion, setPresentacion] = useState("SELECCIONE"); //presentacion
+  const [dataPresentacion, setDataPresentacion] = useState([]);
 
   const [dataCalidadRango, setDataCalidadRango] = useState([]);
   const [dataCalidad, setDataCalidad] = useState([]);
@@ -133,35 +137,61 @@ const TablaCalidad = () => {
       const sedeParam = sede === "TODOS" ? "" : sede;
       const maquinaParam = maquina === "UNITEC" ? "" : maquina;
       const filerParam = filer === "F1" ? "" : filer;
+      const presentacionParam =
+        presentacion === "SELECCIONE" ? "" : presentacion;
 
       // Llamadas paralelas
       const [
-        resCalidad,
-        resCalidadRango,
         resSede,
         resCultivo,
         resMaquina,
         resFiler,
+        resPresentacion,
+        resCalidad,
+        resCalidadRango,
         resCalidadRangoFiler,
       ] = await Promise.all([
-        fetchCalidad(sedeParam, frutaLower, maquinaParam, filerParam),
-        fetchCalidadRango(sedeParam, frutaLower, maquinaParam, filerParam),
         fetchSedes(),
         fetchCultivos(),
         fetchMaquina(frutaLower),
         fetchFiler(maquinaParam),
-        fetchCalidadRangoFiler(sedeParam, frutaLower, maquinaParam, filerParam),
+        fetchPresentacion(sedeParam, frutaLower, maquinaParam, filerParam),
+        fetchCalidad(
+          sedeParam,
+          frutaLower,
+          maquinaParam,
+          filerParam,
+          presentacionParam
+        ),
+        fetchCalidadRango(
+          sedeParam,
+          frutaLower,
+          maquinaParam,
+          filerParam,
+          presentacionParam
+        ),
+        fetchCalidadRangoFiler(
+          sedeParam,
+          frutaLower,
+          maquinaParam,
+          filerParam,
+          presentacionParam
+        ),
       ]);
 
       // Las respuestas de axios ya traen el objeto data
-      setDataCalidad(Array.isArray(resCalidad.data) ? resCalidad.data : []);
-      setDataCalidadRango(
-        Array.isArray(resCalidadRango.data) ? resCalidadRango.data : []
-      );
+
       setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
       setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
       setDataMaquina(Array.isArray(resMaquina.data) ? resMaquina.data : []);
       setDataFiler(Array.isArray(resFiler.data) ? resFiler.data : []);
+      setDataPresentacion(
+        Array.isArray(resPresentacion.data) ? resPresentacion.data : []
+      );
+      setDataCalidad(Array.isArray(resCalidad.data) ? resCalidad.data : []);
+      setDataCalidadRango(
+        Array.isArray(resCalidadRango.data) ? resCalidadRango.data : []
+      );
       setDataCalidadRangoFiler(
         Array.isArray(resCalidadRangoFiler.data)
           ? resCalidadRangoFiler.data
@@ -169,12 +199,13 @@ const TablaCalidad = () => {
       );
     } catch (err) {
       console.error("Error fetching data:", err);
-      setDataCalidad([]);
-      setDataCalidadRango([]);
       setDataSedes([]);
       setDataCultivo([]);
       setDataMaquina([]);
       setDataFiler([]);
+      setDataPresentacion([]);
+      setDataCalidad([]);
+      setDataCalidadRango([]);
       setDataCalidadRangoFiler([]);
     }
   };
@@ -188,7 +219,7 @@ const TablaCalidad = () => {
     }, 10000);
 
     return () => clearInterval(intervaloId); // Limpieza del intervalo
-  }, [sede, fruta, maquina, filer]);
+  }, [sede, fruta, maquina, filer, presentacion]);
 
   return (
     <div className="">
@@ -199,9 +230,8 @@ const TablaCalidad = () => {
           <label className="font-bold text-sm sm:text-lg text-nowrap">
             SEDE:
           </label>
-                  <select
-                      
-                      //mensahe
+          <select
+            //mensahe
             value={sede}
             onChange={(e) => setSedes(e.target.value)}
             className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
@@ -240,6 +270,7 @@ const TablaCalidad = () => {
             )}
           </select>
         </div>
+
         {/* MAQUINA */}
         <div className="flex items-center gap-2 min-w-[160px]">
           <label className="font-bold text-sm sm:text-lg text-nowrap">
@@ -279,6 +310,28 @@ const TablaCalidad = () => {
             )}
           </select>
         </div>
+
+        {/* PRESENTACION */}
+        <div className="flex items-center gap-2 min-w-[160px]">
+          <label className="font-bold text-sm sm:text-lg text-nowrap">
+            PRESENTACION:
+          </label>
+          <select
+            value={presentacion}
+            onChange={(e) => setPresentacion(e.target.value)}
+            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
+          >
+            {dataPresentacion.length > 0 ? (
+              dataPresentacion.map((row, index) => (
+                <option key={index} value={row.presentacion}>
+                  {row.presentacion}
+                </option>
+              ))
+            ) : (
+              <option disabled></option>
+            )}
+          </select>
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 w-full px-2">
@@ -300,6 +353,9 @@ const TablaCalidad = () => {
                   <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
                     %
                   </th>
+                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
+                    CANT
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -315,11 +371,32 @@ const TablaCalidad = () => {
                       <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
                         {row.presentacion || ""}
                       </td>
-                      <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
+                      <td
+                        className={`px-2 py-2 text-center text-sm sm:text-2xl font-medium ${
+                          row.tipO_PESO === "BAJO PESO"
+                            ? "text-red-500"
+                            : row.tipO_PESO === "SOBRE PESO"
+                            ? "text-yellow-500"
+                            : "text-gray-800"
+                        }`}
+                      >
                         {row.tipO_PESO || "--"}
                       </td>
+                      <td
+                        className={`px-2 py-2 text-center text-sm sm:text-2xl font-medium ${
+                          row.porcentaje >= 5 && row.porcentaje < 7
+                            ? "text-green-500"
+                            : row.porcentaje >= 7 && row.porcentaje < 10
+                            ? "text-yellow-500"
+                            : row.porcentaje >= 10
+                            ? "text-red-500"
+                            : "text-gray-800"
+                        }`}
+                      >
+                        {row.porcentaje != null ? `${row.porcentaje} %` : "--"}
+                      </td>
                       <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
-                        {row.porcentaje || "--"} %
+                        {row.cantidad || "--"}
                       </td>
                     </tr>
                   ))
