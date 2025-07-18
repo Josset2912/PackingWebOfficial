@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import LineChartComponent from "./LineChartDual";
 import { ResponsiveContainer } from "recharts";
+import GaugeChart from "./Medidor";
 import {
   LineChart,
   Line,
@@ -41,6 +42,8 @@ const TablaCalidad = () => {
   const [dataCalidad, setDataCalidad] = useState([]);
 
   const [dataCalidadRangoFiler, setDataCalidadRangoFiler] = useState([]);
+
+  const [progressValue, setProgressValue] = useState(0);
 
   //  los tipos de filer
   //  los tipos de filer
@@ -333,12 +336,11 @@ const TablaCalidad = () => {
           </select>
         </div>
       </div>
-
-      <div className="flex flex-col md:flex-row gap-4 w-full px-2">
+      <div className="flex flex-col lg:flex-row gap-4 w-full px-2">
         {/* TABLA VARIEDAD - IZQUIERDA */}
-        <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
+        <div className="lg:w-1/2 w-full overflow-x-auto rounded-xl shadow-lg">
           <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
-            <table className="w-full min-w-[300px] border-collapse">
+            <table className="w-full min-w-[200px] border-collapse">
               <thead className="sticky top-0 z-10">
                 <tr className="bg-blue-600 text-white">
                   <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
@@ -403,7 +405,7 @@ const TablaCalidad = () => {
                 ) : (
                   <tr>
                     <td
-                      colSpan="4"
+                      colSpan="5"
                       className="px-4 py-6 text-center text-sm sm:text-base text-gray-500"
                     >
                       No hay datos de recepción disponibles
@@ -415,8 +417,8 @@ const TablaCalidad = () => {
           </div>
         </div>
 
-        {/* GRAFICOS - DERECHA */}
-        <div className="flex-1 flex flex-col gap-2 h-auto lg:h-[calc(100vh-100px)] lg:overflow-hidden">
+        {/* GRAFICOS - CENTRO */}
+        <div className="lg:w-1/3 w-full flex flex-col gap-1 h-auto lg:h-[calc(100vh-100px)] lg:overflow-hidden">
           {/* Gráfico 1 */}
           <div className="rounded-xl shadow-lg bg-white h-[300px] sm:h-[400px] lg:h-[50%]">
             <div className="bg-blue-500 rounded-t-xl">
@@ -500,6 +502,73 @@ const TablaCalidad = () => {
                   ))}
                 </LineChart>
               </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+
+        {/* Ta */}
+        <div className="flex flex-col gap-6 items-center justify-center">
+          {/* medidor */}
+
+          <div className="flex justify-center bg-white rounded-xl shadow-lg ">
+            <div className="w-full max-w-[300px]">
+              <h4 className="uppercase text-2xl text-center font-bold text-gray-800">
+                porcentaje conforme
+              </h4>
+              <GaugeChart
+                value={progressValue}
+                colors={{
+                  progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                  remaining: "#F5F5F5",
+                  needle: "#E91E63",
+                  text: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                  labelColor: "#757575",
+                }}
+                label="Progress"
+                fontSize="24px"
+                thickness="65%"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-center bg-white rounded-xl shadow-lg ">
+            <div className="w-full max-w-[300px]">
+              <h4 className="uppercase text-2xl text-center font-bold text-gray-800">
+                porcentaje bajopeso
+              </h4>
+              <GaugeChart
+                value={progressValue}
+                colors={{
+                  progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                  remaining: "#F5F5F5",
+                  needle: "#E91E63",
+                  text: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                  labelColor: "#757575",
+                }}
+                label="Progress"
+                fontSize="24px"
+                thickness="65%"
+              />
+            </div>
+          </div>
+          <div className="flex justify-center bg-white rounded-xl shadow-lg ">
+            <div className="w-full max-w-[300px]">
+              <h4 className="uppercase text-2xl text-center font-bold text-gray-800">
+                porcentaje sobrepeso
+              </h4>
+              <GaugeChart
+                value={progressValue}
+                colors={{
+                  progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                  remaining: "#F5F5F5",
+                  needle: "#E91E63",
+                  text: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                  labelColor: "#757575",
+                }}
+                label="Progress"
+                fontSize="24px"
+                thickness="65%"
+              />
             </div>
           </div>
         </div>

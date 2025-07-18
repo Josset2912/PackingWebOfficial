@@ -464,8 +464,7 @@ const TablaLineaVolcadoArandano = () => {
                 </table>
               </div>
             </div>
-          </div>
-
+          </div>{" "}
           {/* Ta */}
           <div className="flex flex-col gap-1">
             {/* medidor */}
