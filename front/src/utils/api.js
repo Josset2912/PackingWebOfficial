@@ -152,7 +152,32 @@ export const fetchCalidadRangoFiler = (
       maquina: maquinaValida,
       linea: lineaValida,
       presentacion: presentacionValida,
-      id: 3, // CAMBIAR A 3
+      id: 3, // 
+    },
+  });
+};
+//API CALIDAD RANGO FILER
+export const fetchCalidadPorcentajeMuestras = (
+  sede,
+  cultivo,
+  maquina,
+  linea,
+  presentacion
+) => {
+  const sedeValida = sede?.trim() || "todos";
+  const cultivoValido = cultivo?.trim() || "arandano";
+  const maquinaValida = maquina?.trim() || "UNITEC";
+  const lineaValida = linea?.trim() || "F1";
+  const presentacionValida = presentacion?.trim() || "SELECCIONE";
+
+  return axios.get(`${BASE_URL}/packing/calidad`, {
+    params: {
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      maquina: maquinaValida,
+      linea: lineaValida,
+      presentacion: presentacionValida,
+      id: 4, // 
     },
   });
 };
@@ -352,6 +377,7 @@ export default {
   fetchCalidad,
   fetchCalidadRangoFiler,
   fetchCalidadRango,
+  fetchCalidadPorcentajeMuestras,
   fetchEsperaGasificado,
   fetchEsperaBatchGasificado,
   fetchEsperaPreFrio,
