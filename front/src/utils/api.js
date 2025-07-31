@@ -378,6 +378,7 @@ export default {
   fetchCalidadRangoFiler,
   fetchCalidadRango,
   fetchCalidadPorcentajeMuestras,
+  fetchCalidadPorcentajeMuestras,
   fetchEsperaGasificado,
   fetchEsperaBatchGasificado,
   fetchEsperaPreFrio,
