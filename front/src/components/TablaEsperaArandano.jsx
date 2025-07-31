@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { fetchCultivos, fetchSedes, fetchEspera } from "../utils/api";
-
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 const TablaEsperaArandano = () => {
   const [fruta, setFruta] = useState("ARANDANO");
   const [sedes, setSedes] = useState("FUNDO SANTA AZUL");
@@ -48,57 +52,96 @@ const TablaEsperaArandano = () => {
   }, [fruta, sedes]);
 
   return (
-    <div className="container mx-auto px-2 sm:px-4">
+    <div className="">
       {/* Selector de cultivo y sede */}
-      <div className="mb-0.5 flex flex-wrap gap-1 justify-end items-center">
+      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
         {/* SEDE */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            SEDE:
-          </label>
-          <select
-            value={sedes}
-            onChange={(e) => setSedes(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            <option value="TODOS">TODOS</option>
-            {dataSedes.length > 0 ? (
-              dataSedes.map((row, index) => (
-                <option key={index} value={row.sede}>
-                  {row.sede}
-                </option>
-              ))
-            ) : (
-              <option disabled></option>
-            )}
-          </select>
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="sede-select-label">SEDE</InputLabel>
+              <Select
+                labelId="sede-select-label"
+                id="sede-select"
+                value={
+                  dataSedes.some((row) => row.sede === sedes) ? sedes : "TODOS"
+                }
+                label="SEDE"
+                onChange={(e) => setSedes(e.target.value)}
+              >
+                <MenuItem value="TODOS">TODOS</MenuItem>
+                {dataSedes.map((row, idx) => (
+                  <MenuItem key={idx} value={row.sede}>
+                    {row.sede}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
+
         {/* CULTIVO */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            CULTIVO:
-          </label>
-          <select
-            value={fruta}
-            onChange={(e) => setFruta(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            {dataCultivo.length > 0 ? (
-              dataCultivo.map((row, index) => (
-                <option key={index} value={row.cultivo}>
-                  {row.cultivo}
-                </option>
-              ))
-            ) : (
-              <option disabled></option>
-            )}
-          </select>
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="cultivo-select-label">CULTIVO</InputLabel>
+              <Select
+                labelId="cultivo-select-label"
+                id="cultivo-select"
+                value={
+                  dataCultivo.some((row) => row.cultivo === fruta) ? fruta : ""
+                }
+                label="CULTIVO"
+                onChange={(e) => setFruta(e.target.value)}
+              >
+                {dataCultivo.map((row, idx) => (
+                  <MenuItem key={idx} value={row.cultivo}>
+                    {row.cultivo}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
       </div>
 
       {/* Tabla */}
       <div className="overflow-x-auto rounded-xl shadow-lg">
-        <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
+        <div className="overflow-y-auto max-h-[calc(100vh-120px)]">
           <table className="w-full min-w-[300px] border-collapse">
             <thead className="sticky top-0 z-10">
               <tr className="bg-gradient-to-r from-cyan-600 to-blue-700 text-white">

@@ -19,7 +19,8 @@ import TablaEsperaArandano from "./components/TablaEsperaArandano";
 import TablaLineaVolcadoArandano from "./components/TablaLineaVolcadoArandano";
 import TablaFrioArandano from "./components/TablaFrioArandano";
 import TablaOrdenesArandano from "./components/TablaOrdenesArandano";
-// Mapeo de endpoints actualizado
+/* import TablaTacometro from "./components/TablaTacometro"; // Importar TablaTacometro
+ */ // Mapeo de endpoints actualizado
 const endpointMap = {
   Arandano: {
     RECEPCIÓN: "recepcion",
@@ -32,7 +33,8 @@ const tablaMap = {
   Arandano: {
     RECEPCIÓN: TablaRecepcionArandano,
     "RECEPCION NISIRA": TablaRecepcionNisiraArandano,
-    CALIDAD: TablaCalidad, // Asumiendo que la tabla de calidad es la misma que recepción
+    /*     TACOMETRO: TablaTacometro, // Agregar TablaTacometro
+     */ CALIDAD: TablaCalidad, // Asumiendo que la tabla de calidad es la misma que recepción
     "GASIFICADO PRE FRÍO": TablaGasificadoArandano,
     "VOLCADO/ESPERA": TablaEsperaArandano,
     "VOLCADO/LÍNEA": TablaLineaVolcadoArandano,
@@ -57,7 +59,8 @@ const App = () => {
   const packingSections = [
     "RECEPCIÓN",
     "RECEPCION NISIRA",
-    "GASIFICADO PRE FRÍO",
+    /*     "TACOMETRO",
+     */ "GASIFICADO PRE FRÍO",
     "CALIDAD",
     {
       name: "VOLCADO",
@@ -193,7 +196,7 @@ const App = () => {
           <>
             <Header logoSrc="/santa.png" />
 
-            <main className="flex-1 overflow-y-auto p-1 bg-gradient-to-b from-gray-50 to-gray-100">
+            <main className="flex-1 overflow-y-auto p-3 bg-gradient-to-b from-gray-50 to-gray-100">
               {renderTablas()}
             </main>
           </>

@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import {
   fetchCultivos,
   fetchSedes,
@@ -9,7 +14,7 @@ import {
 
 const TablaFrioArandano = () => {
   // Estados principales
-  const [fruta, setFruta] = useState("Arandano");
+  const [fruta, setFruta] = useState("ARANDANO");
   const [sedes, setSede] = useState("FUNDO SANTA AZUL");
 
   const [dataCultivo, setDataCultivo] = useState([]);
@@ -77,44 +82,84 @@ const TablaFrioArandano = () => {
   return (
     <div className="container mx-auto px-2 sm:px-4">
       {/* Selectores */}
-      <div className="mb-0.5 flex flex-wrap gap-1 justify-end items-center">
+      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
         {/* SEDE */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            SEDE:
-          </label>
-          <select
-            value={sedes}
-            onChange={(e) => setSede(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            <option value="TODOS">TODOS</option>
-            {dataSedes.length > 0 &&
-              dataSedes.map((row, index) => (
-                <option key={index} value={row.sede}>
-                  {row.sede}
-                </option>
-              ))}
-          </select>
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="sede-select-label">SEDE</InputLabel>
+              <Select
+                labelId="sede-select-label"
+                id="sede-select"
+                value={dataSedes.some((row) => row.sede === sedes) ? sedes : "TODOS"}
+                label="SEDE"
+                onChange={(e) => setSede(e.target.value)}
+              >
+                <MenuItem value="TODOS">TODOS</MenuItem>
+                {dataSedes.map((row, idx) => (
+                  <MenuItem key={idx} value={row.sede}>
+                    {row.sede}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
 
         {/* CULTIVO */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            CULTIVO:
-          </label>
-          <select
-            value={fruta}
-            onChange={(e) => setFruta(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            {dataCultivo.length > 0 &&
-              dataCultivo.map((row, index) => (
-                <option key={index} value={row.cultivo}>
-                  {row.cultivo}
-                </option>
-              ))}
-          </select>
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="cultivo-select-label">CULTIVO</InputLabel>
+              <Select
+                value={
+                  dataCultivo.some((row) => row.cultivo === fruta) ? fruta : "" // valor seguro mientras carga
+                }
+                onChange={(e) => setFruta(e.target.value)}
+                label="CULTIVO"
+              >
+                {dataCultivo.map((row, idx) => (
+                  <MenuItem key={idx} value={row.cultivo}>
+                    {row.cultivo}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
       </div>
 
@@ -179,9 +224,9 @@ const TablaFrioArandano = () => {
         </div>
 
         {/*  ENFRIANDO */}
-        <div className="overflow-y-auto max-h-[calc(100vh-100px)] ">
+        <div className="overflow max-h-[calc(100vh-100px)] ">
           {/* ---------- Tabla ENFRIANDO ---------- */}
-          <div className="mb-1 bg-white rounded-xl shadow-lg overflow-hidden overflow-y-auto max-h-[calc(60vh-70px)]">
+          <div className="mb-1 bg-white rounded-xl shadow-lg overflow-hidden  max-h-[calc(60vh-70px)]">
             <div className="px-6 py-1">
               <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider">
                 ENFRIANDO
@@ -241,15 +286,15 @@ const TablaFrioArandano = () => {
           </div>
 
           {/* Tabla enfriando Batch */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden overflow-y-auto max-h-[calc(40vh-35px)]">
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col max-h-[calc(40vh-35px)]">
             <div className="px-3 xs:px-4 sm:px-6 py-1">
-              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
+              <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider">
                 BATCH ENFRIANDO
               </h2>
             </div>
-            <div className="overflow-y-auto">
+            <div className="overflow-y-auto flex-1 min-h-0">
               <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
-                <thead>
+                <thead className="sticky top-0 z-10 bg-teal-600 text-white shadow-md">
                   <tr className="bg-teal-600 text-white">
                     <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       BATCH

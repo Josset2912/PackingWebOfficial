@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import LineChartComponent from "./LineChartDual";
 import { ResponsiveContainer } from "recharts";
 import GaugeChart from "./Medidor";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import {
   LineChart,
   Line,
@@ -20,6 +25,7 @@ import {
   fetchCalidad,
   fetchCalidadRango,
   fetchCalidadRangoFiler,
+  fetchCalidadPorcentajeMuestras,
 } from "../utils/api";
 
 const TablaCalidad = () => {
@@ -43,7 +49,10 @@ const TablaCalidad = () => {
 
   const [dataCalidadRangoFiler, setDataCalidadRangoFiler] = useState([]);
 
-  const [progressValue, setProgressValue] = useState(0);
+  const [dataCalidadPorcentaje, setDataCalidadPorcentaje] = useState([]);
+  const [progressValueBajoPeso, setProgressValueBajoPeso] = useState(0);
+  const [progressValuePesoNormal, setProgressValuePesoNormal] = useState(0);
+  const [progressValueSobrePeso, setProgressValueSobrePeso] = useState(0);
 
   //  los tipos de filer
   //  los tipos de filer
@@ -153,6 +162,7 @@ const TablaCalidad = () => {
         resCalidad,
         resCalidadRango,
         resCalidadRangoFiler,
+        resCalidadPorcentajeMuestras,
       ] = await Promise.all([
         fetchSedes(),
         fetchCultivos(),
@@ -180,6 +190,13 @@ const TablaCalidad = () => {
           filerParam,
           presentacionParam
         ),
+        fetchCalidadPorcentajeMuestras(
+          sedeParam,
+          frutaLower,
+          maquinaParam,
+          filerParam,
+          presentacionParam
+        ),
       ]);
 
       // Las respuestas de axios ya traen el objeto data
@@ -200,6 +217,40 @@ const TablaCalidad = () => {
           ? resCalidadRangoFiler.data
           : []
       );
+      setDataCalidadPorcentaje(
+        Array.isArray(resCalidadPorcentajeMuestras.data)
+          ? resCalidadPorcentajeMuestras.data
+          : []
+      );
+
+      // Definir el criterio para la fila que buscas
+      const criterio = "BAJO PESO"; // Cambia esto por el criterio adecuado
+      const criterio2 = "PESO NORMAL"; // Cambia esto por el criterio adecuado
+      const criterio3 = "SOBRE PESO"; // Cambia esto por el criterio adecuado
+      // Filtrar la fila específica
+      const filaBajoPeso = resCalidadPorcentajeMuestras.data?.find(
+        (fila) => fila.tipopesototal === criterio
+      );
+      const filaPesoNormal = resCalidadPorcentajeMuestras.data?.find(
+        (fila) => fila.tipopesototal === criterio2
+      );
+      const filaSobrePeso = resCalidadPorcentajeMuestras.data?.find(
+        (fila) => fila.tipopesototal === criterio3
+      );
+
+      // Verificar que la fila existe y obtener el porcentaje de esa fila
+      const pctBajoPeso = filaBajoPeso
+        ? parseFloat(filaBajoPeso.tipopesoporcentaje)
+        : 0;
+      setProgressValueBajoPeso(!isNaN(pctBajoPeso) ? pctBajoPeso : 0);
+      const pctPesoNormal = filaPesoNormal
+        ? parseFloat(filaPesoNormal.tipopesoporcentaje)
+        : 0;
+      setProgressValuePesoNormal(!isNaN(pctPesoNormal) ? pctPesoNormal : 0);
+      const pctSobrePeso = filaSobrePeso
+        ? parseFloat(filaSobrePeso.tipopesoporcentaje)
+        : 0;
+      setProgressValueSobrePeso(!isNaN(pctSobrePeso) ? pctSobrePeso : 0);
     } catch (err) {
       console.error("Error fetching data:", err);
       setDataSedes([]);
@@ -210,6 +261,7 @@ const TablaCalidad = () => {
       setDataCalidad([]);
       setDataCalidadRango([]);
       setDataCalidadRangoFiler([]);
+      setDataCalidadPorcentaje([]);
     }
   };
   // Combinar dataCalidadVariedad y dataCalidadCabezal para el gráfico
@@ -227,113 +279,232 @@ const TablaCalidad = () => {
   return (
     <div className="">
       {/* Selector de cultivo y sede */}
-      <div className="mb-0.5 flex flex-wrap gap-1 justify-end items-center">
+      <div className="mb-0.5 flex flex-wrap gap-1 justify-end items-center ">
         {/* SEDE */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            SEDE:
-          </label>
-          <select
-            //mensahe
-            value={sede}
-            onChange={(e) => setSedes(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            <option value="TODOS">TODOS</option>
-            {dataSedes.length > 0 ? (
-              dataSedes.map((row, index) => (
-                <option key={index} value={row.sede}>
-                  {row.sede}
-                </option>
-              ))
-            ) : (
-              <option disabled></option>
-            )}
-          </select>
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green", 
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="sede-select-label">SEDE</InputLabel>
+              <Select
+                labelId="sede-select-label"
+                id="sede-select"
+                value={
+                  dataSedes.some((row) => row.sede === sede) ? sede : "TODOS"
+                }
+                label="SEDE"
+                onChange={(e) => setSedes(e.target.value)}
+              >
+                <MenuItem value="TODOS">TODOS</MenuItem>
+                {dataSedes.map((row, idx) => (
+                  <MenuItem key={idx} value={row.sede}>
+                    {row.sede}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
 
         {/* CULTIVO */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            CULTIVO:
-          </label>
-          <select
-            value={fruta}
-            onChange={(e) => setFruta(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            {dataCultivo.length > 0 ? (
-              dataCultivo.map((row, index) => (
-                <option key={index} value={row.cultivo}>
-                  {row.cultivo}
-                </option>
-              ))
-            ) : (
-              <option disabled></option>
-            )}
-          </select>
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="cultivo-select-label">CULTIVO</InputLabel>
+              <Select
+                labelId="cultivo-select-label"
+                id="cultivo-select"
+                value={
+                  dataCultivo.some((row) => row.cultivo === fruta) ? fruta : ""
+                }
+                label="CULTIVO"
+                onChange={(e) => setFruta(e.target.value)}
+              >
+                {dataCultivo.map((row, idx) => (
+                  <MenuItem key={idx} value={row.cultivo}>
+                    {row.cultivo}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
 
         {/* MAQUINA */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            MAQUINA:
-          </label>
-          <select
-            value={maquina}
-            onChange={(e) => setMaquina(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            {dataMaquina.map((row, index) => (
-              <option key={index} value={row.maquina}>
-                {row.maquina}
-              </option>
-            ))}
-          </select>
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="maquina-select-label">MAQUINA</InputLabel>
+              <Select
+                labelId="maquina-select-label"
+                id="maquina-select"
+                value={
+                  dataMaquina.some((row) => row.maquina === maquina)
+                    ? maquina
+                    : ""
+                }
+                label="MAQUINA"
+                onChange={(e) => setMaquina(e.target.value)}
+              >
+                {dataMaquina.map((row, idx) => (
+                  <MenuItem key={idx} value={row.maquina}>
+                    {row.maquina}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
 
-        {/* LINEA */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            LINEA:
-          </label>
-          <select
-            value={filer}
-            onChange={(e) => setFiler(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            {dataFiler.length > 0 ? (
-              dataFiler.map((row, index) => (
-                <option key={index} value={row.filer}>
-                  {row.filer}
-                </option>
-              ))
-            ) : (
-              <option disabled></option>
-            )}
-          </select>
+        {/* FILER */}
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="filer-select-label">FILER</InputLabel>
+              <Select
+                labelId="filer-select-label"
+                id="filer-select"
+                value={
+                  dataFiler.some((row) => row.filer === filer)
+                    ? filer
+                    : "SELECCIONE"
+                }
+                label="FILER"
+                onChange={(e) => setFiler(e.target.value)}
+              >
+                {dataFiler.length > 0 ? (
+                  dataFiler.map((row, idx) => (
+                    <MenuItem key={idx} value={row.filer}>
+                      {row.filer}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled value="SELECCIONE">
+                    SELECCIONE
+                  </MenuItem>
+                )}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
-
         {/* PRESENTACION */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            PRESENTACION:
-          </label>
-          <select
-            value={presentacion}
-            onChange={(e) => setPresentacion(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            {dataPresentacion.length > 0 ? (
-              dataPresentacion.map((row, index) => (
-                <option key={index} value={row.presentacion}>
-                  {row.presentacion}
-                </option>
-              ))
-            ) : (
-              <option disabled></option>
-            )}
-          </select>
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="presentacion-select-label">
+                PRESENTACION
+              </InputLabel>
+              <Select
+                labelId="presentacion-select-label"
+                id="presentacion-select"
+                value={
+                  dataPresentacion.some(
+                    (row) => row.presentacion === presentacion
+                  )
+                    ? presentacion
+                    : "SELECCIONE"
+                }
+                label="PRESENTACION"
+                onChange={(e) => setPresentacion(e.target.value)}
+              >
+                {dataPresentacion.length > 0 ? (
+                  dataPresentacion.map((row, idx) => (
+                    <MenuItem key={idx} value={row.presentacion}>
+                      {row.presentacion}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled value="SELECCIONE">
+                    SELECCIONE
+                  </MenuItem>
+                )}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
       </div>
       <div className="flex flex-col lg:flex-row gap-4 w-full px-2">
@@ -507,69 +678,63 @@ const TablaCalidad = () => {
         </div>
 
         {/* Ta */}
-        <div className="flex flex-col gap-6 items-center justify-center">
+        <div className="lg:w-1/5 w-full flex flex-col gap-1 h-auto lg:h-[calc(100vh-100px)] lg:overflow-hidden justify-center items-center">
           {/* medidor */}
 
-          <div className="flex justify-center bg-white rounded-xl shadow-lg ">
-            <div className="w-full max-w-[300px]">
-              <h4 className="uppercase text-2xl text-center font-bold text-gray-800">
-                porcentaje conforme
-              </h4>
-              <GaugeChart
-                value={progressValue}
-                colors={{
-                  progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                  remaining: "#F5F5F5",
-                  needle: "#E91E63",
-                  text: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                  labelColor: "#757575",
-                }}
-                label="Progress"
-                fontSize="24px"
-                thickness="65%"
-              />
-            </div>
+          <div className="w-full flex-1 bg-white rounded-xl shadow-lg  flex flex-col justify-center">
+            <h4 className="uppercase text-2xl text-center font-bold text-gray-800 ">
+              % conforme
+            </h4>
+            <GaugeChart
+              value={progressValuePesoNormal}
+              colors={{
+                progress: progressValuePesoNormal > 80 ? "#4CAF50" : "#FFC107",
+                remaining: "#F5F5F5",
+                needle: "#E91E63",
+                text: progressValuePesoNormal > 80 ? "#4CAF50" : "#FFC107",
+                labelColor: "#757575",
+              }}
+              label="Progress"
+              fontSize="24px"
+              thickness="65%"
+            />
           </div>
 
-          <div className="flex justify-center bg-white rounded-xl shadow-lg ">
-            <div className="w-full max-w-[300px]">
-              <h4 className="uppercase text-2xl text-center font-bold text-gray-800">
-                porcentaje bajopeso
-              </h4>
-              <GaugeChart
-                value={progressValue}
-                colors={{
-                  progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                  remaining: "#F5F5F5",
-                  needle: "#E91E63",
-                  text: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                  labelColor: "#757575",
-                }}
-                label="Progress"
-                fontSize="24px"
-                thickness="65%"
-              />
-            </div>
+          <div className="w-full flex-1 bg-white rounded-xl shadow-lg  flex flex-col justify-center">
+            <h4 className="uppercase text-2xl text-center font-bold text-gray-800 ">
+              % bajopeso
+            </h4>
+            <GaugeChart
+              value={progressValueBajoPeso}
+              colors={{
+                progress: progressValueBajoPeso > 80 ? "#4CAF50" : "#FFC107",
+                remaining: "#F5F5F5",
+                needle: "#E91E63",
+                text: progressValueBajoPeso > 80 ? "#4CAF50" : "#FFC107",
+                labelColor: "#757575",
+              }}
+              label="Progress"
+              fontSize="24px"
+              thickness="65%"
+            />
           </div>
-          <div className="flex justify-center bg-white rounded-xl shadow-lg ">
-            <div className="w-full max-w-[300px]">
-              <h4 className="uppercase text-2xl text-center font-bold text-gray-800">
-                porcentaje sobrepeso
-              </h4>
-              <GaugeChart
-                value={progressValue}
-                colors={{
-                  progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                  remaining: "#F5F5F5",
-                  needle: "#E91E63",
-                  text: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                  labelColor: "#757575",
-                }}
-                label="Progress"
-                fontSize="24px"
-                thickness="65%"
-              />
-            </div>
+          <div className="w-full flex-1 bg-white rounded-xl shadow-lg  flex flex-col justify-center">
+            <h4 className="uppercase text-2xl text-center font-bold text-gray-800 ">
+              % sobrepeso
+            </h4>
+            <GaugeChart
+              value={progressValueSobrePeso}
+              colors={{
+                progress: progressValueSobrePeso > 80 ? "#4CAF50" : "#FFC107",
+                remaining: "#F5F5F5",
+                needle: "#E91E63",
+                text: progressValueSobrePeso > 80 ? "#4CAF50" : "#FFC107",
+                labelColor: "#757575",
+              }}
+              label="Progress"
+              fontSize="24px"
+              thickness="65%"
+            />
           </div>
         </div>
       </div>

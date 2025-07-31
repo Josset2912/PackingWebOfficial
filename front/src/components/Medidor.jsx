@@ -19,12 +19,12 @@ export const GaugeChart = ({ value, max = 100, colors = {} }) => {
         alignItems: "center", // Centrar verticalmente
         position: "relative",
         margin: "0",
-        padding: "0",
+        padding: "3px",
         overflow: "hidden", // Por si algún contenido sobresale
       }}
     >
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart margin={{ top: -20, right: -10, bottom: -10, left: -10 }}>
+      <ResponsiveContainer width="140%" height="140%">
+        <PieChart margin={{ top: -20, right: -10, bottom: -20, left: -10 }}>
           <Pie
             data={data}
             cx="50%"

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import GaugeChart from "./Medidor";
-import LineChartComponent from "./LineChartDual";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { ResponsiveContainer } from "recharts";
 import {
   LineChart,
@@ -44,8 +48,6 @@ const TablaLineaVolcadoArandano = () => {
 
   const [dataLineaRango, setDataLineaRango] = useState([]);
 
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [fecha, setFecha] = useState(
     () => new Date().toISOString().split("T")[0]
   );
@@ -200,103 +202,219 @@ const TablaLineaVolcadoArandano = () => {
   //
   return (
     <div className="">
-      <div className="mb-0.5 flex flex-wrap gap-1 justify-end items-center">
+      <div className="mb-0.5 flex flex-wrap  justify-end items-center gap-3">
         {/* SEDE */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            SEDE:
-          </label>
-          <select
-            value={sede}
-            onChange={(e) => setSede(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            <option value="TODOS">TODOS</option>
-            {dataSedes.length > 0 ? (
-              dataSedes.map((row, index) => (
-                <option key={index} value={row.sede}>
-                  {row.sede}
-                </option>
-              ))
-            ) : (
-              <option disabled></option>
-            )}
-          </select>
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="sede-select-label">SEDE</InputLabel>
+              <Select
+                labelId="sede-select-label"
+                id="sede-select"
+                value={
+                  dataSedes.some((row) => row.sede === sede) ? sede : "TODOS"
+                }
+                label="SEDE"
+                onChange={(e) => setSede(e.target.value)}
+              >
+                <MenuItem value="TODOS">TODOS</MenuItem>
+                {dataSedes.map((row, idx) => (
+                  <MenuItem key={idx} value={row.sede}>
+                    {row.sede}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
 
         {/* CULTIVO */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            CULTIVO:
-          </label>
-          <select
-            value={fruta}
-            onChange={(e) => setFruta(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            {dataCultivo.map((row, index) => (
-              <option key={index} value={row.cultivo}>
-                {row.cultivo}
-              </option>
-            ))}
-          </select>
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="cultivo-select-label">CULTIVO</InputLabel>
+              <Select
+                labelId="cultivo-select-label"
+                id="cultivo-select"
+                value={
+                  dataCultivo.some((row) => row.cultivo === fruta)
+                    ? fruta
+                    : ""
+                }
+                label="CULTIVO"
+                onChange={(e) => setFruta(e.target.value)}
+              >
+                {dataCultivo.map((row, idx) => (
+                  <MenuItem key={idx} value={row.cultivo}>
+                    {row.cultivo}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
 
         {/* MAQUINA */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            MAQUINA:
-          </label>
-          <select
-            value={maquina}
-            onChange={(e) => setMaquina(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            {dataMaquina.map((row, index) => (
-              <option key={index} value={row.maquina}>
-                {row.maquina}
-              </option>
-            ))}
-          </select>
-        </div>
-        {/* TURNO */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className="font-bold text-sm sm:text-lg text-nowrap">
-            TURNO:
-          </label>
-          <select
-            value={turno}
-            onChange={(e) => setTurno(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-base font-bold text-green-800 rounded w-full"
-          >
-            {dataTurno.map((row, index) => (
-              <option key={index} value={row.turno}>
-                {row.turno}
-              </option>
-            ))}
-          </select>
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="maquina-select-label">MAQUINA</InputLabel>
+              <Select
+                labelId="maquina-select-label"
+                id="maquina-select"
+                value={
+                  dataMaquina.some((row) => row.maquina === maquina)
+                    ? maquina
+                    : ""
+                }
+                label="MAQUINA"
+                onChange={(e) => setMaquina(e.target.value)}
+              >
+                {dataMaquina.map((row, idx) => (
+                  <MenuItem key={idx} value={row.maquina}>
+                    {row.maquina}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
 
+        {/*TURNO */}
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="turno-select-label">TURNO</InputLabel>
+              <Select
+                labelId="turno-select-label"
+                id="turno-select"
+                value={
+                  dataTurno.some((row) => row.turno === turno)
+                    ? turno
+                    : ""
+                }
+                label="TURNO"
+                onChange={(e) => setTurno(e.target.value)}
+              >
+                {dataTurno.map((row, idx) => (
+                  <MenuItem key={idx} value={row.turno}>
+                    {row.turno}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </div>
         {/* FECHA */}
-        <div className="flex items-center gap-2 min-w-[160px]">
-          <label className=" font-bold text-sm sm:text-lg text-nowrap    ">
-            FECHA:
-          </label>
-          <input
-            type="date"
-            value={fecha}
-            onChange={(e) => setFecha(e.target.value)}
-            className="p-1 border border-green-600 text-sm sm:text-xl font-bold text-green-800 rounded"
-          />
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel shrink htmlFor="fecha-input">
+                FECHA
+              </InputLabel>
+              <input
+                id="fecha-input"
+                type="date"
+                value={fecha}
+                onChange={(e) => setFecha(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #4caf50",
+                  fontSize: "16px",
+                }}
+              />
+            </FormControl>
+          </Box>
         </div>
       </div>
 
-      {/* Error */}
-      {error && (
-        <div className="text-center py-4 text-sm sm:text-xl font-semibold text-red-600 mb-4">
-          {error}
-        </div>
-      )}
       {/* Tabla kg proy vs ejec y sgte palet */}
       <div className="flex flex-col lg:flex-row gap-3">
         {/* Tabla Línea Avance */}
