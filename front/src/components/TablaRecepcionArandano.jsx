@@ -9,16 +9,26 @@ import {
   fetchSedes,
   fetchVariedad,
   fetchCabezal,
+  fetchEmpaqFiltro,
+  fetchVariedadFiltro,
 } from "../utils/api";
 
 const TablaRecepcionArandano = () => {
   // Estados para filtros
+  const [empaqueFiltro, setEmpaqueFiltro] = useState("TODOS");
+  const [dataEmpaqueFiltro, setDataEmpaqueFiltro] = useState([]);
+
+  const [variedadFiltro, setVariedadfiltro] = useState("TODOS");
+  const [dataVariedadfiltro, setDataVariedadfiltro] = useState([]);
+  // Estado para fruta y sede
+
   const [fruta, setFruta] = useState("ARANDANO");
+  const [dataCultivo, setDataCultivo] = useState([]);
+
   const [sede, setSede] = useState("TODOS");
+  const [dataSedes, setDataSedes] = useState([]);
 
   // Datos obtenidos de APIs
-  const [dataCultivo, setDataCultivo] = useState([]);
-  const [dataSedes, setDataSedes] = useState([]);
   const [dataVariedad, setDataVariedad] = useState([]);
   const [dataCabezal, setDataCabezal] = useState([]);
 
@@ -28,13 +38,24 @@ const TablaRecepcionArandano = () => {
       // Convertir valores a minúsculas para la API si lo requiere
       const frutaLower = fruta.toLowerCase();
       const sedeParam = sede === "TODOS" ? "" : sede;
-
+      const empaqueParam = empaqueFiltro === "TODOS" ? "" : empaqueFiltro;
+      const variedadFiltroParam =
+        variedadFiltro === "TODOS" ? "" : variedadFiltro;
       // Llamadas paralelas
-      const [resVariedad, resCabezal, resSede, resCultivo] = await Promise.all([
-        fetchVariedad(sedeParam, frutaLower),
-        fetchCabezal(sedeParam, frutaLower),
+      const [
+        resVariedad,
+        resCabezal,
+        resSede,
+        resCultivo,
+        resEmpaque,
+        resVariedadFiltro,
+      ] = await Promise.all([
+        fetchVariedad(sedeParam, frutaLower, empaqueParam, variedadFiltroParam),
+        fetchCabezal(sedeParam, frutaLower, empaqueParam, variedadFiltroParam),
         fetchSedes(),
         fetchCultivos(),
+        fetchEmpaqFiltro(),
+        fetchVariedadFiltro(),
       ]);
       // Verificar si las respuestas son válidas y asignar los datos
       // si no, asignar un array vacío
@@ -44,12 +65,20 @@ const TablaRecepcionArandano = () => {
       setDataCabezal(Array.isArray(resCabezal.data) ? resCabezal.data : []);
       setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
       setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
+      setDataEmpaqueFiltro(
+        Array.isArray(resEmpaque.data) ? resEmpaque.data : []
+      );
+      setDataVariedadfiltro(
+        Array.isArray(resVariedadFiltro.data) ? resVariedadFiltro.data : []
+      );
     } catch (err) {
       console.error("Error fetching data:", err);
       setDataVariedad([]);
       setDataCabezal([]);
       setDataSedes([]);
       setDataCultivo([]);
+      setDataEmpaqueFiltro([]);
+      setDataVariedadfiltro([]);
     }
   };
 
@@ -62,7 +91,7 @@ const TablaRecepcionArandano = () => {
     }, 10000);
 
     return () => clearInterval(intervaloId); // Limpieza del intervalo
-  }, [fruta, sede]);
+  }, [fruta, sede, empaqueFiltro, variedadFiltro]);
 
   return (
     <div className="">
@@ -148,6 +177,90 @@ const TablaRecepcionArandano = () => {
             </FormControl>
           </Box>
         </div>
+
+        {/* EMPAQUE */}
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="empaque-select-label">EMPAQUE</InputLabel>
+              <Select
+                labelId="empaque-select-label"
+                id="empaque-select"
+                value={empaqueFiltro}
+                label="EMPAQUE"
+                onChange={(e) => setEmpaqueFiltro(e.target.value)}
+              >
+                <MenuItem value="TODOS">TODOS</MenuItem>
+                {dataEmpaqueFiltro
+                  .filter((row) => row.cultivo === fruta) // ← Asegúrate de que este campo existe
+                  .map((row, idx) => (
+                    <MenuItem key={idx} value={row.empaque}>
+                      {row.empaque}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </div>
+
+        {/* VARIEDAD */}
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  "& fieldset": {
+                    borderColor: "green",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "darkgreen",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "green",
+                  },
+                },
+              }}
+            >
+              <InputLabel id="variedad-select-label">VARIEDAD</InputLabel>
+              <Select
+                labelId="variedad-select-label"
+                id="variedad-select"
+                value={variedadFiltro}
+                label="VARIEDAD"
+                onChange={(e) => setVariedadfiltro(e.target.value)}
+              >
+                <MenuItem value="TODOS">TODOS</MenuItem>
+                {dataVariedadfiltro
+                  .filter((row) => row.cultivo === fruta) // ← Asegúrate de que este campo existe
+                  .map((row, idx) => (
+                    <MenuItem key={idx} value={row.variedad}>
+                      {row.variedad}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-1 w-full">
@@ -159,10 +272,16 @@ const TablaRecepcionArandano = () => {
                 <thead>
                   <tr className="bg-blue-600 text-white">
                     <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase">
+                      EMPAQUE
+                    </th>
+                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase">
                       VARIEDAD
                     </th>
                     <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase">
-                      EJECUCIÓN
+                      CABEZAL
+                    </th>
+                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase">
+                      PESO NETO
                     </th>
                   </tr>
                 </thead>
@@ -193,10 +312,18 @@ const TablaRecepcionArandano = () => {
                             }`}
                           >
                             <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                              {row.var}
+                              {row.empaque || ""}
                             </td>
                             <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                              {row.ejec || "--"} Kg
+                              {row.var || ""}
+                            </td>
+
+                            <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
+                              {row.cabezal || ""}
+                            </td>
+
+                            <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
+                              {row.ejec || "--"} kg
                             </td>
                           </tr>
                         );
@@ -218,7 +345,7 @@ const TablaRecepcionArandano = () => {
           </div>
 
           {/* Tabla cabezal */}
-          <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
+          {/*   <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
             <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
               <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
                 <thead>
@@ -281,7 +408,7 @@ const TablaRecepcionArandano = () => {
                 </tbody>
               </table>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

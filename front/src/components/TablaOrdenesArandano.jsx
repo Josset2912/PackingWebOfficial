@@ -53,7 +53,7 @@ const TablaOrdenesArandano = () => {
   }, [fruta, sedes]);
 
   return (
-    <div className="container mx-auto px-2 sm:px-4">
+    <div className="">
       {/* Selector de cultivo y sede */}
       <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
         {/* SEDE */}

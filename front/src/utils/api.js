@@ -5,6 +5,17 @@ import axios from "axios";
 //=======================================================
 const BASE_URL = "http://190.119.200.124:45490";
 //=======================================================
+//API EMPAQUE
+export const fetchEmpaqFiltro = () =>
+  axios.get(`${BASE_URL}/maestros/empaque`, {
+    params: {},
+  });
+//API VARIEDAD
+export const fetchVariedadFiltro = () =>
+  axios.get(`${BASE_URL}/maestros/variedad`, {
+    params: {},
+  });
+
 //API CLUNCH
 export const fetchPresentacion = (sede, cultivo, maquina, filer) => {
   const sedeValido = sede?.trim() || "TODOS"; // Ajusta según tu lógica
@@ -50,40 +61,76 @@ export const fetchFiler = (maquina) => {
 };
 //=====================================
 //API  RECPECION VARIEDAD
-export const fetchVariedad = (sede, cultivo) => {
+export const fetchVariedad = (sede, cultivo, empaque, variedad) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
+  const empaqueValido = empaque?.trim() || "TODOS";
+  const variedadValida = variedad?.trim() || "TODOS";
 
   return axios.get(`${BASE_URL}/packing/recepcion`, {
-    params: { cod: "1", sede: sedeValida, cultivo: cultivoValido, id: 1 },
+    params: {
+      cod: "1",
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      empaque: empaqueValido,
+      variedad: variedadValida,
+      id: 1,
+    },
   });
 };
 //API RECPECION CABEZAL
-export const fetchCabezal = (sede, cultivo) => {
+export const fetchCabezal = (sede, cultivo, empaque, variedad) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
+  const empaqueValido = empaque?.trim() || "TODOS";
+  const variedadValida = variedad?.trim() || "TODOS";
 
   return axios.get(`${BASE_URL}/packing/recepcion`, {
-    params: { cod: "1", sede: sedeValida, cultivo: cultivoValido, id: 2 },
+    params: {
+      cod: "1",
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      empaque: empaqueValido,
+      variedad: variedadValida,
+      id: 2,
+    },
   });
 };
 //=====================================
 //API VARIEDAD NISIRA
-export const fetchVariedadNisira = (sede, cultivo) => {
+export const fetchVariedadNisira = (sede, cultivo, empaque, variedad) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
+  const empaqueValido = empaque?.trim() || "todos";
+  const variedadValida = variedad?.trim() || "todos";
 
   return axios.get(`${BASE_URL}/packing/recepcionNisira`, {
-    params: { cod: "1", sede: sedeValida, cultivo: cultivoValido, id: 1 },
+    params: {
+      cod: "1",
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      empaque: empaqueValido,
+      variedad: variedadValida,
+      id: 1,
+    },
   });
 };
 //API CABEZAL NISIRA
-export const fetchCabezalNisira = (sede, cultivo) => {
+export const fetchCabezalNisira = (sede, cultivo, empaque, variedad) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
+  const empaqueValido = empaque?.trim() || "todos";
+  const variedadValida = variedad?.trim() || "todos";
 
   return axios.get(`${BASE_URL}/packing/recepcionNisira`, {
-    params: { cod: "1", sede: sedeValida, cultivo: cultivoValido, id: 2 },
+    params: {
+      cod: "1",
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      empaque: empaqueValido,
+      variedad: variedadValida,
+      id: 2,
+    },
   });
 };
 //=====================================
@@ -322,6 +369,31 @@ export const fetchEsperaLineaRatio = (fecha, sede, cultivo, turno, maquina) => {
   });
 };
 
+export const fetchEsperaLineaTnTotal = (
+  fecha,
+  sede,
+  cultivo,
+  turno,
+  maquina
+) => {
+  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
+  const sedeValida = sede?.trim() || "todos";
+  const cultivoValido = cultivo?.trim() || "arandano";
+  const turnoValido = turno?.trim() || "TARDE";
+  const maquinaValida = maquina?.trim() || "UNITEC";
+
+  return axios.get(`${BASE_URL}/packing/esperalinea`, {
+    params: {
+      fecha: fechaValida,
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      turno: turnoValido,
+      maquina: maquinaValida,
+      id: 5,
+    },
+  });
+};
+
 //==============================//
 //API ESPERA FRIO
 export const fetchEsperaFrio = (sede, cultivo) => {
@@ -364,6 +436,8 @@ export const fetchOrdenes = (sede, cultivo) => {
   });
 };
 export default {
+  fetchEmpaqFiltro,
+  fetchVariedadFiltro,
   fetchPresentacion,
   fetchFiler,
   fetchTurno,
@@ -378,7 +452,6 @@ export default {
   fetchCalidadRangoFiler,
   fetchCalidadRango,
   fetchCalidadPorcentajeMuestras,
-  fetchCalidadPorcentajeMuestras,
   fetchEsperaGasificado,
   fetchEsperaBatchGasificado,
   fetchEsperaPreFrio,
@@ -388,6 +461,7 @@ export default {
   fetchEsperaLineaSgtePalet,
   fetchEsperaLineaPorcentaje,
   fetchEsperaLineaRatio,
+  fetchEsperaLineaTnTotal,
   fetchEsperaFrio,
   fetchEnfriando,
   fetchBatchEnfriando,

@@ -108,7 +108,9 @@ const TablaFrioArandano = () => {
               <Select
                 labelId="sede-select-label"
                 id="sede-select"
-                value={dataSedes.some((row) => row.sede === sedes) ? sedes : "TODOS"}
+                value={
+                  dataSedes.some((row) => row.sede === sedes) ? sedes : "TODOS"
+                }
                 label="SEDE"
                 onChange={(e) => setSede(e.target.value)}
               >
@@ -165,7 +167,7 @@ const TablaFrioArandano = () => {
 
       {/* Contenido */}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2 ">
         {/*ESPERA FRÍO */}
         <div className="overflow-y-auto max-h-[calc(100vh-100px)] ">
           {/* ---------- Tabla ESPERA FRÍO ---------- */}

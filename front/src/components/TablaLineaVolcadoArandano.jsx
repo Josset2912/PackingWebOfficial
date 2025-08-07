@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ResponsiveContainer } from "recharts";
+import NumeroUnico from "./NumeroUnico";
 import {
   LineChart,
   Line,
@@ -25,10 +26,13 @@ import {
   fetchEsperaLineaSgtePalet,
   fetchEsperaLineaPorcentaje,
   fetchEsperaLineaRatio,
+  fetchEsperaLineaTnTotal,
 } from "../utils/api"; // Asegúrate de que estas funciones estén definidas en utils/api.js
 //insertando nuevas tablas
 const TablaLineaVolcadoArandano = () => {
   /* ----------------------- estados ----------------------- */
+  const [dataLineaTnTotal, setDataLineaTnTotal] = useState([]);
+
   const [dataLineaVolcado, setDataLineaVolcado] = useState([]);
   const [dataSgtePalet, setDataSgtePalet] = useState([]);
   const [dataPorcentaje, setDataPorcentaje] = useState([]);
@@ -52,6 +56,44 @@ const TablaLineaVolcadoArandano = () => {
     () => new Date().toISOString().split("T")[0]
   );
 
+  const selectSx = {
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "8px",
+      "& fieldset": {
+        borderColor: "green",
+      },
+      "&:hover fieldset": {
+        borderColor: "darkgreen",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "green",
+      },
+    },
+  };
+
+  const FiltroSelect = ({ id, label, value, options, onChange }) => (
+    <div className="w-full sm:w-auto">
+      <Box sx={{ minWidth: 190, width: "100%" }}>
+        <FormControl fullWidth size="small" sx={selectSx}>
+          <InputLabel id={`${id}-label`}>{label}</InputLabel>
+          <Select
+            labelId={`${id}-label`}
+            id={id}
+            value={value}
+            label={label}
+            onChange={(e) => onChange(e.target.value)}
+          >
+            {options.map((option, idx) => (
+              <MenuItem key={idx} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+    </div>
+  );
+
   // Obtener los tipos de peso únicos de dataCalidadRango
   const tiposPeso = Array.isArray(dataLineaRango)
     ? [
@@ -60,7 +102,8 @@ const TablaLineaVolcadoArandano = () => {
         ),
       ]
     : [];
-  //  los tipos de filer
+
+  //Linea TN TOTAL
 
   // Agrupar los datos por rango y tipo de peso
   const dataAgrupada = [];
@@ -116,6 +159,7 @@ const TablaLineaVolcadoArandano = () => {
         resLineaVolcadoSgtePalet,
         resLineaVolcadoPorcentaje,
         resLineaVolcadoRatio,
+        resLineaTnTotal,
         resSedes,
         resCultivo,
         resMaquina,
@@ -137,6 +181,13 @@ const TablaLineaVolcadoArandano = () => {
           maquinaParam
         ),
         fetchEsperaLineaRatio(
+          fecha,
+          sedeParam,
+          frutaLower,
+          turno,
+          maquinaParam
+        ),
+        fetchEsperaLineaTnTotal(
           fecha,
           sedeParam,
           frutaLower,
@@ -168,6 +219,9 @@ const TablaLineaVolcadoArandano = () => {
           ? resLineaVolcadoRatio.data
           : []
       );
+      setDataLineaTnTotal(
+        Array.isArray(resLineaTnTotal.data) ? resLineaTnTotal.data : []
+      );
       setDataMaquina(Array.isArray(resMaquina.data) ? resMaquina.data : []);
       setDataTurno(Array.isArray(resTurno.data) ? resTurno.data : []);
       setDataSedes(Array.isArray(resSedes.data) ? resSedes.data : []);
@@ -177,6 +231,15 @@ const TablaLineaVolcadoArandano = () => {
         resLineaVolcadoPorcentaje.data?.[0]?.porcentajetotal
       );
       setProgressValue(!isNaN(pct) ? pct : 0);
+      // Calcular el total de TN por hora
+      // Asegurarse de que resLineaTnTotal.data sea un array y tenga al menos un elemento
+      const tnTotal = parseFloat(resLineaTnTotal.data?.[0]?.tnhoratotal);
+      setDataLineaTnTotal((prev) => [
+        {
+          ...prev[0],
+          tnTotal: !isNaN(tnTotal) ? tnTotal : 0,
+        },
+      ]);
     } catch (err) {
       console.error("Error fetching data:", err);
 
@@ -184,6 +247,7 @@ const TablaLineaVolcadoArandano = () => {
       setDataSgtePalet([]);
       setDataPorcentaje([]);
       setDataLineaRango([]);
+      setDataLineaTnTotal([]);
       setDataMaquina([]);
       setDataSedes([]);
       setDataCultivo([]);
@@ -204,196 +268,47 @@ const TablaLineaVolcadoArandano = () => {
     <div className="">
       <div className="mb-0.5 flex flex-wrap  justify-end items-center gap-3">
         {/* SEDE */}
-        <div className="w-full sm:w-auto">
-          <Box sx={{ minWidth: 190, width: "100%" }}>
-            <FormControl
-              fullWidth
-              size="small"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                  "& fieldset": {
-                    borderColor: "green",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "darkgreen",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "green",
-                  },
-                },
-              }}
-            >
-              <InputLabel id="sede-select-label">SEDE</InputLabel>
-              <Select
-                labelId="sede-select-label"
-                id="sede-select"
-                value={
-                  dataSedes.some((row) => row.sede === sede) ? sede : "TODOS"
-                }
-                label="SEDE"
-                onChange={(e) => setSede(e.target.value)}
-              >
-                <MenuItem value="TODOS">TODOS</MenuItem>
-                {dataSedes.map((row, idx) => (
-                  <MenuItem key={idx} value={row.sede}>
-                    {row.sede}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
+        <FiltroSelect
+          id="sede"
+          label="SEDE"
+          value={dataSedes.some((row) => row.sede === sede) ? sede : "TODOS"}
+          options={["TODOS", ...dataSedes.map((r) => r.sede)]}
+          onChange={setSede}
+        />
 
         {/* CULTIVO */}
-        <div className="w-full sm:w-auto">
-          <Box sx={{ minWidth: 190, width: "100%" }}>
-            <FormControl
-              fullWidth
-              size="small"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                  "& fieldset": {
-                    borderColor: "green",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "darkgreen",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "green",
-                  },
-                },
-              }}
-            >
-              <InputLabel id="cultivo-select-label">CULTIVO</InputLabel>
-              <Select
-                labelId="cultivo-select-label"
-                id="cultivo-select"
-                value={
-                  dataCultivo.some((row) => row.cultivo === fruta)
-                    ? fruta
-                    : ""
-                }
-                label="CULTIVO"
-                onChange={(e) => setFruta(e.target.value)}
-              >
-                {dataCultivo.map((row, idx) => (
-                  <MenuItem key={idx} value={row.cultivo}>
-                    {row.cultivo}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
+        <FiltroSelect
+          id="cultivo"
+          label="CULTIVO"
+          value={dataCultivo.some((row) => row.cultivo === fruta) ? fruta : ""}
+          options={dataCultivo.map((r) => r.cultivo)}
+          onChange={setFruta}
+        />
 
         {/* MAQUINA */}
-        <div className="w-full sm:w-auto">
-          <Box sx={{ minWidth: 190, width: "100%" }}>
-            <FormControl
-              fullWidth
-              size="small"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                  "& fieldset": {
-                    borderColor: "green",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "darkgreen",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "green",
-                  },
-                },
-              }}
-            >
-              <InputLabel id="maquina-select-label">MAQUINA</InputLabel>
-              <Select
-                labelId="maquina-select-label"
-                id="maquina-select"
-                value={
-                  dataMaquina.some((row) => row.maquina === maquina)
-                    ? maquina
-                    : ""
-                }
-                label="MAQUINA"
-                onChange={(e) => setMaquina(e.target.value)}
-              >
-                {dataMaquina.map((row, idx) => (
-                  <MenuItem key={idx} value={row.maquina}>
-                    {row.maquina}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
+        <FiltroSelect
+          id="maquina"
+          label="MAQUINA"
+          value={
+            dataMaquina.some((row) => row.maquina === maquina) ? maquina : ""
+          }
+          options={dataMaquina.map((r) => r.maquina)}
+          onChange={setMaquina}
+        />
 
-        {/*TURNO */}
-        <div className="w-full sm:w-auto">
-          <Box sx={{ minWidth: 190, width: "100%" }}>
-            <FormControl
-              fullWidth
-              size="small"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                  "& fieldset": {
-                    borderColor: "green",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "darkgreen",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "green",
-                  },
-                },
-              }}
-            >
-              <InputLabel id="turno-select-label">TURNO</InputLabel>
-              <Select
-                labelId="turno-select-label"
-                id="turno-select"
-                value={
-                  dataTurno.some((row) => row.turno === turno)
-                    ? turno
-                    : ""
-                }
-                label="TURNO"
-                onChange={(e) => setTurno(e.target.value)}
-              >
-                {dataTurno.map((row, idx) => (
-                  <MenuItem key={idx} value={row.turno}>
-                    {row.turno}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </div>
+        {/* TURNO */}
+        <FiltroSelect
+          id="turno"
+          label="TURNO"
+          value={dataTurno.some((row) => row.turno === turno) ? turno : ""}
+          options={dataTurno.map((r) => r.turno)}
+          onChange={setTurno}
+        />
+
         {/* FECHA */}
         <div className="w-full sm:w-auto">
           <Box sx={{ minWidth: 190, width: "100%" }}>
-            <FormControl
-              fullWidth
-              size="small"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                  "& fieldset": {
-                    borderColor: "green",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "darkgreen",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "green",
-                  },
-                },
-              }}
-            >
+            <FormControl fullWidth size="small" sx={selectSx}>
               <InputLabel shrink htmlFor="fecha-input">
                 FECHA
               </InputLabel>
@@ -416,16 +331,18 @@ const TablaLineaVolcadoArandano = () => {
       </div>
 
       {/* Tabla kg proy vs ejec y sgte palet */}
-      <div className="flex flex-col lg:flex-row gap-3">
+      <div className="flex flex-col lg:flex-row gap-3 w-full px-2 overflow-x-auto">
+        {" "}
         {/* Tabla Línea Avance */}
-        <div className="flex-1 bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="flex-1 min-w-0 min-h-0 bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
           <div className="px-6 py-1">
             <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider">
               KG PROG VS EJEC
             </h2>
           </div>
+
           <div className="overflow-x-auto">
-            <div className="max-h-[calc(100vh-130px)] overflow-y-auto">
+            <div className="h-auto max-h-[75vh] overflow-y-auto">
               <table className="w-full">
                 <thead className="sticky top-0 z-10">
                   <tr className="bg-indigo-600 text-white">
@@ -480,8 +397,9 @@ const TablaLineaVolcadoArandano = () => {
               </table>
             </div>
           </div>
+
           {/* GRÁFICO DE LÍNEA */}
-          <div className="flex-1 overflow-x-auto rounded-xl shadow-lg mt-5">
+          <div className="flex-1 overflow-x-auto rounded-xl shadow-lg mt-5 h-[300px] sm:h-[400px]">
             <div className="p-1 bg-blue-500 rounded-t-xl">
               <h2 className="text-center text-lg sm:text-2xl font-bold mb-1 uppercase text-white">
                 AVANCE TN POR HORA
@@ -521,8 +439,8 @@ const TablaLineaVolcadoArandano = () => {
             </ResponsiveContainer>
           </div>
         </div>
-
-        <div className="flex flex-col gap-1">
+        {/* Contenedor derecho */}
+        <div className="flex flex-col gap-1 min-w-0 min-h-0">
           {/* Tabla SGTE PALET */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             <div className="px-12 py-1">
@@ -531,7 +449,7 @@ const TablaLineaVolcadoArandano = () => {
               </h2>
             </div>
             <div className="overflow-x-auto">
-              <div className="max-h-[calc(100vh-100px)] overflow-y-auto">
+              <div className="h-auto max-h-[75vh] overflow-y-auto">
                 <table className="w-full">
                   <thead className="sticky top-0 z-10">
                     <tr className="bg-teal-600 text-white">
@@ -571,7 +489,7 @@ const TablaLineaVolcadoArandano = () => {
                     ) : (
                       <tr>
                         <td
-                          colSpan="1"
+                          colSpan="3"
                           className="px-4 py-3 text-center text-sm sm:text-base text-red-500 italic"
                         >
                           Ningún dato disponible
@@ -582,31 +500,37 @@ const TablaLineaVolcadoArandano = () => {
                 </table>
               </div>
             </div>
-          </div>{" "}
-          {/* Ta */}
-          <div className="flex flex-col gap-1">
-            {/* medidor */}
+          </div>
 
-            <div className="flex justify-center bg-white rounded-xl shadow-lg ">
-              <div className="w-full max-w-[300px]">
-                <h4 className="uppercase text-2xl text-center font-bold text-gray-800">
-                  porcentaje avance
-                </h4>
-                <GaugeChart
-                  value={progressValue}
-                  colors={{
-                    progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                    remaining: "#F5F5F5",
-                    needle: "#E91E63",
-                    text: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                    labelColor: "#757575",
-                  }}
-                  label="Progress"
-                  fontSize="24px"
-                  thickness="65%"
-                />
-              </div>
+          {/* Medidor */}
+          <div className="flex justify-center bg-white rounded-xl shadow-lg">
+            <div className="w-full max-w-[300px]">
+              <h4 className="uppercase text-2xl text-center font-bold text-gray-800">
+                porcentaje avance
+              </h4>
+              <GaugeChart
+                value={progressValue}
+                colors={{
+                  progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                  remaining: "#F5F5F5",
+                  needle: "#E91E63",
+                  text: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                  labelColor: "#757575",
+                }}
+                label="Progress"
+                fontSize="24px"
+                thickness="65%"
+              />
             </div>
+          </div>
+
+          {/* TN PROMEDIO */}
+          <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center p-4">
+            <h4 className="uppercase text-3xl text-center font-bold text-gray-800">
+              AVANCE HR <br/> ACUMULADO
+            </h4>
+            <NumeroUnico value={dataLineaTnTotal?.[0]?.tnTotal || 0} />
+            {/* tnhoratotal */}
           </div>
         </div>
       </div>

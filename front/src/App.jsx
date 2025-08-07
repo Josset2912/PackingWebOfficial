@@ -189,14 +189,14 @@ const App = () => {
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      {/* Contenedor principal */}
+      <div className="flex-1 flex flex-col overflow-hidden relative">
         {mostrarBienvenida ? (
           <Bienvenida onStart={handleStart} />
         ) : (
           <>
-            <Header logoSrc="/santa.png" />
-
-            <main className="flex-1 overflow-y-auto p-3 bg-gradient-to-b from-gray-50 to-gray-100">
+            {/* Main con scroll funcional */}
+            <main className="flex-1 overflow-y-auto p-2">
               {renderTablas()}
             </main>
           </>

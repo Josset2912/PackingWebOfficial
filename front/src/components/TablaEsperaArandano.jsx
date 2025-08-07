@@ -57,7 +57,7 @@ const TablaEsperaArandano = () => {
       <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
         {/* SEDE */}
         <div className="w-full sm:w-auto">
-          <Box sx={{ minWidth: 190, width: "100%" }}>
+          <Box sx={{ minWidth: 100, width: "100%" }}>
             <FormControl
               fullWidth
               size="small"
@@ -141,7 +141,7 @@ const TablaEsperaArandano = () => {
 
       {/* Tabla */}
       <div className="overflow-x-auto rounded-xl shadow-lg">
-        <div className="overflow-y-auto max-h-[calc(100vh-120px)]">
+        <div className="overflow-y-auto max-h-[calc(100vh-140px)]">
           <table className="w-full min-w-[300px] border-collapse">
             <thead className="sticky top-0 z-10">
               <tr className="bg-gradient-to-r from-cyan-600 to-blue-700 text-white">

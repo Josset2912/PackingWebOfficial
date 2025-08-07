@@ -313,17 +313,16 @@ const TablaGasificadoArandano = () => {
 
         {/* Espera Pre Frío */}
         <div className="overflow-y-auto max-h-[calc(100vh-100px)] ">
-          {/* Tabla Pre Frío */}
-          <div className="mb-1 bg-white rounded-xl shadow-lg overflow-hidden overflow-y-auto max-h-[calc(60vh-70px)]">
+          <div className="mb-1 bg-white rounded-xl shadow-lg overflow-hidden flex flex-col max-h-[calc(60vh-70px)] ">
             <div className="px-3 xs:px-4 sm:px-6 py-1">
               <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
                 ESPERA PRE FRÍO
               </h2>
             </div>
-
-            <div className="overflow-y-auto">
+            <div className="overflow-y-auto flex-1 min-h-0">
               <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
-                <thead>
+                {/* ✅ Cabecera sticky con fondo y sombra */}
+                <thead className="sticky top-0 z-10 bg-teal-600 text-white shadow-md">
                   <tr className="bg-teal-600 text-white">
                     <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       PALET
@@ -378,7 +377,6 @@ const TablaGasificadoArandano = () => {
                 BATCH PRE FRIO
               </h2>
             </div>
-
             <div className="overflow-y-auto flex-1 min-h-0">
               <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
                 {/* ✅ Cabecera sticky con fondo y sombra */}
@@ -440,7 +438,6 @@ const TablaGasificadoArandano = () => {
           </div>
         </div>
       </div>
-      {/*  */}
     </div>
   );
 };

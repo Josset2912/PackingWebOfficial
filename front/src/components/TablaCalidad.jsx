@@ -85,6 +85,16 @@ const TablaCalidad = () => {
       }
     });
   });
+
+  const dataAgrupadaFilerOrdenada = [...dataAgrupadaFiler].sort((a, b) => {
+    const getStartHour = (rango) => {
+      const [horaInicio] = rango.split("-");
+      return parseInt(horaInicio.trim(), 10);
+    };
+
+    return getStartHour(a.rangofiler) - getStartHour(b.rangofiler);
+  });
+
   //========================
   // Obtener los tipos de peso únicos de dataCalidadRango
   const tiposPeso = Array.isArray(dataCalidadRango)
@@ -116,6 +126,7 @@ const TablaCalidad = () => {
     });
   });
 
+  //SECCION COLORES
   const colores = {};
 
   const coloresBase = [
@@ -140,6 +151,7 @@ const TablaCalidad = () => {
   tiposFiler.forEach((filer, index) => {
     colores[filer] = coloresBase[index % coloresBase.length];
   });
+  //====
 
   // Función para cargar todos los datos
   const fetchData = async () => {
@@ -290,7 +302,7 @@ const TablaCalidad = () => {
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
                   "& fieldset": {
-                    borderColor: "green", 
+                    borderColor: "green",
                   },
                   "&:hover fieldset": {
                     borderColor: "darkgreen",
@@ -603,7 +615,7 @@ const TablaCalidad = () => {
                   data={dataAgrupada}
                   margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid strokeDasharray="10 10" />
                   <XAxis dataKey="rango" />
                   <YAxis tick={false} />
                   <Tooltip formatter={(value) => `${value} %`} />
@@ -643,10 +655,10 @@ const TablaCalidad = () => {
             <div className="h-[calc(100%-40px)]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
-                  data={dataAgrupadaFiler}
+                  data={dataAgrupadaFilerOrdenada}
                   margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid strokeDasharray="10 10" />
                   <XAxis dataKey="rangofiler" />
                   <YAxis tick={false} />
                   <Tooltip formatter={(value) => `${value} %`} />
