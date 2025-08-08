@@ -16,131 +16,91 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`bg-gray-950/95 border-r border-cyan-400/5 flex flex-col backdrop-blur-sm ${
-        sidebarOpen ? "w-[260px]" : "w-[35px]"
-      } transition-[width] duration-400 ease-[cubic-bezier(0.33,1,0.68,1)]`}
+      className={`bg-blue shadow-lg flex flex-col border-r border-gray-200 ${
+        sidebarOpen ? "w-[220px]" : "w-[50px]"
+      } transition-width duration-300 ease-in-out`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      style={{ minWidth: sidebarOpen ? 260 : 35 }}
+      style={{ minWidth: sidebarOpen ? 220 : 50 }}
     >
       {/* Header */}
-      <div className="p-4 pb-3 flex items-center justify-between border-b border-gray-800/50">
-        {sidebarOpen ? (
-          <div className="flex items-center space-x-2 transition-opacity duration-300">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-900 border border-cyan-400/10 shadow-[0_0_12px_-3px_rgba(34,211,238,0.3)]">
-              <svg
-                className="w-4 h-4 text-cyan-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-            </div>
-            <h2 className="text-lg font-light text-cyan-50 tracking-widest">
-              PACK<span className="text-cyan-400">ING</span>
-            </h2>
-          </div>
-        ) : (
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-900 border border-cyan-400/10 shadow-[0_0_12px_-3px_rgba(34,211,238,0.3)]">
-            <svg
-              className="w-4 h-4 text-cyan-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-            </svg>
-          </div>
-        )}
-        <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="text-gray-400 hover:text-cyan-300 transition-all p-1 rounded-lg hover:bg-gray-900/50"
-          aria-label="Toggle sidebar"
-        >
-          {sidebarOpen ? (
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M15 19l-7-7 7-7" />
-            </svg>
-          ) : (
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M9 5l7 7-7 7" />
-            </svg>
-          )}
-        </button>
-      </div>
+      {/* ... tu header aquí ... */}
 
       {/* Navegación Packing */}
-      <nav className="flex-1 overflow-y-auto px-2">
-        <div className="mb-6">
+      <nav className="flex-1 overflow-y-auto px-4 py-6">
+        <div className="mb-8">
           <button
             onClick={() => setPackingExpanded(!packingExpanded)}
-            className={`w-full flex items-center p-2.5 hover:bg-gray-900/50 transition-all duration-200 rounded-lg mx-1 ${
+            className={`w-full flex items-center p-3 rounded-md cursor-pointer ${
               sidebarOpen ? "justify-between" : "justify-center"
-            } ${packingExpanded ? "bg-gray-900/30" : ""}`}
+            } hover:bg-blue-100 transition-colors duration-200`}
+            aria-expanded={packingExpanded}
+            aria-controls="packing-menu"
           >
             {sidebarOpen ? (
               <>
-                <span className="flex items-center space-x-2">
-                  <div className="p-1 rounded-md bg-gray-900/80 border border-gray-800">
+                <span className="flex items-center space-x-3 text-gray-700">
+                  <div className="p-2 rounded-md bg-blue-50">
                     <svg
-                      className="w-4 h-4 text-cyan-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-blue-500"
                       fill="none"
-                      stroke="currentColor"
                       viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
                     >
-                      <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3 10h18M7 6h10M5 14h14M9 18h6"
+                      />
                     </svg>
                   </div>
-                  <span className="text-sm font-medium text-gray-200">
-                    Packing
-                  </span>
+                  <span className="text-base font-semibold">Packing</span>
                 </span>
                 <span
-                  style={{
-                    display: "inline-block",
-                    transition: "transform 0.2s",
-                    transform: packingExpanded
-                      ? "rotate(180deg)"
-                      : "rotate(0deg)",
-                  }}
+                  className={`transition-transform duration-300 text-gray-400 ${
+                    packingExpanded ? "rotate-180" : ""
+                  }`}
                 >
                   <svg
-                    className="w-4 h-4 text-gray-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
                     fill="none"
-                    stroke="currentColor"
                     viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
                   >
-                    <path d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </span>
               </>
             ) : (
-              <div className="p-0 rounded-md bg-gray-900/80 border border-gray-800">
+              <div className="p-2 rounded-md bg-blue-50">
                 <svg
-                  className="w-4 h-4 text-cyan-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-blue-500"
                   fill="none"
-                  stroke="currentColor"
                   viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
                 >
-                  <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 10h18M7 6h10M5 14h14M9 18h6"
+                  />
                 </svg>
               </div>
             )}
           </button>
 
           {packingExpanded && (
-            <div className="overflow-hidden rounded-lg transition-all duration-300">
+            <div id="packing-menu" className="mt-2 space-y-1">
               {packingSections.map((section) => {
                 const sectionName =
                   typeof section === "object" ? section.name : section;
@@ -162,39 +122,43 @@ export default function Sidebar({
                         }
                         if (!sidebarOpen) setSidebarOpen(true);
                       }}
-                      className={`w-full text-left p-2 ${
-                        sidebarOpen ? "pl-10" : "pl-2.5 flex justify-center"
-                      } transition-all rounded-md text-sm ${
+                      className={`w-full flex items-center rounded-md text-gray-600 text-sm px-4 py-2 transition-colors duration-200 ${
+                        sidebarOpen ? "justify-between" : "justify-center"
+                      } ${
                         isSelected
-                          ? "text-cyan-300 bg-gray-900/60 border-l border-cyan-400"
-                          : "text-gray-400 hover:text-gray-200 hover:bg-gray-900/40"
+                          ? "bg-blue-200 text-blue-700 font-semibold"
+                          : "hover:bg-blue-100 hover:text-blue-600"
                       }`}
+                      aria-current={isSelected ? "page" : undefined}
+                      aria-expanded={
+                        section.submenus ? expandedVolcado : undefined
+                      }
+                      aria-haspopup={section.submenus ? true : undefined}
+                      title={!sidebarOpen ? sectionName : undefined} // Tooltip solo si está cerrado
                     >
                       {sidebarOpen ? (
-                        <div className="flex items-center justify-between w-full">
-                          <span>{sectionName}</span>
+                        <>
+                          <span className="truncate">{sectionName}</span>{" "}
+                          {/* Trunca texto si no cabe */}
                           {section.submenus && (
-                            <span
-                              className="text-gray-500"
-                              style={{
-                                display: "inline-block",
-                                transition: "transform 0.2s",
-                                transform: expandedVolcado
-                                  ? "rotate(180deg)"
-                                  : "rotate(0deg)",
-                              }}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className={`h-4 w-4 text-blue-400 transition-transform duration-300 ${
+                                expandedVolcado ? "rotate-180" : ""
+                              }`}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
                             >
-                              <svg
-                                className="w-3.5 h-3.5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path d="M19 9l-7 7-7-7" />
-                              </svg>
-                            </span>
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M19 9l-7 7-7-7"
+                              />
+                            </svg>
                           )}
-                        </div>
+                        </>
                       ) : (
                         <span className="text-xs font-medium">
                           {sectionName.charAt(0)}
@@ -202,19 +166,29 @@ export default function Sidebar({
                       )}
                     </button>
 
+                    {/* Submenús */}
                     {section.submenus && expandedVolcado && (
-                      <div className="ml-6 border-l border-gray-800/50">
+                      <div className="ml-8 mt-1 space-y-1 border-l border-blue-300 pl-3">
                         {section.submenus.map((submenu) => (
                           <button
                             key={submenu.key}
                             onClick={() => setSelectedButton(submenu.key)}
-                            className={`w-full text-left p-1 pl-2 text-xs rounded-md ${
+                            className={`w-full text-left rounded-md text-blue-600 text-xs px-3 py-1 transition-colors duration-200 ${
                               selectedButton === submenu.key
-                                ? "text-cyan-300"
-                                : "text-gray-500 hover:text-gray-300"
+                                ? "bg-blue-300 font-semibold"
+                                : "hover:bg-blue-100"
                             }`}
+                            aria-current={
+                              selectedButton === submenu.key
+                                ? "page"
+                                : undefined
+                            }
+                            title={!sidebarOpen ? submenu.name : undefined} // Tooltip si sidebar cerrado
                           >
-                            → {submenu.name}
+                            &rarr;{" "}
+                            {sidebarOpen
+                              ? submenu.name
+                              : submenu.name.charAt(0)}
                           </button>
                         ))}
                       </div>

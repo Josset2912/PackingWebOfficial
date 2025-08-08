@@ -43,7 +43,7 @@ export default function LineChartDual({ data }) {
             {keys.map((key, index) => (
               <Line
                 key={key}
-                type="monotone"
+                type="lynear"
                 dataKey={key}
                 name={`% ${key}`}
                 stroke={colores[index % colores.length]}

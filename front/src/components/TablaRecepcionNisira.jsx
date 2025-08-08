@@ -13,7 +13,7 @@ import {
   fetchVariedadFiltro,
 } from "../utils/api";
 
-const TablaRecepcionNisiraArandano = () => {
+const TablaRecepcionNisira = () => {
   const [empaqueFiltro, setEmpaqueFiltro] = useState("TODOS");
   const [dataEmpaqueFiltro, setDataEmpaqueFiltro] = useState([]);
 
@@ -291,10 +291,10 @@ const TablaRecepcionNisiraArandano = () => {
               <tbody className="divide-y divide-gray-200">
                 {(() => {
                   const totalRow = dataVariedad.find(
-                    (row) => row.var?.toLowerCase() === "total"
+                    (row) => row.empaque?.toLowerCase() === "total"
                   );
                   const otherRows = dataVariedad.filter(
-                    (row) => row.var?.toLowerCase() !== "total"
+                    (row) => row.empaque?.toLowerCase() !== "total"
                   );
                   const finalRows = [
                     ...otherRows,
@@ -303,14 +303,14 @@ const TablaRecepcionNisiraArandano = () => {
 
                   return finalRows.length > 0 ? (
                     finalRows.map((row, index) => {
-                      const isTotalRow = row.var?.toLowerCase() === "total";
+                      const isTotalRow = row.empaque?.toLowerCase() === "total";
 
                       return (
                         <tr
                           key={index}
                           className={`hover:bg-gray-50 transition-colors ${
                             isTotalRow
-                              ? " font-bold text-blue-900 border-t-4 border-blue-400"
+                              ? "font-bold text-blue-900 border-t-4 border-blue-400  border-5  "
                               : ""
                           }`}
                         >
@@ -399,4 +399,4 @@ const TablaRecepcionNisiraArandano = () => {
     </div>
   );
 };
-export default TablaRecepcionNisiraArandano;
+export default TablaRecepcionNisira;

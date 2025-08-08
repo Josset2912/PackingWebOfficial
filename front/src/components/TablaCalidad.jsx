@@ -291,7 +291,7 @@ const TablaCalidad = () => {
   return (
     <div className="">
       {/* Selector de cultivo y sede */}
-      <div className="mb-0.5 flex flex-wrap gap-1 justify-end items-center ">
+      <div className="mb-0.5 flex flex-wrap gap-3 justify-end items-center ">
         {/* SEDE */}
         <div className="w-full sm:w-auto">
           <Box sx={{ minWidth: 190, width: "100%" }}>

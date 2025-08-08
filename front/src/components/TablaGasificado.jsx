@@ -13,7 +13,7 @@ import {
   fetchBatchPreFrio,
 } from "../utils/api";
 
-const TablaGasificadoArandano = () => {
+const TablaGasificado = () => {
   const [dataGasificado, setDataGasificado] = useState([]);
   const [dataGasificadoBatch, setDataGasificadoBatch] = useState([]);
   const [dataFrio, setDataFrio] = useState([]);
@@ -442,4 +442,4 @@ const TablaGasificadoArandano = () => {
   );
 };
 
-export default TablaGasificadoArandano;
+export default TablaGasificado;

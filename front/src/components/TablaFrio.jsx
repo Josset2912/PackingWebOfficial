@@ -12,7 +12,7 @@ import {
   fetchBatchEnfriando,
 } from "../utils/api";
 
-const TablaFrioArandano = () => {
+const TablaFrio = () => {
   // Estados principales
   const [fruta, setFruta] = useState("ARANDANO");
   const [sedes, setSede] = useState("FUNDO SANTA AZUL");
@@ -352,4 +352,4 @@ const TablaFrioArandano = () => {
   );
 };
 
-export default TablaFrioArandano;
+export default TablaFrio;

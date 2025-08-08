@@ -13,7 +13,7 @@ import {
   fetchVariedadFiltro,
 } from "../utils/api";
 
-const TablaRecepcionArandano = () => {
+const TablaRecepcion = () => {
   // Estados para filtros
   const [empaqueFiltro, setEmpaqueFiltro] = useState("TODOS");
   const [dataEmpaqueFiltro, setDataEmpaqueFiltro] = useState([]);
@@ -263,7 +263,7 @@ const TablaRecepcionArandano = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-1 w-full">
+      <div className="flex flex-col md:flex-row gap-1 w-full ">
         <div className="flex flex-col md:flex-row gap-2 w-full px-2 mt-1">
           {/* Tabla Variedad */}
           <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
@@ -288,10 +288,10 @@ const TablaRecepcionArandano = () => {
                 <tbody className="divide-y divide-gray-200">
                   {(() => {
                     const totalRow = dataVariedad.find(
-                      (row) => row.var?.toLowerCase() === "total"
+                      (row) => row.empaque?.toLowerCase() === "total"
                     );
                     const otherRows = dataVariedad.filter(
-                      (row) => row.var?.toLowerCase() !== "total"
+                      (row) => row.empaque?.toLowerCase() !== "total"
                     );
                     const finalRows = [
                       ...otherRows,
@@ -300,14 +300,15 @@ const TablaRecepcionArandano = () => {
 
                     return finalRows.length > 0 ? (
                       finalRows.map((row, index) => {
-                        const isTotalRow = row.var?.toLowerCase() === "total";
+                        const isTotalRow =
+                          row.empaque?.toLowerCase() === "total";
 
                         return (
                           <tr
                             key={index}
                             className={`hover:bg-gray-50 transition-colors ${
                               isTotalRow
-                                ? "font-bold text-blue-900 border-t-4 border-blue-400"
+                                ? "font-bold text-blue-900 border-t-4 border-blue-400  border-5  "
                                 : ""
                             }`}
                           >
@@ -323,7 +324,7 @@ const TablaRecepcionArandano = () => {
                             </td>
 
                             <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                              {row.ejec || "--"} kg
+                              {row.ejec || ""} kg
                             </td>
                           </tr>
                         );
@@ -343,9 +344,21 @@ const TablaRecepcionArandano = () => {
               </table>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Tabla cabezal */}
-          {/*   <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
+      {/* Gráfico de barras por rango de filer */}
+    </div>
+  );
+};
+
+export default TablaRecepcion;
+
+{
+  /* Tabla cabezal */
+}
+{
+  /*   <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
             <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
               <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
                 <thead>
@@ -408,13 +421,5 @@ const TablaRecepcionArandano = () => {
                 </tbody>
               </table>
             </div>
-          </div> */}
-        </div>
-      </div>
-
-      {/* Gráfico de barras por rango de filer */}
-    </div>
-  );
-};
-
-export default TablaRecepcionArandano;
+          </div> */
+}

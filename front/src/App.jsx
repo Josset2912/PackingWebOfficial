@@ -11,16 +11,16 @@ import {
 import Sidebar from "./components/Sidebar";
 
 // Componentes para Arándano
-import TablaRecepcionArandano from "./components/TablaRecepcionArandano";
-import TablaRecepcionNisiraArandano from "./components/TablaRecepcionNisiraArandano";
-import TablaGasificadoArandano from "./components/TablaGasificadoArandano";
+import TablaRecepcion from "./components/TablaRecepcion";
+import TablaRecepcionNisira from "./components/TablaRecepcionNisira";
+import TablaGasificado from "./components/TablaGasificado";
 import TablaCalidad from "./components/TablaCalidad"; // Asumiendo que TablaCalidad es genérica
-import TablaEsperaArandano from "./components/TablaEsperaArandano";
-import TablaLineaVolcadoArandano from "./components/TablaLineaVolcadoArandano";
-import TablaFrioArandano from "./components/TablaFrioArandano";
-import TablaOrdenesArandano from "./components/TablaOrdenesArandano";
-/* import TablaTacometro from "./components/TablaTacometro"; // Importar TablaTacometro
- */ // Mapeo de endpoints actualizado
+import TablaEspera from "./components/TablaEspera";
+import TablaLineaVolcado from "./components/TablaLineaVolcado";
+import TablaFrio from "./components/TablaFrio";
+import TablaOrdenes from "./components/TablaOrdenes";
+import TablaTacometro from "./components/TablaRecepcionResumen"; // Importar TablaTacometro
+// Mapeo de endpoints actualizado
 const endpointMap = {
   Arandano: {
     RECEPCIÓN: "recepcion",
@@ -31,15 +31,15 @@ const endpointMap = {
 // Mapeo de componentes de tabla actualizado
 const tablaMap = {
   Arandano: {
-    RECEPCIÓN: TablaRecepcionArandano,
-    "RECEPCION NISIRA": TablaRecepcionNisiraArandano,
-    /*     TACOMETRO: TablaTacometro, // Agregar TablaTacometro
-     */ CALIDAD: TablaCalidad, // Asumiendo que la tabla de calidad es la misma que recepción
-    "GASIFICADO PRE FRÍO": TablaGasificadoArandano,
-    "VOLCADO/ESPERA": TablaEsperaArandano,
-    "VOLCADO/LÍNEA": TablaLineaVolcadoArandano,
-    FRIO: TablaFrioArandano,
-    "ORDEN PRD": TablaOrdenesArandano,
+    RECEPCIÓN: TablaRecepcion,
+    "RECEPCION NISIRA": TablaRecepcionNisira,
+    "RESUMEN RECEPCION ": TablaTacometro, // Agregar TablaTacometro
+    CALIDAD: TablaCalidad, // Asumiendo que la tabla de calidad es la misma que recepción
+    "GASIFICADO PRE FRÍO": TablaGasificado,
+    "VOLCADO/ESPERA": TablaEspera,
+    "VOLCADO/LÍNEA": TablaLineaVolcado,
+    FRIO: TablaFrio,
+    "ORDEN PRD": TablaOrdenes,
   },
 };
 
@@ -59,8 +59,8 @@ const App = () => {
   const packingSections = [
     "RECEPCIÓN",
     "RECEPCION NISIRA",
-    /*     "TACOMETRO",
-     */ "GASIFICADO PRE FRÍO",
+    "RESUMEN RECEPCION ",
+    "GASIFICADO PRE FRÍO",
     "CALIDAD",
     {
       name: "VOLCADO",
@@ -196,9 +196,7 @@ const App = () => {
         ) : (
           <>
             {/* Main con scroll funcional */}
-            <main className="flex-1 overflow-y-auto p-2">
-              {renderTablas()}
-            </main>
+            <main className="flex-1 overflow-y-auto p-2">{renderTablas()}</main>
           </>
         )}
       </div>

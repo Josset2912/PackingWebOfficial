@@ -29,7 +29,7 @@ import {
   fetchEsperaLineaTnTotal,
 } from "../utils/api"; // Asegúrate de que estas funciones estén definidas en utils/api.js
 //insertando nuevas tablas
-const TablaLineaVolcadoArandano = () => {
+const TablaLineaVolcado = () => {
   /* ----------------------- estados ----------------------- */
   const [dataLineaTnTotal, setDataLineaTnTotal] = useState([]);
 
@@ -350,7 +350,7 @@ const TablaLineaVolcadoArandano = () => {
                       VAR
                     </th>
                     <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
-                      PROG
+                      KG PROG
                     </th>
                     <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
                       EJEC
@@ -418,7 +418,7 @@ const TablaLineaVolcadoArandano = () => {
                 {tiposPeso.map((tipo) => (
                   <Line
                     key={tipo}
-                    type="monotone"
+                    type="lynear"
                     dataKey={tipo}
                     stroke={colores[tipo] || "#000000"}
                     dot={true}
@@ -527,10 +527,13 @@ const TablaLineaVolcadoArandano = () => {
           {/* TN PROMEDIO */}
           <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center p-4">
             <h4 className="uppercase text-3xl text-center font-bold text-gray-800">
-              AVANCE HR <br/> ACUMULADO
+              AVANCE HR <br /> ACUMULADO
             </h4>
-            <NumeroUnico value={dataLineaTnTotal?.[0]?.tnTotal || 0} />
-            {/* tnhoratotal */}
+            <NumeroUnico
+              value={dataLineaTnTotal?.[0]?.tnTotal || 0}
+              color="#007BFF" // Puedes personalizar el color
+              duration={3} // Duración en segundos
+            />
           </div>
         </div>
       </div>
@@ -538,4 +541,4 @@ const TablaLineaVolcadoArandano = () => {
   );
 };
 
-export default TablaLineaVolcadoArandano;
+export default TablaLineaVolcado;

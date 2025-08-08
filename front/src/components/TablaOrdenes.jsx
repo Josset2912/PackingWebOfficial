@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { fetchCultivos, fetchSedes, fetchEspera } from "../utils/api";
+import { fetchOrdenes, fetchSedes, fetchCultivos } from "../utils/api";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-const TablaEsperaArandano = () => {
-  const [fruta, setFruta] = useState("ARANDANO");
-  const [sedes, setSedes] = useState("FUNDO SANTA AZUL");
 
+const TablaOrdenes = () => {
+  const [dataOrdenPRD, setDataOrdenPRD] = useState([]);
+
+  const [fruta, setFruta] = useState("ARANDANO"); // Fruta por defecto
   const [dataCultivo, setDataCultivo] = useState([]);
+
+  const [sedes, setSedes] = useState("FUNDO SANTA AZUL");
   const [dataSedes, setDataSedes] = useState([]);
-  const [dataEsperaVolcado, setDataEsperaVolcado] = useState([]);
 
   // Move fetchData outside so it's accessible in both useEffects
+  // Función para cargar todos los datos
   const fetchData = async () => {
     try {
       // Convertir valores a minúsculas para la API si lo requiere
@@ -21,34 +24,32 @@ const TablaEsperaArandano = () => {
       const sedeParam = sedes === "TODOS" ? "" : sedes;
 
       // Llamadas paralelas
-      const [resEspera, resSede, resCultivo] = await Promise.all([
-        fetchEspera(sedeParam, frutaLower),
+      const [resOrdenes, resSede, resCultivo] = await Promise.all([
+        fetchOrdenes(sedeParam, frutaLower),
         fetchSedes(),
         fetchCultivos(),
       ]);
 
       // Las respuestas de axios ya traen el objeto data
-      setDataEsperaVolcado(Array.isArray(resEspera.data) ? resEspera.data : []);
+      setDataOrdenPRD(Array.isArray(resOrdenes.data) ? resOrdenes.data : []);
       setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
       setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
     } catch (err) {
       console.error("Error fetching data:", err);
-      setDataEsperaVolcado([]);
+      setDataOrdenPRD([]);
       setDataSedes([]);
       setDataCultivo([]);
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, [fruta, sedes]);
+    fetchData(); // Llamada inicial
 
-  useEffect(() => {
     const intervaloId = setInterval(() => {
-      fetchData();
+      fetchData(); // Actualización cada 10 segundos
     }, 10000);
 
-    return () => clearInterval(intervaloId);
+    return () => clearInterval(intervaloId); // Limpieza del intervalo
   }, [fruta, sedes]);
 
   return (
@@ -57,7 +58,7 @@ const TablaEsperaArandano = () => {
       <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
         {/* SEDE */}
         <div className="w-full sm:w-auto">
-          <Box sx={{ minWidth: 100, width: "100%" }}>
+          <Box sx={{ minWidth: 190, width: "100%" }}>
             <FormControl
               fullWidth
               size="small"
@@ -141,45 +142,60 @@ const TablaEsperaArandano = () => {
 
       {/* Tabla */}
       <div className="overflow-x-auto rounded-xl shadow-lg">
-        <div className="overflow-y-auto max-h-[calc(100vh-140px)]">
+        <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
           <table className="w-full min-w-[300px] border-collapse">
-            <thead className="sticky top-0 z-10">
-              <tr className="bg-gradient-to-r from-cyan-600 to-blue-700 text-white">
-                <th className="px-4 py-2 text-center font-semibold text-base sm:text-4xl uppercase tracking-wider">
-                  PALET
-                </th>
-                <th className="px-4 py-2 text-center font-semibold text-base sm:text-4xl uppercase tracking-wider">
-                  ESPERA
-                </th>
-                <th className="px-4 py-2 text-center font-semibold text-base sm:text-4xl uppercase tracking-wider">
-                  TOTAL
-                </th>
+            <thead className="sticky top-0 z-10 bg-teal-600 text-white">
+              <tr>
+                {[
+                  "ORDEN",
+                  "PRIORIDAD",
+                  "DESTINO",
+                  "PRESENTACIÓN",
+                  "EJEC. PROY",
+                  "F. DESPACHO",
+                ].map((col, i) => (
+                  <th
+                    key={i}
+                    className="px-4 py-3 text-sm sm:text-3xl font-semibold uppercase tracking-wider text-center"
+                  >
+                    {col}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {dataEsperaVolcado.length > 0 ? (
-                dataEsperaVolcado.map((row, index) => (
+              {dataOrdenPRD.length > 0 ? (
+                dataOrdenPRD.map((row, index) => (
                   <tr
                     key={index}
                     className={`border-b border-gray-200 transition duration-200 ${
                       index % 2 === 0 ? "bg-gray-50" : "bg-white"
                     } hover:bg-cyan-50`}
                   >
-                    <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                      {row.palet}
+                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-800 font-medium">
+                      {row.orden}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                      {row.espera}
+                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-800 font-medium">
+                      {row.prioridad}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700">
-                      {row.total}
+                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
+                      {row.destino}
+                    </td>
+                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
+                      {row.presentacion}
+                    </td>
+                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
+                      {row.ejec_proy}
+                    </td>
+                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
+                      {row.f_despacho}
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
                   <td
-                    colSpan="4"
+                    colSpan="6"
                     className="px-4 py-3 text-center text-sm sm:text-base text-gray-500 italic"
                   >
                     Ningún dato disponible
@@ -194,4 +210,4 @@ const TablaEsperaArandano = () => {
   );
 };
 
-export default TablaEsperaArandano;
+export default TablaOrdenes;
