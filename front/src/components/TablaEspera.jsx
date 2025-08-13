@@ -52,7 +52,7 @@ const TablaEspera = () => {
   }, [fruta, sedes]);
 
   return (
-    <div className="">
+    <div className="p-3">
       {/* Selector de cultivo y sede */}
       <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
         {/* SEDE */}
@@ -142,7 +142,7 @@ const TablaEspera = () => {
       {/* Tabla */}
       <div className="overflow-x-auto rounded-xl ">
         <div className="overflow-y-auto max-h-[calc(100vh-140px)]">
-          <table className="w-full min-w-[300px] border-collapse border border-gray-400">
+          <table className="w-full min-w-[300px]  ">
             <thead className="sticky top-0 z-10">
               <tr className="bg-gradient-to-r from-cyan-600 to-blue-700 text-white">
                 <th className="px-4 py-2 text-center font-semibold text-base sm:text-4xl uppercase tracking-wider">
@@ -161,7 +161,7 @@ const TablaEspera = () => {
                 dataEsperaVolcado.map((row, index) => (
                   <tr
                     key={index}
-                    className={`border-b  transition duration-200 ${
+                    className={`border-b-1 border-cyan-600 transition duration-200 ${
                       index % 2 === 0 ? "" : ""
                     } hover:bg-cyan-50`}
                   >
@@ -180,9 +180,9 @@ const TablaEspera = () => {
                 <tr>
                   <td
                     colSpan="4"
-                    className="px-4 py-3 text-center text-sm sm:text-base  italic"
+                    className="px-4 py-3 text-center text-sm sm:text-base  italic text-red-500"
                   >
-                    Ningún dato disponible
+                    Por el momento ningún dato disponible
                   </td>
                 </tr>
               )}

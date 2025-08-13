@@ -435,6 +435,79 @@ export const fetchOrdenes = (sede, cultivo) => {
     params: { cod: "1", sede: sedeValida, cultivo: cultivoValido },
   });
 };
+//==================================
+//FETCH RECEPCION RESUMEN
+export const fetchRecepcionResumen = (
+  sede,
+  cultivo,
+  empaque,
+  variedad,
+  fecha
+) => {
+  const sedeValida = sede?.trim() || "todos";
+  const cultivoValido = cultivo?.trim() || "arandano";
+  const empaqueValido = empaque?.trim() || "todos";
+  const variedadValida = variedad?.trim() || "todos";
+  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
+
+  return axios.get(`${BASE_URL}/packing/resumenrecepcion`, {
+    params: {
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      empaque: empaqueValido,
+      variedad: variedadValida,
+      fecha: fechaValida,
+      id: "1",
+    },
+  });
+};
+
+export function fetchRecepcionVariedad(
+  sede,
+  cultivo,
+  empaque,
+  variedad,
+  fecha
+) {
+  const sedeValida = sede?.trim() || "todos";
+  const cultivoValido = cultivo?.trim() || "arandano";
+  const empaqueValido = empaque?.trim() || "todos";
+  const variedadValida = variedad?.trim() || "todos";
+  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
+
+  return axios.get(`${BASE_URL}/packing/resumenrecepcion`, {
+    params: {
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      empaque: empaqueValido,
+      variedad: variedadValida,
+      fecha: fechaValida,
+      id: "2",
+    },
+  });
+}
+
+export function fetchRecepcionRango(sede, cultivo, empaque, variedad, fecha) {
+  const sedeValida = sede?.trim() || "todos";
+  const cultivoValido = cultivo?.trim() || "arandano";
+  const empaqueValido = empaque?.trim() || "todos";
+  const variedadValida = variedad?.trim() || "todos";
+  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
+
+  return axios.get(`${BASE_URL}/packing/resumenrecepcion`, {
+    params: {
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      empaque: empaqueValido,
+      variedad: variedadValida,
+      fecha: fechaValida,
+      id: "3",
+    },
+  });
+}
+
+//=============================//
+//EXPORTANDO FETCH'S
 export default {
   fetchEmpaqFiltro,
   fetchVariedadFiltro,
@@ -466,6 +539,9 @@ export default {
   fetchEnfriando,
   fetchBatchEnfriando,
   fetchOrdenes,
+  fetchRecepcionResumen,
+  fetchRecepcionVariedad,
+  fetchRecepcionRango,
 };
 
 //const isLocalhost = window.location.hostname === "10.51.51.15";

@@ -53,11 +53,11 @@ const TablaOrdenes = () => {
   }, [fruta, sedes]);
 
   return (
-    <div className="">
+    <div className="p-3 max-sm:p-2">
       {/* Selector de cultivo y sede */}
-      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
+      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full max-sm:gap-2 max-sm:mb-2">
         {/* SEDE */}
-        <div className="w-full sm:w-auto">
+        <div className="w-full sm:w-auto max-sm:w-full">
           <Box sx={{ minWidth: 190, width: "100%" }}>
             <FormControl
               fullWidth
@@ -99,7 +99,7 @@ const TablaOrdenes = () => {
         </div>
 
         {/* CULTIVO */}
-        <div className="w-full sm:w-auto">
+        <div className="w-full sm:w-auto max-sm:w-full">
           <Box sx={{ minWidth: 190, width: "100%" }}>
             <FormControl
               fullWidth
@@ -141,8 +141,8 @@ const TablaOrdenes = () => {
       </div>
 
       {/* Tabla */}
-      <div className="overflow-x-auto rounded-xl shadow-lg">
-        <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
+      <div className="overflow-x-auto rounded-xl shadow-lg max-sm:rounded-lg max-sm:shadow-md">
+        <div className="overflow-y-auto max-h-[calc(100vh-140px)] max-sm:max-h-[calc(100vh-160px)] lg:max-h-[calc(100vh-180px)]">
           <table className="w-full min-w-[300px] border-collapse">
             <thead className="sticky top-0 z-10 bg-teal-600 text-white">
               <tr>
@@ -151,14 +151,42 @@ const TablaOrdenes = () => {
                   "PRIORIDAD",
                   "DESTINO",
                   "PRESENTACIÓN",
-                  "EJEC. PROY",
-                  "F. DESPACHO",
+                  "EJEC.PROY",
+                  "F.DESPACHO",
                 ].map((col, i) => (
                   <th
                     key={i}
-                    className="px-4 py-3 text-sm sm:text-3xl font-semibold uppercase tracking-wider text-center"
+                    className="px-4 py-3 text-sm sm:text-xl md:text-2xl lg:text-3xl font-semibold uppercase tracking-wider text-center max-sm:px-2 max-sm:py-1 max-sm:text-xs"
                   >
-                    {col}
+                    <span className="max-sm:hidden xl:inline">{col}</span>
+                    {/* Versiones cortas para móvil y tablet */}
+                    <span className="hidden max-sm:inline sm:hidden md:inline lg:hidden xl:hidden">
+                      {i === 0
+                        ? "ORD"
+                        : i === 1
+                        ? "PRIOR"
+                        : i === 2
+                        ? "DEST"
+                        : i === 3
+                        ? "PRES"
+                        : i === 4
+                        ? "PROY"
+                        : "FECHA"}
+                    </span>
+                    {/* Versiones para tablet */}
+                    <span className="hidden sm:inline md:hidden">
+                      {i === 0
+                        ? "ORDEN"
+                        : i === 1
+                        ? "PRIOR."
+                        : i === 2
+                        ? "DESTINO"
+                        : i === 3
+                        ? "PRESEN."
+                        : i === 4
+                        ? "PROYEC."
+                        : "FECHA"}
+                    </span>
                   </th>
                 ))}
               </tr>
@@ -170,24 +198,24 @@ const TablaOrdenes = () => {
                     key={index}
                     className={`border-b border-gray-200 transition duration-200 ${
                       index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                    } hover:bg-cyan-50`}
+                    } hover:bg-cyan-50 active:bg-cyan-100`}
                   >
-                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-800 font-medium">
+                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-800 font-medium max-sm:px-2 max-sm:py-1 max-sm:text-xs">
                       {row.orden}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-800 font-medium">
+                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-800 font-medium max-sm:px-2 max-sm:py-1 max-sm:text-xs">
                       {row.prioridad}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
+                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 truncate max-w-[120px] mx-auto max-sm:px-2 max-sm:py-1 max-sm:text-xs max-sm:max-w-[80px]">
                       {row.destino}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
+                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 truncate max-w-[150px] mx-auto max-sm:px-2 max-sm:py-1 max-sm:text-xs max-sm:max-w-[90px]">
                       {row.presentacion}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
+                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 max-sm:px-2 max-sm:py-1 max-sm:text-xs">
                       {row.ejec_proy}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-1xl text-gray-700">
+                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 max-sm:px-2 max-sm:py-1 max-sm:text-xs">
                       {row.f_despacho}
                     </td>
                   </tr>
@@ -196,9 +224,24 @@ const TablaOrdenes = () => {
                 <tr>
                   <td
                     colSpan="6"
-                    className="px-4 py-3 text-center text-sm sm:text-base text-gray-500 italic"
+                    className="px-4 py-6 text-center text-sm sm:text-base md:text-lg text-gray-500 italic max-sm:px-2 max-sm:py-3 max-sm:text-xs"
                   >
-                    Ningún dato disponible
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                      <svg
+                        className="w-8 h-8 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                      </svg>
+                      <span>No se encontraron datos</span>
+                    </div>
                   </td>
                 </tr>
               )}
@@ -211,3 +254,4 @@ const TablaOrdenes = () => {
 };
 
 export default TablaOrdenes;
+//para ipad mini 768x1024

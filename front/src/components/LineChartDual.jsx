@@ -39,7 +39,7 @@ export default function LineChartDual({ data }) {
             <XAxis dataKey="rango" />
             <YAxis />
             <Tooltip />
-            <Legend />
+            <Legend align="center" />
             {keys.map((key, index) => (
               <Line
                 key={key}

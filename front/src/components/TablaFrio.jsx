@@ -80,7 +80,7 @@ const TablaFrio = () => {
   }, [fruta, sedes]); // solo una vez al montar
 
   return (
-    <div className="container mx-auto px-2 sm:px-4">
+    <div className="container mx-auto px-2 sm:px-4  mt-3">
       {/* Selectores */}
       <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
         {/* SEDE */}

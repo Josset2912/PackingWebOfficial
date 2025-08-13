@@ -94,9 +94,9 @@ const TablaRecepcion = () => {
   }, [fruta, sede, empaqueFiltro, variedadFiltro]);
 
   return (
-    <div className="">
+    <div className="P-4">
       {/* Selectores de filtro */}
-      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
+      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full mt-1 p-2">
         {/* SEDE */}
         <div className="w-full sm:w-auto">
           <Box sx={{ minWidth: 190, width: "100%" }}>
@@ -209,7 +209,7 @@ const TablaRecepcion = () => {
               >
                 <MenuItem value="TODOS">TODOS</MenuItem>
                 {dataEmpaqueFiltro
-                  .filter((row) => row.cultivo === fruta) // ← Asegúrate de que este campo existe
+                  .filter((row) => row.cultivo === fruta)
                   .map((row, idx) => (
                     <MenuItem key={idx} value={row.empaque}>
                       {row.empaque}
@@ -251,7 +251,7 @@ const TablaRecepcion = () => {
               >
                 <MenuItem value="TODOS">TODOS</MenuItem>
                 {dataVariedadfiltro
-                  .filter((row) => row.cultivo === fruta) // ← Asegúrate de que este campo existe
+                  .filter((row) => row.cultivo === fruta)
                   .map((row, idx) => (
                     <MenuItem key={idx} value={row.variedad}>
                       {row.variedad}
@@ -263,91 +263,87 @@ const TablaRecepcion = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-1 w-full ">
-        <div className="flex flex-col md:flex-row gap-2 w-full px-2 mt-1">
-          {/* Tabla Variedad */}
-          <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
-            <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
-              <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
-                <thead>
-                  <tr className="bg-blue-600 text-white">
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase">
-                      EMPAQUE
-                    </th>
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase">
-                      VARIEDAD
-                    </th>
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase">
-                      CABEZAL
-                    </th>
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase">
-                      PESO NETO
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {(() => {
-                    const totalRow = dataVariedad.find(
-                      (row) => row.empaque?.toLowerCase() === "total"
-                    );
-                    const otherRows = dataVariedad.filter(
-                      (row) => row.empaque?.toLowerCase() !== "total"
-                    );
-                    const finalRows = [
-                      ...otherRows,
-                      ...(totalRow ? [totalRow] : []),
-                    ];
+      {/* Tabla y contenido */}
+      {/* Tabla y contenido */}
+      <div className="overflow-x-auto rounded-xl  gap-2 max-sm:mt-1">
+        <div className="overflow-y-auto max-h-[calc(100vh-100px)] max-sm:max-h-[calc(844px-200px)]">
+          <table className="w-full min-w-[300px] border-collapse overflow-x-auto ">
+            <thead className="sticky top-0 z-10 bg-blue-600 text-white">
+              <tr className="bg-blue-600 text-white  ">
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">EMPAQUE</span>
+                  <span className="hidden max-sm:inline">EMP</span>
+                </th>
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">VARIEDAD</span>
+                  <span className="hidden max-sm:inline">VAR</span>
+                </th>
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">CABEZAL</span>
+                  <span className="hidden max-sm:inline">CAB</span>
+                </th>
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-4xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">PESO NETO</span>
+                  <span className="hidden max-sm:inline">PESO</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {(() => {
+                const totalRow = dataVariedad.find(
+                  (row) => row.empaque?.toLowerCase() === "total"
+                );
+                const otherRows = dataVariedad.filter(
+                  (row) => row.empaque?.toLowerCase() !== "total"
+                );
+                const finalRows = [
+                  ...otherRows,
+                  ...(totalRow ? [totalRow] : []),
+                ];
 
-                    return finalRows.length > 0 ? (
-                      finalRows.map((row, index) => {
-                        const isTotalRow =
-                          row.empaque?.toLowerCase() === "total";
+                return finalRows.length > 0 ? (
+                  finalRows.map((row, index) => {
+                    const isTotalRow = row.empaque?.toLowerCase() === "total";
 
-                        return (
-                          <tr
-                            key={index}
-                            className={`hover:bg-gray-50 transition-colors ${
-                              isTotalRow
-                                ? "font-bold text-blue-900 border-t-4 border-blue-400  border-5  "
-                                : ""
-                            }`}
-                          >
-                            <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                              {row.empaque || ""}
-                            </td>
-                            <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                              {row.var || ""}
-                            </td>
-
-                            <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                              {row.cabezal || ""}
-                            </td>
-
-                            <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
-                              {row.ejec || ""} kg
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="2"
-                          className="px-4 py-6 text-center text-sm sm:text-base text-gray-500"
-                        >
-                          No hay datos de recepción disponibles
+                    return (
+                      <tr
+                        key={index}
+                        className={`hover:bg-gray-50 transition-colors ${
+                          isTotalRow
+                            ? "font-bold text-blue-900 border-t-4 border-blue-400"
+                            : "border-b-1 border-cyan-600 "
+                        }`}
+                      >
+                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          {row.empaque || ""}
+                        </td>
+                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          {row.var || ""}
+                        </td>
+                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          {row.cabezal || ""}
+                        </td>
+                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          {row.ejec || "--"} kg
                         </td>
                       </tr>
                     );
-                  })()}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                  })
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="4"
+                      className="px-4 py-6 text-center text-sm sm:text-base text-gray-500 max-sm:text-xs max-sm:py-3"
+                    >
+                      No hay datos disponibles
+                    </td>
+                  </tr>
+                );
+              })()}
+            </tbody>
+          </table>
         </div>
       </div>
-
-      {/* Gráfico de barras por rango de filer */}
     </div>
   );
 };

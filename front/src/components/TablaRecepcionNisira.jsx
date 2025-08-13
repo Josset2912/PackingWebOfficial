@@ -100,7 +100,7 @@ const TablaRecepcionNisira = () => {
   return (
     <div className="">
       {/* Selector de cultivo y sede */}
-      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
+      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full p-3 mt-1">
         {/* SEDE */}
         <div className="w-full sm:w-auto">
           <Box sx={{ minWidth: 190, width: "100%" }}>
@@ -267,24 +267,28 @@ const TablaRecepcionNisira = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 w-full px-2">
+      <div className="flex flex-col md:flex-row gap-4 w-full px-2 max-sm:px-1 max-sm:gap-2">
         {/* Tabla Variedad */}
-        <div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
-          <div className="overflow-y-auto max-h-[calc(100vh-120px)]">
-            <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
+        <div className="flex-1 overflow-x-auto rounded-xl shadow-lg max-sm:rounded-lg">
+          <div className="overflow-y-auto max-h-[calc(100vh-120px)] max-sm:max-h-[calc(844px-200px)]">
+            <table className="w-full min-w-[300px]  overflow-x-auto">
               <thead className="sticky top-0 z-10 bg-blue-600 text-white">
                 <tr className="bg-blue-600 text-white">
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
-                    EMPAQUE
+                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                    <span className="max-sm:hidden">EMPAQUE</span>
+                    <span className="hidden max-sm:inline">EMP</span>
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
-                    VARIEDAD
+                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                    <span className="max-sm:hidden">VARIEDAD</span>
+                    <span className="hidden max-sm:inline">VAR</span>
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
-                    CABEZAL
+                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                    <span className="max-sm:hidden">CABEZAL</span>
+                    <span className="hidden max-sm:inline">CAB</span>
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
-                    PESO NETO
+                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                    <span className="max-sm:hidden">PESO NETO</span>
+                    <span className="hidden max-sm:inline">PESO</span>
                   </th>
                 </tr>
               </thead>
@@ -310,20 +314,20 @@ const TablaRecepcionNisira = () => {
                           key={index}
                           className={`hover:bg-gray-50 transition-colors ${
                             isTotalRow
-                              ? "font-bold text-blue-900 border-t-4 border-blue-400  border-5  "
-                              : ""
+                              ? "font-bold text-blue-900 border-t-4 border-blue-400"
+                              : "border-b-1 border-cyan-600 "
                           }`}
                         >
-                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
+                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
                             {row.empaque}
                           </td>
-                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
+                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
                             {row.var}
                           </td>
-                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
+                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
                             {row.cabezal || ""}
                           </td>
-                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
+                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
                             {row.pesoneto || "--"} Kg
                           </td>
                         </tr>
@@ -333,9 +337,9 @@ const TablaRecepcionNisira = () => {
                     <tr>
                       <td
                         colSpan="4"
-                        className="px-4 py-6 text-center text-sm sm:text-base text-gray-500"
+                        className="px-4 py-6 text-center text-sm sm:text-base text-gray-500 max-sm:text-xs max-sm:py-3"
                       >
-                        No hay datos de recepción disponibles
+                        No hay datos disponibles
                       </td>
                     </tr>
                   );
@@ -345,56 +349,58 @@ const TablaRecepcionNisira = () => {
           </div>
         </div>
 
-        {/* Tabla cabezal */}
-        {/*<div className="flex-1 overflow-x-auto rounded-xl shadow-lg">
-          <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
-            <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
-              <thead>
-                <tr className="bg-blue-600 text-white">
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
-                    CABEZAL
-                  </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
-                    EMPAQUE
-                  </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
-                    PESO NETO
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {dataCabezal.length > 0 ? (
-                  dataCabezal.map((row, index) => (
-                    <tr
-                      key={index}
-                      className="hover:bg-gray-50 transition-colors"
-                    >
-                      <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
-                        {row.cabezal || "VACÍO"}
-                      </td>
-                      <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
-                        {row.empaque || ""}
-                      </td>
-                      <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium">
-                        {row.pesoneto || "--"} Kg
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan="3"
-                      className="px-4 py-6 text-center text-sm sm:text-base text-gray-500"
-                    >
-                      No hay datos de recepción disponibles
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-              </div>
-              */}
+        {/* Tabla cabezal (comentada) */}
+        {/*<div className="flex-1 overflow-x-auto rounded-xl shadow-lg max-sm:rounded-lg">
+    <div className="overflow-y-auto max-h-[calc(100vh-100px)] max-sm:max-h-[300px]">
+      <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
+        <thead>
+          <tr className="bg-blue-600 text-white">
+            <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+              <span className="max-sm:hidden">CABEZAL</span>
+              <span className="hidden max-sm:inline">CAB</span>
+            </th>
+            <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+              <span className="max-sm:hidden">EMPAQUE</span>
+              <span className="hidden max-sm:inline">EMP</span>
+            </th>
+            <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+              <span className="max-sm:hidden">PESO NETO</span>
+              <span className="hidden max-sm:inline">PESO</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {dataCabezal.length > 0 ? (
+            dataCabezal.map((row, index) => (
+              <tr
+                key={index}
+                className="hover:bg-gray-50 transition-colors"
+              >
+                <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  {row.cabezal || "VACÍO"}
+                </td>
+                <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  {row.empaque || ""}
+                </td>
+                <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  {row.pesoneto || "--"} Kg
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan="3"
+                className="px-4 py-6 text-center text-sm sm:text-base text-gray-500 max-sm:text-xs max-sm:py-3"
+              >
+                No hay datos disponibles
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  </div>*/}
       </div>
     </div>
   );
