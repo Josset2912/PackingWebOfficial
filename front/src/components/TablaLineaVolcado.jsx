@@ -43,8 +43,8 @@ const TablaLineaVolcado = () => {
   const [turno, setTurno] = useState("SELECCIONE");
   const [dataTurno, setDataTurno] = useState([]);
 
-  const [fecha, setFecha] = useState(
-    () => new Date().toISOString().split("T")[0]
+  const [fecha, setFecha] = useState(() =>
+    new Date().toLocaleDateString("en-CA")
   );
 
   /* ----------------------- estados ----------------------- */
@@ -414,10 +414,7 @@ const TablaLineaVolcado = () => {
               </h2>
             </div>
             <ResponsiveContainer width="100%" height={200}>
-              <LineChart
-                data={dataAgrupada}
-                margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
-              >
+              <LineChart data={dataAgrupada}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="rango" />
                 <YAxis tick={false} />

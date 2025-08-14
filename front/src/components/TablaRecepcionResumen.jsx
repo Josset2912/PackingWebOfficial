@@ -42,8 +42,8 @@ const TablaRecepcion = () => {
   const [variedadFiltro, setVariedadfiltro] = useState("TODOS");
   const [dataVariedadfiltro, setDataVariedadfiltro] = useState([]);
 
-  const [fecha, setFecha] = useState(
-    () => new Date().toISOString().split("T")[0]
+  const [fecha, setFecha] = useState(() =>
+    new Date().toLocaleDateString("en-CA")
   );
 
   const [dataRecepcionVariedad, setDataRecepcionVariedad] = useState([]);
@@ -222,7 +222,7 @@ const TablaRecepcion = () => {
   }, [sede, fruta, empaqueFiltro, variedadFiltro, fecha]);
 
   return (
-    <div className="p-4">
+    <div className="p-2">
       {/* Selectores de filtro */}
       <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
         <div className="mb-0.5 flex flex-wrap  justify-end items-center gap-3">
@@ -300,49 +300,46 @@ const TablaRecepcion = () => {
       {/* TABLAS Y LINEAS*/}
 
       {/*MEDIDOR Y NÚMEROS UNICOS */}
-      <div className="">
-        {/* Contenedor flex horizontal */}
-        <div className="mb-3">
-          {/* Contenedor flex responsive */}
-          <div className="flex flex-wrap gap-40 justify-center ">
-            {/* Medidor */}
-            <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/4 max-w-full bg-white rounded-lg shadow-md flex flex-col items-center ">
-              <h4 className="text-lg font-semibold text-gray-700 mb-3 text-center sm:text-left uppercase">
-                Porcentaje cumplimiento
-              </h4>
-              <GaugeChart
-                value={progressValue}
-                colors={{
-                  progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                  remaining: "#F5F5F5",
-                  needle: "#E91E63",
-                  text: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                  labelColor: "#757575",
-                }}
-                label="Progress"
-                fontSize="24px"
-                thickness="65%"
-              />
-            </div>
+      <div className="mb-3">
+        {/* Contenedor flex responsive */}
+        <div className="flex flex-wrap justify-evenly items-center gap-4">
+          {/* Medidor */}
+          <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/4 max-w-full bg-white rounded-lg shadow-md flex flex-col items-center ">
+            <h4 className="text-lg font-semibold text-gray-700 mb-3 text-center sm:text-left uppercase">
+              Porcentaje cumplimiento
+            </h4>
+            <GaugeChart
+              value={progressValue}
+              colors={{
+                progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                remaining: "#F5F5F5",
+                needle: "#E91E63",
+                text: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                labelColor: "#757575",
+              }}
+              label="Progress"
+              fontSize="26px"
+              thickness="65%"
+            />
+          </div>
 
-            {/* KG PROGRAMADO */}
-            <div className="inline-block bg-white p-4 rounded-lg shadow-md text-center ">
-              <h4 className="text-lg font-semibold text-gray-700 mb-3 uppercase">
-                kg programado
-              </h4>
-              <div className="inline-block">
-                <NumeroUnico value={dataLineaTnTotal?.[0]?.kgprogtotal || 0} />
-              </div>
+          {/* KG PROGRAMADO */}
+          <div className="inline-block bg-white p-4 rounded-lg shadow-md text-center ">
+            <h4 className="text-lg font-semibold text-gray-700 mb-3 uppercase">
+              kg programado
+            </h4>
+            <div className="inline-block">
+              <NumeroUnico value={dataLineaTnTotal?.[0]?.kgprogtotal || 0} />
             </div>
+          </div>
 
-            {/* KG EJECUTADO */}
-            <div className="inline-block bg-white p-4 rounded-lg shadow-md text-center">
-              <h4 className="text-lg font-semibold text-gray-700 mb-3 uppercase">
-                kg ejecutado
-              </h4>
-              <div className="inline-block">
-                <NumeroUnico value={dataLineaTnTotal?.[0]?.kgejectotal || 0} />
-              </div>
+          {/* KG EJECUTADO */}
+          <div className="inline-block bg-white p-4 rounded-lg shadow-md text-center">
+            <h4 className="text-lg font-semibold text-gray-700 mb-3 uppercase">
+              kg ejecutado
+            </h4>
+            <div className="inline-block">
+              <NumeroUnico value={dataLineaTnTotal?.[0]?.kgejectotal || 0} />
             </div>
           </div>
         </div>
@@ -352,19 +349,19 @@ const TablaRecepcion = () => {
         {/* TABLA VARIEDAD - IZQUIERDA */}
         <div className="lg:w-1/2 w-full overflow-x-auto rounded-xl shadow-lg">
           <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
-            <table className="w-full min-w-[200px] border-collapse">
+            <table className="w-full min-w-[300px] border-collapse">
               <thead className="sticky top-0 z-10">
                 <tr className="bg-blue-600 text-white">
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
+                  <th className="px-2 py-2 text-center font-semibold text-xs sm:text-lg lg:text-xl xl:text-2xl uppercase">
                     VAR
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
+                  <th className="px-2 py-2 text-center font-semibold text-xs sm:text-lg lg:text-xl xl:text-2xl uppercase">
                     KG PROG
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
+                  <th className="px-2 py-2 text-center font-semibold text-xs sm:text-lg lg:text-xl xl:text-2xl uppercase">
                     KG EJEC
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase">
+                  <th className="px-2 py-2 text-center font-semibold text-xs sm:text-lg lg:text-xl xl:text-2xl uppercase">
                     % CUMP
                   </th>
                 </tr>
@@ -379,16 +376,16 @@ const TablaRecepcion = () => {
                         key={index}
                         className="hover:bg-gray-50 transition-colors"
                       >
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 py-2 text-center text-xs sm:text-base lg:text-lg xl:text-3xl text-gray-800 font-medium">
                           {row.variedad || "--"}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 py-2 text-center text-xs sm:text-base lg:text-lg xl:text-3xl text-gray-800 font-medium">
                           {row.kgprog || "--"}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 py-2 text-center text-xs sm:text-base lg:text-lg xl:text-3xl text-gray-800 font-medium">
                           {row.kgejec || "--"}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 py-2 text-center text-xs sm:text-base lg:text-lg xl:text-3xl text-gray-800 font-medium">
                           {cumplimiento >= 100 ? "✅" : "❌"}{" "}
                           {cumplimiento.toFixed(2)} %
                         </td>
@@ -399,7 +396,7 @@ const TablaRecepcion = () => {
                   <tr>
                     <td
                       colSpan="5"
-                      className="px-4 py-6 text-center text-sm sm:text-base text-gray-500"
+                      className="px-4 py-6 text-center text-xs sm:text-sm md:text-base text-gray-500"
                     >
                       No hay datos de recepción disponibles
                     </td>
@@ -409,29 +406,35 @@ const TablaRecepcion = () => {
             </table>
           </div>
         </div>
+
         {/* TABLA LINEA - DERECHA */}
-        <div className="lg:w-1/2 w-full rounded-xl shadow-lg bg-white h-[300px] sm:h-[400px] lg:h-[50%]">
-          <div className="bg-blue-500 rounded-t-xl">
-            <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-2xl font-bold mb-1 uppercase text-white">
+        <div className="lg:w-1/2 w-full overflow-x-auto rounded-xl shadow-lg">
+          <div className="p-1 bg-blue-500 rounded-t-xl">
+            <h2 className="text-center text-sm sm:text-lg md:text-xl lg:text-2xl font-bold mb-1 uppercase text-white">
               Porcentaje por rango de hora
             </h2>
           </div>
-          <div className="h-[calc(100%-40px)]">
-            <ResponsiveContainer width="100%" height={350}>
+          <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={dataAgrupada}
-                margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
+                margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
               >
                 <CartesianGrid strokeDasharray="10 10" opacity={0.1} />
-                <XAxis dataKey="hora" />
+                <XAxis
+                  dataKey="hora"
+                  tick={{ fontSize: "0.6rem", sm: "0.8rem", md: "1rem" }}
+                />
                 <YAxis tick={false} />
                 <Tooltip
-                  formatter={(value) => `${value.toLocaleString()} kg`} // <-- aquí
+                  formatter={(value) => `${value.toLocaleString()} kg`}
                   contentStyle={{
                     borderRadius: "8px",
                     background: "#ffffffdd",
                     backdropFilter: "blur(4px)",
                     border: "1px solid #dddddd",
+                    fontSize: "0.8rem",
+                    sm: "1rem",
                   }}
                 />
                 <Legend
@@ -442,8 +445,10 @@ const TablaRecepcion = () => {
                     textAlign: "center",
                     width: "100%",
                     left: 0,
+                    fontSize: "0.8rem",
+                    sm: "1rem",
                   }}
-                />{" "}
+                />
                 {tiposPeso.map((tipo) => (
                   <Line
                     key={tipo}
@@ -451,18 +456,18 @@ const TablaRecepcion = () => {
                     dataKey={tipo}
                     stroke={colores[tipo] || "#007bff"}
                     strokeWidth={2}
-                    dot={{ r: 4 }}
-                    activeDot={{ r: 6 }}
+                    dot={{ r: 3 }}
+                    activeDot={{ r: 5 }}
                     animationDuration={500}
                     label={({ x, y, value }) => (
                       <text
                         x={x}
                         y={y - 10}
                         fill="#000"
-                        fontSize={10}
+                        fontSize={12}
                         textAnchor="middle"
                       >
-                        {`${value.toLocaleString()} kg`} {/* <-- aquí */}
+                        {`${value.toLocaleString()} kg`}
                       </text>
                     )}
                   />

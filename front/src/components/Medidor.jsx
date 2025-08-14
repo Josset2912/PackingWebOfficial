@@ -3,7 +3,12 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 export const GaugeChart = ({ value, max = 100, colors = {} }) => {
   const { progress = "#4CAF50", remaining = "#F0F0F0" } = colors;
 
+  // Para el color (máximo 100%)
   const adjustedValue = Math.min(Math.max(value, 0), max);
+
+  // Para mostrar el porcentaje real
+  const displayValue = value;
+
   const data = [
     { name: "Progreso", value: adjustedValue },
     { name: "Restante", value: max - adjustedValue },
@@ -13,14 +18,14 @@ export const GaugeChart = ({ value, max = 100, colors = {} }) => {
     <div
       style={{
         width: "100%",
-        height: "140px", // Más bajo para eliminar el espacio superior
+        height: "140px",
         display: "flex",
-        justifyContent: "center", // Centrar horizontalmente
-        alignItems: "center", // Centrar verticalmente
+        justifyContent: "center",
+        alignItems: "center",
         position: "relative",
         margin: "0",
         padding: "3px",
-        overflow: "hidden", // Por si algún contenido sobresale
+        overflow: "hidden",
       }}
     >
       <ResponsiveContainer width="140%" height="140%">
@@ -28,11 +33,11 @@ export const GaugeChart = ({ value, max = 100, colors = {} }) => {
           <Pie
             data={data}
             cx="50%"
-            cy="70%" // Lleva el semicírculo completamente abajo
+            cy="70%"
             startAngle={180}
             endAngle={0}
-            innerRadius="60%" // Más delgado para dar mejor espacio
-            outerRadius="100%" // Se expande al límite del contenedor
+            innerRadius="60%"
+            outerRadius="100%"
             paddingAngle={0}
             dataKey="value"
             stroke="none"
@@ -43,22 +48,20 @@ export const GaugeChart = ({ value, max = 100, colors = {} }) => {
         </PieChart>
       </ResponsiveContainer>
 
-      {/* Valor numérico centrado */}
+      {/* Texto centrado con el valor original */}
       <div
         style={{
           position: "absolute",
           top: "70%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          fontSize: "22px",
+          fontSize: "30px",
           fontWeight: "bold",
           color: "#333",
-          margin: 0,
-          padding: 0,
           lineHeight: 1,
         }}
       >
-        {adjustedValue}%
+        {displayValue}%
       </div>
     </div>
   );

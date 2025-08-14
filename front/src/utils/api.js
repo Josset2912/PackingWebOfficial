@@ -492,7 +492,7 @@ export function fetchRecepcionRango(sede, cultivo, empaque, variedad, fecha) {
   const cultivoValido = cultivo?.trim() || "arandano";
   const empaqueValido = empaque?.trim() || "todos";
   const variedadValida = variedad?.trim() || "todos";
-  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
+  const fechaValida = fecha?.trim() || new Date().toLocaleDateString("en-CA");
 
   return axios.get(`${BASE_URL}/packing/resumenrecepcion`, {
     params: {
