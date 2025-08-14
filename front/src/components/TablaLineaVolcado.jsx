@@ -269,7 +269,7 @@ const TablaLineaVolcado = () => {
 
   //
   return (
-    <div className="p-3">
+    <div className="p-1">
       <div className="mb-0.5 flex flex-wrap  justify-end items-center gap-3">
         {/* SEDE */}
         <FiltroSelect
@@ -337,7 +337,7 @@ const TablaLineaVolcado = () => {
       <div className="flex flex-col lg:flex-row gap-3 w-full  overflow-x-auto">
         <div className="flex flex-col  flex-1 min-w-0 min-h-0">
           {/* Tabla Línea Avance */}{" "}
-          <div className="flex-1 min-w-0 min-h-0 bg-white rounded-xl overflow-hidden flex flex-col max-sm:rounded-lg">
+          {/* <div className="flex-1 min-w-0 min-h-0 bg-white rounded-xl overflow-hidden flex flex-col max-sm:rounded-lg">
             <div className="px-6 py-1 max-sm:px-3 max-sm:py-1">
               <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider max-sm:text-sm">
                 KG PROG VS EJEC
@@ -405,16 +405,97 @@ const TablaLineaVolcado = () => {
                 </table>
               </div>
             </div>
+          </div> */}
+          <div
+            className="bg-white rounded-xl overflow-hidden flex flex-col 
+     max-h-[calc(40vh-35px)] md:max-h-[62vh] sm:max-h-[60vh]  
+     shadow-lg align-middle justify-between"
+          >
+            {/* Encabezado */}
+            <div className="px-6 py-1 max-sm:px-3 max-sm:py-1">
+              <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider max-sm:text-sm">
+                KG PROG VS EJEC
+              </h2>
+            </div>
+
+            {/* Contenedor con scroll */}
+            <div className="overflow-y-auto flex-1 min-h-0 ">
+              <table className="w-full min-w-[260px] border-collapse">
+                {/* Encabezados sticky */}
+                <thead className="sticky top-0 z-10 bg-indigo-600 text-white">
+                  <tr>
+                    <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                      EMPAQUE
+                    </th>
+                    <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                      VAR
+                    </th>
+                    <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                      KG PROG
+                    </th>
+                    <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                      EJEC
+                    </th>
+                    <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                      %
+                    </th>
+                  </tr>
+                </thead>
+
+                {/* Cuerpo */}
+                <tbody className="divide-y divide-gray-200">
+                  {Array.isArray(dataLineaVolcado) &&
+                  dataLineaVolcado.length > 0 ? (
+                    dataLineaVolcado.map((row, index) => (
+                      <tr
+                        key={`lineaAvance-${index}`}
+                        className={`transition-colors ${
+                          index % 2 === 0 ? "bg-white" : "bg-indigo-50"
+                        } hover:bg-indigo-100`}
+                      >
+                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                          {row.empaque || ""}
+                        </td>
+                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                          {row.var || ""}
+                        </td>
+                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                          {row.prog || "0"}
+                        </td>
+                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                          {row.ejec || "0"}
+                        </td>
+                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                          {row.porcentaje || "0"} %
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan="5"
+                        className="px-4 py-3 text-center text-sm sm:text-base text-gray-500 italic max-sm:text-xs max-sm:py-2"
+                      >
+                        Ningún dato disponible
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
           {/* GRÁFICO DE LÍNEA   <div className=" overflow-x-auto rounded-xl mt-5 h-[300px] sm:h-[400px]"></div> */}
-          <div className=" overflow-x-auto rounded-xl mt-2 border border-gray-400 shadow-lg">
+          <div className=" overflow-x-auto rounded-xl mt-5 border border-gray-400 shadow-lg">
             <div className="p-1 bg-blue-500 rounded-t-xl">
               <h2 className="text-center text-lg sm:text-2xl font-bold mb-1 uppercase text-white">
                 AVANCE TN POR HORA
               </h2>
             </div>
-            <ResponsiveContainer width="100%" height={200}>
-              <LineChart data={dataAgrupada}>
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart
+                data={dataAgrupada}
+                margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="rango" />
                 <YAxis tick={false} />

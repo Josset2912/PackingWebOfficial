@@ -300,6 +300,7 @@ const TablaRecepcion = () => {
       {/* TABLAS Y LINEAS*/}
 
       {/*MEDIDOR Y NÚMEROS UNICOS */}
+
       <div className="mb-3">
         {/* Contenedor flex responsive */}
         <div className="flex flex-wrap justify-evenly items-center gap-4">
@@ -324,16 +325,69 @@ const TablaRecepcion = () => {
           </div>
 
           {/* KG PROGRAMADO */}
-          <div className="inline-block bg-white p-4 rounded-lg shadow-md text-center ">
-            <h4 className="text-lg font-semibold text-gray-700 mb-3 uppercase">
-              kg programado
-            </h4>
-            <div className="inline-block">
-              <NumeroUnico value={dataLineaTnTotal?.[0]?.kgprogtotal || 0} />
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+            <div className="p-4 flex justify-between items-start">
+              <div>
+                <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  KG PROGRAMADO
+                </h4>
+                <div className="text-3xl font-bold text-gray-800 mt-1">
+                  <NumeroUnico
+                    value={dataLineaTnTotal?.[0]?.kgprogtotal || 0}
+                  />
+                </div>
+              </div>
+              <div className="bg-green-50 text-green-800 text-xs px-2 py-1 rounded-full">
+                En tiempo real
+              </div>
             </div>
+            <div className="h-20 px-4 pb-3">
+              {/* Mini gráfico de tendencia */}
+              <div className="h-full flex items-end gap-1">
+                {[30, 45, 60, 52, 70, 85, 78].map((value, index) => (
+                  <div
+                    key={index}
+                    className="flex-1 bg-blue-100 hover:bg-blue-200 rounded-t-sm transition-colors"
+                    style={{ height: `${value}%` }}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="px-4 pb-3 text-xs text-gray-500 border-t border-gray-100 pt-2"></div>
           </div>
 
           {/* KG EJECUTADO */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+            <div className="p-4 flex justify-between items-start">
+              <div>
+                <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  KG ejecutado
+                </h4>
+                <div className="text-3xl font-bold text-gray-800 mt-1">
+                  <NumeroUnico
+                    value={dataLineaTnTotal?.[0]?.kgejectotal || 0}
+                  />
+                </div>
+              </div>
+              <div className="bg-green-50 text-green-800 text-xs px-2 py-1 rounded-full">
+                En tiempo real
+              </div>
+            </div>
+            <div className="h-20 px-4 pb-3">
+              {/* Mini gráfico de tendencia */}
+              <div className="h-full flex items-end gap-1">
+                {[30, 45, 60, 52, 70, 85, 78].map((value, index) => (
+                  <div
+                    key={index}
+                    className="flex-1 bg-blue-100 hover:bg-blue-200 rounded-t-sm transition-colors"
+                    style={{ height: `${value}%` }}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="px-4 pb-3 text-xs text-gray-500 border-t border-gray-100 pt-2"></div>
+          </div>
+          {/* 
           <div className="inline-block bg-white p-4 rounded-lg shadow-md text-center">
             <h4 className="text-lg font-semibold text-gray-700 mb-3 uppercase">
               kg ejecutado
@@ -341,7 +395,7 @@ const TablaRecepcion = () => {
             <div className="inline-block">
               <NumeroUnico value={dataLineaTnTotal?.[0]?.kgejectotal || 0} />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
