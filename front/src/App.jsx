@@ -1,50 +1,48 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Bienvenida from "./components/Bienvenida";
-import Header from "./components/Header";
+import { useState, useEffect, useRef, lazy, Suspense, useMemo } from "react";
 import {
   fetchVariedad,
   fetchCabezal,
   fetchSedes,
   fetchCultivos,
-} from "./utils/api"; // Importar función de API
-import Sidebar from "./components/Sidebar";
+} from "./utils/api";
 
-// Componentes para Arándano
-import TablaRecepcion from "./components/TablaRecepcion";
-import TablaRecepcionNisira from "./components/TablaRecepcionNisira";
-import TablaGasificado from "./components/TablaGasificado";
-import TablaCalidad from "./components/TablaCalidad"; // Asumiendo que TablaCalidad es genérica
-import TablaEspera from "./components/TablaEspera";
-import TablaLineaVolcado from "./components/TablaLineaVolcado";
-import TablaFrio from "./components/TablaFrio";
-import TablaOrdenes from "./components/TablaOrdenes";
-import TablaTacometro from "./components/TablaRecepcionResumen"; // Importar TablaTacometro
-// Mapeo de endpoints actualizado
-const endpointMap = {
-  Arandano: {
-    RECEPCIÓN: "recepcion",
-    // otros endpoints...
-  },
+// Lazy loading componentes
+const Bienvenida = lazy(() => import("./components/Bienvenida"));
+const Sidebar = lazy(() => import("./components/Sidebar"));
+
+// Función para lazy loading dinámico de tablas
+const getLazyTabla = (tablaName) => {
+  switch (tablaName) {
+    case "RECEPCIÓN":
+      return lazy(() => import("./components/TablaRecepcion"));
+    case "RECEPCION NISIRA":
+      return lazy(() => import("./components/TablaRecepcionNisira"));
+    case "RESUMEN RECEPCION ":
+      return lazy(() => import("./components/TablaRecepcionResumen"));
+    case "CALIDAD":
+      return lazy(() => import("./components/TablaCalidad"));
+
+    case "VOLCADO-MUESTRA":
+      return lazy(() => import("./components/Nuevo"));
+    case "GASIFICADO PRE FRÍO":
+      return lazy(() => import("./components/TablaGasificado"));
+    case "VOLCADO/ESPERA":
+      return lazy(() => import("./components/TablaEspera"));
+    case "VOLCADO/LÍNEA":
+      return lazy(() => import("./components/TablaLineaVolcado"));
+    case "FRIO":
+      return lazy(() => import("./components/TablaFrio"));
+    case "ORDEN PRD":
+      return lazy(() => import("./components/TablaOrdenes"));
+
+    default:
+      return null;
+  }
 };
 
-// Mapeo de componentes de tabla actualizado
-const tablaMap = {
-  Arandano: {
-    RECEPCIÓN: TablaRecepcion,
-    "RECEPCION NISIRA": TablaRecepcionNisira,
-    "RESUMEN RECEPCION ": TablaTacometro, // Agregar TablaTacometro
-    CALIDAD: TablaCalidad, // Asumiendo que la tabla de calidad es la misma que recepción
-    "GASIFICADO PRE FRÍO": TablaGasificado,
-    "VOLCADO/ESPERA": TablaEspera,
-    "VOLCADO/LÍNEA": TablaLineaVolcado,
-    FRIO: TablaFrio,
-    "ORDEN PRD": TablaOrdenes,
-  },
-};
+const endpointMap = { Arandano: { RECEPCIÓN: "recepcion" } };
 
 const App = () => {
-  // Estados
   const [mostrarBienvenida, setMostrarBienvenida] = useState(true);
   const [selectedOption] = useState("Arandano");
   const [selectedButton, setSelectedButton] = useState("RECEPCIÓN");
@@ -55,13 +53,13 @@ const App = () => {
   const [packingExpanded, setPackingExpanded] = useState(true);
   const [expandedVolcado, setExpandedVolcado] = useState(false);
 
-  // Secciones de packing con estructura jerárquica
   const packingSections = [
     "RECEPCIÓN",
     "RECEPCION NISIRA",
     "RESUMEN RECEPCION ",
     "GASIFICADO PRE FRÍO",
     "CALIDAD",
+    "VOLCADO-MUESTRA",
     {
       name: "VOLCADO",
       submenus: [
@@ -73,14 +71,10 @@ const App = () => {
     "ORDEN PRD",
   ];
 
-  const handleStart = () => {
-    setMostrarBienvenida(false);
-  };
+  const handleStart = () => setMostrarBienvenida(false);
 
-  // Función para cargar datos
   const cargarDatos = async () => {
     if (!selectedButton || !selectedOption) return;
-
     const endpoint = endpointMap[selectedOption]?.[selectedButton];
     if (!endpoint) return;
 
@@ -88,12 +82,9 @@ const App = () => {
       let response;
       switch (endpoint) {
         case "recepcionAran":
-          // Por ejemplo, puedes llamar fetchVariedad o fetchCabezal según selectedButton
-          // Aquí deberías adaptar según lo que quieres obtener realmente
           response = await fetchVariedad("funfo santa azul", "arandano");
           break;
         case "recepcionNisiraAran":
-          // Similar para otras llamadas
           response = await fetchCabezal("funfo santa azul", "arandano");
           break;
         case "sede":
@@ -103,10 +94,9 @@ const App = () => {
           response = await fetchCultivos();
           break;
         default:
-          // Podrías hacer axios directo o manejar otros endpoints
           break;
       }
-      if (response && response.data) {
+      if (response?.data) {
         setData((prevData) => {
           if (JSON.stringify(prevData) !== JSON.stringify(response.data)) {
             setUltimaActualizacion(new Date());
@@ -120,16 +110,13 @@ const App = () => {
     }
   };
 
-  // Configurar intervalo de actualización
   useEffect(() => {
-    const manejarActualizacion = () => cargarDatos();
-    const intervaloId = setInterval(manejarActualizacion, 8000);
+    const intervaloId = setInterval(cargarDatos, 8000);
     intervaloRef.current = intervaloId;
     cargarDatos();
     return () => clearInterval(intervaloId);
   }, []);
 
-  // Actualizar al volver a la pestaña
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden) cargarDatos();
@@ -138,10 +125,13 @@ const App = () => {
     return () =>
       document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, []);
-  // Render de tablas
-  const renderTablas = () => {
-    const ComponenteTabla = tablaMap[selectedOption]?.[selectedButton];
 
+  const ComponenteTabla = useMemo(
+    () => getLazyTabla(selectedButton),
+    [selectedButton]
+  );
+
+  const renderTablas = () => {
     if (!ComponenteTabla) {
       return (
         <div className="flex items-center justify-center h-full">
@@ -170,35 +160,49 @@ const App = () => {
       );
     }
 
-    return <ComponenteTabla data={data} />;
+    return (
+      <Suspense
+        fallback={<div className="text-center p-6">Cargando tabla...</div>}
+      >
+        <ComponenteTabla data={data} />
+      </Suspense>
+    );
   };
 
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
-      <Sidebar
-        sidebarOpen={sidebarOpen}
-        setSidebarOpen={setSidebarOpen}
-        packingExpanded={packingExpanded}
-        setPackingExpanded={setPackingExpanded}
-        expandedVolcado={expandedVolcado}
-        setExpandedVolcado={setExpandedVolcado}
-        packingSections={packingSections}
-        selectedButton={selectedButton}
-        setSelectedButton={setSelectedButton}
-      />
+      <Suspense
+        fallback={
+          <div className="absolute left-0 top-0 p-4">Cargando menú...</div>
+        }
+      >
+        <Sidebar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          packingExpanded={packingExpanded}
+          setPackingExpanded={setPackingExpanded}
+          expandedVolcado={expandedVolcado}
+          setExpandedVolcado={setExpandedVolcado}
+          packingSections={packingSections}
+          selectedButton={selectedButton}
+          setSelectedButton={setSelectedButton}
+        />
+      </Suspense>
 
       {/* Main Content */}
-      {/* Contenedor principal */}
       <div className="flex-1 flex flex-col overflow-hidden relative">
-        {mostrarBienvenida ? (
-          <Bienvenida onStart={handleStart} />
-        ) : (
-          <>
-            {/* Main con scroll funcional */}
+        <Suspense
+          fallback={
+            <div className="text-center p-6">Cargando bienvenida...</div>
+          }
+        >
+          {mostrarBienvenida ? (
+            <Bienvenida onStart={handleStart} />
+          ) : (
             <main className="flex-1 overflow-y-auto p-2">{renderTablas()}</main>
-          </>
-        )}
+          )}
+        </Suspense>
       </div>
     </div>
   );

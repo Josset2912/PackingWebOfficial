@@ -171,7 +171,8 @@ const TablaCalidad = () => {
         resMaquina,
         resFiler,
         resPresentacion,
-        resCalidad,
+          resCalidad,
+        
         resCalidadRango,
         resCalidadRangoFiler,
         resCalidadPorcentajeMuestras,

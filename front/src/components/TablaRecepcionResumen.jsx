@@ -328,7 +328,7 @@ const TablaRecepcion = () => {
           <div className="bg-white rounded-xl shadow-sm border border-gray-200">
             <div className="p-4 flex justify-between items-start">
               <div>
-                <h4 className="text-2xl font-medium text-gray-500 uppercase tracking-wider">
+                <h4 className="text-2xl font-bold text-black  uppercase tracking-wider">
                   KG PROGRAMADO
                 </h4>
                 <div className="text-3xl font-bold text-gray-800 mt-1">
@@ -360,7 +360,7 @@ const TablaRecepcion = () => {
           <div className="bg-white rounded-xl shadow-sm border border-gray-200">
             <div className="p-4 flex justify-between items-start">
               <div>
-                <h4 className="text-2xl font-medium text-gray-500 uppercase tracking-wider">
+                <h4 className="text-2xl font-bold text-black  uppercase tracking-wider">
                   KG ejecutado
                 </h4>
                 <div className="text-3xl font-bold text-gray-800 mt-1">

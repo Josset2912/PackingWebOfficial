@@ -99,7 +99,7 @@ const TablaLineaVolcado = () => {
   );
 
   // Obtener los tipos de peso únicos de dataCalidadRango
-  const tiposPeso = Array.isArray(dataLineaRango)
+  const tiposPesos = Array.isArray(dataLineaRango)
     ? [
         ...new Set(
           dataLineaRango.map((row) => row.maquina?.trim().toUpperCase())
@@ -110,24 +110,27 @@ const TablaLineaVolcado = () => {
   //Linea TN TOTAL
 
   // Agrupar los datos por rango y tipo de peso
-  const dataAgrupada = [];
+  const dataAgrupadas = [];
 
   dataLineaRango.forEach(({ maquina, rango, avance }) => {
     const tipo = maquina?.trim().toUpperCase();
     if (!rango || !tipo) return;
-    let existente = dataAgrupada.find((item) => item.rango === rango);
+    let existente = dataAgrupadas.find((item) => item.rango === rango);
     if (!existente) {
       existente = { rango };
-      dataAgrupada.push(existente);
+      dataAgrupadas.push(existente);
     }
     existente[tipo] = avance;
   });
-  dataAgrupada.forEach((item) => {
-    tiposPeso.forEach((tipo) => {
+  dataAgrupadas.forEach((item) => {
+    tiposPesos.forEach((tipo) => {
       if (!(tipo in item)) {
         item[tipo] = 0;
       }
     });
+  });
+  tiposPesos.forEach((maquina, index) => {
+    colores[maquina] = coloresBase[index % coloresBase.length];
   });
 
   const colores = {};
@@ -147,9 +150,6 @@ const TablaLineaVolcado = () => {
     "#98df8a",
   ];
 
-  tiposPeso.forEach((maquina, index) => {
-    colores[maquina] = coloresBase[index % coloresBase.length];
-  });
   const fetchData = async () => {
     try {
       // Convertir valores a minúsculas para la API si lo requiere
@@ -493,7 +493,7 @@ const TablaLineaVolcado = () => {
             </div>
             <ResponsiveContainer width="100%" height={280}>
               <LineChart
-                data={dataAgrupada}
+                data={dataAgrupadas}
                 margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -518,7 +518,7 @@ const TablaLineaVolcado = () => {
                     left: 0,
                   }}
                 />{" "}
-                {tiposPeso.map((tipo) => (
+                {tiposPesos.map((tipo) => (
                   <Line
                     key={tipo}
                     type="linear"
