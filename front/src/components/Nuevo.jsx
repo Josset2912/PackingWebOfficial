@@ -200,6 +200,9 @@ const TablaNuevo = () => {
   tiposFiler.forEach(
     (tipo, index) => (colores[tipo] = coloresBase[index % coloresBase.length])
   );
+  tiposPesosLinea.forEach(
+    (tipo, index) => (colores[tipo] = coloresBase[index % coloresBase.length])
+  );
 
   const selectSx = {
     "& .MuiOutlinedInput-root": {
@@ -464,103 +467,344 @@ const TablaNuevo = () => {
 
   return (
     <>
-      <div className="P-4">
-        {/* Selectores de filtro */}
-        <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full mt-1 ">
-          {/* SEDE */}
-          <FiltroSelect
-            id="sede"
-            label="SEDE"
-            value={
-              dataSedes.some((row) => row.sede === filters.sede)
-                ? filters.sede
-                : "TODOS"
-            }
-            options={["TODOS", ...dataSedes.map((r) => r.sede)]}
-            onChange={(val) => handleFilterChange("sede", val)}
-          />
-          {/* CULTIVO */}
-          {/* CULTIVO */}
-          <FiltroSelect
-            id="cultivo"
-            label="CULTIVO"
-            value={
-              dataCultivo.some((row) => row.cultivo === fruta) ? fruta : ""
-            }
-            options={dataCultivo.map((r) => r.cultivo)}
-            onChange={setFruta}
-          />
-          {/* maquina */}
-          <FiltroSelect
-            id="maquina"
-            label="MAQUINA"
-            value={
-              dataMaquina.some((row) => row.maquina === maquina) ? maquina : ""
-            }
-            options={dataMaquina.map((r) => r.maquina)}
-            onChange={setMaquina}
-          />
-          {/* FILER */}
-          <FiltroSelect
-            id="filer"
-            label="FILER"
-            value={dataFiler.some((row) => row.filer === filer) ? filer : ""}
-            options={dataFiler.map((r) => r.filer)}
-            onChange={setFiler}
-          />
-          {/* TURNO */}
-          <FiltroSelect
-            id="turno"
-            label="TURNO"
-            value={dataTurno.some((row) => row.turno === turno) ? turno : ""}
-            options={dataTurno.map((r) => r.turno)}
-            onChange={setTurno}
-          />
-          {/* PRESENTACION */}
-          <FiltroSelect
-            id="presentacion"
-            label="PRESENTACION"
-            value={
-              dataPresentacion.some((row) => row.presentacion === presentacion)
-                ? presentacion
-                : "SELECCIONE"
-            }
-            options={dataPresentacion.map((r) => r.presentacion)}
-            onChange={setPresentacion}
-          />
-          {/* FECHA */}
-          <div className="w-full sm:w-auto">
-            <Box sx={{ minWidth: 190, width: "100%" }}>
-              <FormControl fullWidth size="small" sx={selectSx}>
-                <InputLabel shrink htmlFor="fecha-input">
-                  FECHA
-                </InputLabel>
-                <input
-                  id="fecha-input"
-                  type="date"
-                  value={fecha}
-                  onChange={(e) => setFecha(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    border: "1px solid #4caf50",
-                    fontSize: "16px",
+      {/* Selectores de filtro */}
+      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full mt-1 ">
+        {/* SEDE */}
+        <FiltroSelect
+          id="sede"
+          label="SEDE"
+          value={
+            dataSedes.some((row) => row.sede === filters.sede)
+              ? filters.sede
+              : "TODOS"
+          }
+          options={["TODOS", ...dataSedes.map((r) => r.sede)]}
+          onChange={(val) => handleFilterChange("sede", val)}
+        />
+        {/* CULTIVO */}
+        {/* CULTIVO */}
+        <FiltroSelect
+          id="cultivo"
+          label="CULTIVO"
+          value={dataCultivo.some((row) => row.cultivo === fruta) ? fruta : ""}
+          options={dataCultivo.map((r) => r.cultivo)}
+          onChange={setFruta}
+        />
+        {/* maquina */}
+        <FiltroSelect
+          id="maquina"
+          label="MAQUINA"
+          value={
+            dataMaquina.some((row) => row.maquina === maquina) ? maquina : ""
+          }
+          options={dataMaquina.map((r) => r.maquina)}
+          onChange={setMaquina}
+        />
+        {/* FILER */}
+        <FiltroSelect
+          id="filer"
+          label="FILER"
+          value={dataFiler.some((row) => row.filer === filer) ? filer : ""}
+          options={dataFiler.map((r) => r.filer)}
+          onChange={setFiler}
+        />
+        {/* TURNO */}
+        <FiltroSelect
+          id="turno"
+          label="TURNO"
+          value={dataTurno.some((row) => row.turno === turno) ? turno : ""}
+          options={dataTurno.map((r) => r.turno)}
+          onChange={setTurno}
+        />
+        {/* PRESENTACION */}
+        <FiltroSelect
+          id="presentacion"
+          label="PRESENTACION"
+          value={
+            dataPresentacion.some((row) => row.presentacion === presentacion)
+              ? presentacion
+              : "SELECCIONE"
+          }
+          options={dataPresentacion.map((r) => r.presentacion)}
+          onChange={setPresentacion}
+        />
+        {/* FECHA */}
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl fullWidth size="small" sx={selectSx}>
+              <InputLabel shrink htmlFor="fecha-input">
+                FECHA
+              </InputLabel>
+              <input
+                id="fecha-input"
+                type="date"
+                value={fecha}
+                onChange={(e) => setFecha(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #4caf50",
+                  fontSize: "16px",
+                }}
+              />
+            </FormControl>
+          </Box>
+        </div>{" "}
+      </div>
+
+      <div className=" flex-1 flex flex-col gap-3">
+        {/* TABLA LINEA VOLCADO */}
+        <div className="flex flex-col lg:flex-row gap-2 w-full h-auto max-sm:h-auto">
+          {/* Contenedor izquierdo */}
+          <div className="flex flex-col flex-1 gap-3 w-full">
+            {/* Tabla KG PROG VS EJEC */}
+            <div className="bg-white rounded-xl shadow-lg flex flex-col w-full max-h-[250px] overflow-hidden">
+              <div className="px-4 py-1 max-sm:px-2 max-sm:py-1">
+                <h2 className="text-center font-bold text-base sm:text-2xl md:text-3xl text-black uppercase tracking-wider max-sm:text-sm">
+                  KG PROG VS EJEC
+                </h2>
+              </div>
+
+              {/* Cabecera de la tabla */}
+              <div className="overflow-x-auto w-full">
+                <table className="w-full table-auto border-collapse">
+                  <thead className="sticky top-0 z-10 bg-indigo-600 text-white">
+                    <tr>
+                      {["EMPAQUE", "VAR", "KG PROG", "EJEC", "%"].map(
+                        (header, i) => (
+                          <th
+                            key={i}
+                            className="px-2 py-1 text-center font-semibold text-sm sm:text-base md:text-lg uppercase max-sm:text-xs"
+                          >
+                            {header}
+                          </th>
+                        )
+                      )}
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+
+              {/* Cuerpo de la tabla con scroll */}
+              <div className="overflow-y-auto flex-1 w-full">
+                <table className="w-full table-auto border-collapse">
+                  <tbody className="divide-y divide-gray-200">
+                    {Array.isArray(dataLineaVolcado) &&
+                    dataLineaVolcado.length > 0 ? (
+                      dataLineaVolcado.map((row, index) => (
+                        <tr
+                          key={index}
+                          className={`${
+                            index % 2 === 0 ? "bg-white" : "bg-indigo-50"
+                          } hover:bg-indigo-100`}
+                        >
+                          {[
+                            row.empaque || "",
+                            row.var || "",
+                            row.prog || "0",
+                            row.ejec || "0",
+                            `${row.porcentaje || "0"} %`,
+                          ].map((cell, i) => (
+                            <td
+                              key={i}
+                              className="px-2 py-1 text-center text-sm sm:text-base md:text-lg text-gray-800 font-medium max-sm:text-xs"
+                            >
+                              {cell}
+                            </td>
+                          ))}
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          className="px-2 py-2 text-center text-sm sm:text-base text-gray-500 italic max-sm:text-xs"
+                        >
+                          Ningún dato disponible
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Gráfico de línea */}
+            <div className="rounded-xl border border-gray-400 shadow-lg flex flex-col w-full max-h-[250px] overflow-hidden">
+              {/* Cabecera sticky */}
+              <div className="p-1 bg-blue-500 rounded-t-xl sticky top-0 z-20">
+                <h2 className="text-center text-lg sm:text-xl md:text-2xl font-bold mb-1 uppercase text-white">
+                  AVANCE TN POR HORA
+                </h2>
+              </div>
+
+              {/* Contenedor scroll del gráfico */}
+              <div className="overflow-x-auto w-full flex-1">
+                <ResponsiveContainer width="100%" height={200}>
+                  <LineChart
+                    data={dataAgrupadasLinea}
+                    margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="rango" />
+                    <YAxis tick={false} />
+                    <Tooltip
+                      contentStyle={{
+                        borderRadius: "8px",
+                        background: "#ffffffdd",
+                        backdropFilter: "blur(4px)",
+                        border: "1px solid #dddddd",
+                      }}
+                    />
+                    <Legend
+                      align="center"
+                      layout="horizontal"
+                      verticalAlign="bottom"
+                      wrapperStyle={{
+                        textAlign: "center",
+                        width: "100%",
+                        left: 0,
+                      }}
+                    />
+                    {tiposPesosLinea.map((tipo) => (
+                      <Line
+                        key={tipo}
+                        type="linear"
+                        dataKey={tipo}
+                        stroke={colores[tipo]}
+                        strokeWidth={2}
+                        dot={{ r: 4 }}
+                        activeDot={{ r: 6 }}
+                        animationDuration={500}
+                        label={({ x, y, value }) => (
+                          <text
+                            x={x}
+                            y={y - 10}
+                            fill={colores[tipo]}
+                            fontSize={12}
+                            fontWeight="bold"
+                            textAnchor="middle"
+                          >
+                            {`${value} `}
+                          </text>
+                        )}
+                      />
+                    ))}
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+
+          {/* Contenedor derecho */}
+          <div className="flex flex-col gap-3 w-full lg:w-[40%]">
+            {/* Tabla SGTE PALET */}
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div className="px-4 py-1">
+                <h2 className="text-center font-bold text-base sm:text-2xl md:text-3xl text-black uppercase tracking-wider">
+                  SGTE PALET
+                </h2>
+              </div>
+
+              <div className="overflow-x-auto">
+                <div className="overflow-y-auto max-h-[75vh]">
+                  <table className="w-full table-auto">
+                    <thead className="sticky top-0 z-10 bg-teal-600 text-white">
+                      <tr>
+                        {["PALET", "VAR", "CAB"].map((h, i) => (
+                          <th
+                            key={i}
+                            className="px-2 py-1 text-center font-semibold text-sm sm:text-base md:text-lg uppercase"
+                          >
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {dataSgtePalet.length > 0 ? (
+                        dataSgtePalet.map((row, index) => (
+                          <tr
+                            key={index}
+                            className={
+                              index === 0 ? "animate-blink text-green-700" : ""
+                            }
+                          >
+                            {[
+                              row.palet || "N/A",
+                              row.varsgt || "N/A",
+                              row.cabsgt || "N/A",
+                            ].map((cell, i) => (
+                              <td
+                                key={i}
+                                className="px-2 py-1 text-center text-sm sm:text-base md:text-lg text-gray-800 font-medium"
+                              >
+                                {cell}
+                              </td>
+                            ))}
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="3"
+                            className="px-2 py-2 text-center text-sm sm:text-base text-red-500 italic"
+                          >
+                            Ningún dato disponible
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {/* Medidor de porcentaje avance */}
+            <div className="flex justify-center bg-white rounded-xl shadow-lg w-full">
+              <div className="w-full max-w-[300px]">
+                <h4 className="uppercase text-xl sm:text-2xl text-center font-bold text-gray-800">
+                  porcentaje avance
+                </h4>
+                <GaugeChart
+                  value={progressValue}
+                  colors={{
+                    progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                    remaining: "#F5F5F5",
+                    needle: "#E91E63",
+                    text: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                    labelColor: "#757575",
                   }}
+                  label="Progress"
+                  fontSize="24px"
+                  thickness="65%"
                 />
-              </FormControl>
-            </Box>
-          </div>{" "}
+              </div>
+            </div>
+
+            {/* TN PROMEDIO / Avance HR Acumulado */}
+            <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center w-full">
+              <h4 className="uppercase text-xl sm:text-2xl text-center font-bold text-gray-800">
+                AVANCE HR ACUMULADO
+              </h4>
+              <NumeroUnico
+                value={dataLineaTnTotal?.[0]?.tnTotal || 0}
+                color="#007BFF"
+                duration={3}
+              />
+            </div>
+          </div>
         </div>
         {/* TABLA CALIDAD */}
-        <div className="flex flex-col gap-4 px-2 max-sm:px-0">
-          {/* Contenedor superior: ocupa 50% de la pantalla */}
-          <div className="flex lg:flex-row gap-4 w-full h-[50vh]">
-            {/* COLUMNA IZQUIERDA - Tabla */}
-            <div className="w-full lg:w-2/5 flex flex-col overflow-y-auto gap-2">
-              <table className="w-full min-w-[200px]">
-                <thead className="sticky top-0 z-10 bg-blue-600 text-white">
-                  <tr>
+        <div className="flex flex-col lg:flex-row gap-3 w-full h-auto max-sm:h-auto  ">
+          {/* Contenedor superior: ocupa 50% de la pantalla */}{" "}
+          {/* COLUMNA IZQUIERDA - Tabla */}
+          <div className="w-full lg:w-1/2 overflow-x-auto rounded-xl shadow-lg  max-sm:mt-1 max-sm:rounded-lg">
+            <div className=" max-h-[calc(48vh-70px)] max-sm:max-h-[300px]">
+              <table className="w-full min-w-[200px] ">
+                <thead className="sticky top-0 z-10">
+                  <tr className="bg-blue-600 text-white">
                     <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs">
                       <span className="max-sm:hidden">LINEA</span>
                       <span className="hidden max-sm:inline">LN</span>
@@ -586,7 +830,7 @@ const TablaNuevo = () => {
                     dataCalidad.map((row, index) => (
                       <tr
                         key={index}
-                        className="hover:bg-gray-50 transition-colors border-b-2 border-cyan-600"
+                        className="hover:bg-gray-50 transition-colors border-b-2 border-cyan-600 "
                       >
                         <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs">
                           {row.linea}
@@ -638,120 +882,55 @@ const TablaNuevo = () => {
                 </tbody>
               </table>
             </div>
-
-            {/* COLUMNA CENTRAL - Gráficos */}
-            {/* COLUMNA CENTRAL - Gráficos */}
-            <div className="w-full lg:w-2/5 flex flex-col gap-2 h-[50vh] overflow-y-auto">
-              {/* Gráfico 1 */}
-              <div className="bg-white rounded-xl shadow-lg flex-1 min-h-0">
-                <div className="bg-blue-500 rounded-t-xl">
-                  <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-2xl font-bold mb-1 uppercase text-white max-sm:text-xs">
-                    % por rango de hora
-                  </h2>
-                </div>
-                <div className="h-[calc(100%-40px)] min-h-0">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
-                      data={dataAgrupada}
-                      margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
-                    >
-                      <CartesianGrid strokeDasharray="2 2" />
-                      <XAxis dataKey="rango" />
-                      <YAxis tick={false} />
-                      <Tooltip
-                        formatter={(value) => `${value} %`}
-                        contentStyle={{
-                          borderRadius: "8px",
-                          background: "#ffffffdd",
-                          backdropFilter: "blur(4px)",
-                        }}
-                      />
-                      <Legend
-                        align="center"
-                        layout="horizontal"
-                        verticalAlign="bottom"
-                        wrapperStyle={{
-                          textAlign: "center",
-                          width: "100%",
-                          left: 0,
-                        }}
-                      />
-                      {tiposPeso.map((tipo) => (
-                        <Line
-                          key={tipo}
-                          type="linear"
-                          dataKey={tipo}
-                          stroke={colores[tipo] || "#000"}
-                          strokeWidth={2}
-                          dot={{ r: 4 }}
-                          activeDot={{ r: 6 }}
-                          animationDuration={500}
-                          label={({ x, y, value }) =>
-                            value > 0 && (
-                              <text
-                                x={x}
-                                y={y - 10}
-                                fill={colores[tipo]}
-                                fontSize={10}
-                                fontWeight="bold"
-                                textAnchor="middle"
-                              >
-                                {`${value}%`}
-                              </text>
-                            )
-                          }
-                        />
-                      ))}
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
+          </div>
+          {/* COLUMNA CENTRAL - Gráficos */}
+          <div className="w-full lg:w-2/5 flex flex-col gap-1 h-[50vh] overflow-y-auto">
+            {/* Gráfico 1 */}
+            <div className="bg-white rounded-xl shadow-lg flex-1 min-h-0">
+              <div className="bg-blue-500 rounded-t-xl">
+                <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-2xl font-bold mb-1 uppercase text-white max-sm:text-xs">
+                  % por rango de hora
+                </h2>
               </div>
-
-              {/* Gráfico 2 */}
-              <div className="bg-white rounded-xl shadow-lg flex-1 min-h-0">
-                <div className="bg-blue-500 rounded-t-xl">
-                  <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-2xl font-bold mb-1 uppercase text-white max-sm:text-xs">
-                    % por filer
-                  </h2>
-                </div>
-                <div className="h-[calc(100%-40px)] min-h-0">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
-                      data={dataAgrupadaFilerOrdenada}
-                      margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
-                    >
-                      <CartesianGrid strokeDasharray="2 2" />
-                      <XAxis dataKey="rangofiler" />
-                      <YAxis tick={false} />
-                      <Tooltip
-                        formatter={(value) => `${value} %`}
-                        contentStyle={{
-                          borderRadius: "8px",
-                          background: "#ffffffdd",
-                          backdropFilter: "blur(4px)",
-                        }}
-                      />
-                      <Legend
-                        align="center"
-                        layout="horizontal"
-                        verticalAlign="bottom"
-                        wrapperStyle={{
-                          textAlign: "center",
-                          width: "100%",
-                          left: 0,
-                        }}
-                      />
-                      {tiposFiler.map((tipo) => (
-                        <Line
-                          key={tipo}
-                          type="linear"
-                          dataKey={tipo}
-                          stroke={colores[tipo] || "#000"}
-                          strokeWidth={2}
-                          dot={{ r: 4 }}
-                          activeDot={{ r: 6 }}
-                          animationDuration={500}
-                          label={({ x, y, value }) => (
+              <div className="h-[calc(100%-40px)] min-h-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={dataAgrupada}
+                    margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
+                  >
+                    <CartesianGrid strokeDasharray="2 2" />
+                    <XAxis dataKey="rango" />
+                    <YAxis tick={false} />
+                    <Tooltip
+                      formatter={(value) => `${value} %`}
+                      contentStyle={{
+                        borderRadius: "8px",
+                        background: "#ffffffdd",
+                        backdropFilter: "blur(4px)",
+                      }}
+                    />
+                    <Legend
+                      align="center"
+                      layout="horizontal"
+                      verticalAlign="bottom"
+                      wrapperStyle={{
+                        textAlign: "center",
+                        width: "100%",
+                        left: 0,
+                      }}
+                    />
+                    {tiposPeso.map((tipo) => (
+                      <Line
+                        key={tipo}
+                        type="linear"
+                        dataKey={tipo}
+                        stroke={colores[tipo] || "#000"}
+                        strokeWidth={2}
+                        dot={{ r: 4 }}
+                        activeDot={{ r: 6 }}
+                        animationDuration={500}
+                        label={({ x, y, value }) =>
+                          value > 0 && (
                             <text
                               x={x}
                               y={y - 10}
@@ -760,293 +939,95 @@ const TablaNuevo = () => {
                               fontWeight="bold"
                               textAnchor="middle"
                             >
-                              {`${value} %`}
+                              {`${value}%`}
                             </text>
-                          )}
-                        />
-                      ))}
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
+                          )
+                        }
+                      />
+                    ))}
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
             </div>
 
-            {/* COLUMNA DERECHA - Medidores */}
-            <div className="w-full lg:w-1/5 flex flex-col gap-2 overflow-y-auto">
-              <div className="bg-white rounded-xl shadow-lg flex-1 flex flex-col justify-center sm:min-w-[120px] sm:h-[80px]">
-                <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
-                  {" "}
-                  % conforme{" "}
-                </h4>
-                <GaugeChart
-                  value={progressValuePesoNormal}
-                  colors={{
-                    progress:
-                      progressValuePesoNormal > 80 ? "#4CAF50" : "#FFC107",
-                    remaining: "#F5F5F5",
-                    needle: "#E91E63",
-                    text: progressValuePesoNormal > 80 ? "#4CAF50" : "#FFC107",
-                    labelColor: "#757575",
-                  }}
-                  label="Progress"
-                  fontSize="24px"
-                  thickness="65%"
-                />
+            {/* Gráfico 2 */}
+            <div className="bg-white rounded-xl shadow-lg flex-1 min-h-0">
+              <div className="bg-blue-500 rounded-t-xl">
+                <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-2xl font-bold mb-1 uppercase text-white max-sm:text-xs">
+                  % por filer
+                </h2>
               </div>
-
-              <div className="bg-white rounded-xl shadow-lg flex-1 flex flex-col justify-center sm:min-w-[120px] sm:h-[80px]">
-                <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
-                  {" "}
-                  % bajopeso{" "}
-                </h4>
-                <GaugeChart
-                  value={progressValueBajoPeso}
-                  colors={{
-                    progress:
-                      progressValueBajoPeso > 80 ? "#4CAF50" : "#FFC107",
-                    remaining: "#F5F5F5",
-                    needle: "#E91E63",
-                    text: progressValueBajoPeso > 80 ? "#4CAF50" : "#FFC107",
-                    labelColor: "#757575",
-                  }}
-                  label="Progress"
-                  fontSize="24px"
-                  thickness="65%"
-                />
-              </div>
-
-              <div className="bg-white rounded-xl shadow-lg flex-1 flex flex-col justify-center sm:min-w-[120px] sm:h-[80px]">
-                <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
-                  {" "}
-                  % sobrepeso{" "}
-                </h4>
-                <GaugeChart
-                  value={progressValueSobrePeso}
-                  colors={{
-                    progress:
-                      progressValueSobrePeso > 80 ? "#4CAF50" : "#FFC107",
-                    remaining: "#F5F5F5",
-                    needle: "#E91E63",
-                    text: progressValueSobrePeso > 80 ? "#4CAF50" : "#FFC107",
-                    labelColor: "#757575",
-                  }}
-                  label="Progress"
-                  fontSize="24px"
-                  thickness="65%"
-                />
+              <div className="h-[calc(100%-40px)] min-h-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={dataAgrupadaFilerOrdenada}
+                    margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
+                  >
+                    <CartesianGrid strokeDasharray="2 2" />
+                    <XAxis dataKey="rangofiler" />
+                    <YAxis tick={false} />
+                    <Tooltip
+                      formatter={(value) => `${value} %`}
+                      contentStyle={{
+                        borderRadius: "8px",
+                        background: "#ffffffdd",
+                        backdropFilter: "blur(4px)",
+                      }}
+                    />
+                    <Legend
+                      align="center"
+                      layout="horizontal"
+                      verticalAlign="bottom"
+                      wrapperStyle={{
+                        textAlign: "center",
+                        width: "100%",
+                        left: 0,
+                      }}
+                    />
+                    {tiposFiler.map((tipo) => (
+                      <Line
+                        key={tipo}
+                        type="linear"
+                        dataKey={tipo}
+                        stroke={colores[tipo] || "#000"}
+                        strokeWidth={2}
+                        dot={{ r: 4 }}
+                        activeDot={{ r: 6 }}
+                        animationDuration={500}
+                        label={({ x, y, value }) => (
+                          <text
+                            x={x}
+                            y={y - 10}
+                            fill={colores[tipo]}
+                            fontSize={10}
+                            fontWeight="bold"
+                            textAnchor="middle"
+                          >
+                            {`${value} %`}
+                          </text>
+                        )}
+                      />
+                    ))}
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="w-full h-1 bg-gray-200 my-2"></div>
-      </div>
-      {/* TABLA LINEA VOLCADO */}
-      <div className="flex flex-col lg:flex-row gap-3 w-full overflow-x-auto">
-        {/* Contenedor izquierdo */}
-        <div className="flex flex-col flex-1 min-w-0 min-h-0 gap-3">
-          {/* Tabla KG PROG VS EJEC */}
-          <div className="bg-white rounded-xl shadow-lg overflow-y-auto max-h-[250px]">
-            <div className="px-6 py-1 max-sm:px-3 max-sm:py-1">
-              <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider max-sm:text-sm">
-                KG PROG VS EJEC
-              </h2>
-            </div>
-            <div className="overflow-y-auto">
-              <table className="w-full min-w-[260px] border-collapse">
-                <thead className="sticky top-0 z-10 bg-indigo-600 text-white">
-                  <tr>
-                    <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
-                      EMPAQUE
-                    </th>
-                    <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
-                      VAR
-                    </th>
-                    <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
-                      KG PROG
-                    </th>
-                    <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
-                      EJEC
-                    </th>
-                    <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
-                      %
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {Array.isArray(dataLineaVolcado) &&
-                  dataLineaVolcado.length > 0 ? (
-                    dataLineaVolcado.map((row, index) => (
-                      <tr
-                        key={`lineaAvance-${index}`}
-                        className={`${
-                          index % 2 === 0 ? "bg-white" : "bg-indigo-50"
-                        } hover:bg-indigo-100`}
-                      >
-                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
-                          {row.empaque || ""}
-                        </td>
-                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
-                          {row.var || ""}
-                        </td>
-                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
-                          {row.prog || "0"}
-                        </td>
-                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
-                          {row.ejec || "0"}
-                        </td>
-                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
-                          {row.porcentaje || "0"} %
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td
-                        colSpan="5"
-                        className="px-4 py-3 text-center text-sm sm:text-base text-gray-500 italic max-sm:text-xs max-sm:py-2"
-                      >
-                        Ningún dato disponible
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Gráfico de línea */}
-          <div className="overflow-x-auto rounded-xl border border-gray-400 shadow-lg max-h-[250px]">
-            <div className="p-1 bg-blue-500 rounded-t-xl">
-              <h2 className="text-center text-lg sm:text-2xl font-bold mb-1 uppercase text-white">
-                AVANCE TN POR HORA
-              </h2>
-            </div>
-            <ResponsiveContainer width="100%" height={200}>
-              <LineChart
-                data={dataAgrupadasLinea}
-                margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="rango" />
-                <YAxis tick={false} />
-                <Tooltip
-                  contentStyle={{
-                    borderRadius: "8px",
-                    background: "#ffffffdd",
-                    backdropFilter: "blur(4px)",
-                    border: "1px solid #dddddd",
-                  }}
-                />
-                <Legend
-                  align="center"
-                  layout="horizontal"
-                  verticalAlign="bottom"
-                  wrapperStyle={{ textAlign: "center", width: "100%", left: 0 }}
-                />
-                {tiposPesosLinea.map((tipo) => (
-                  <Line
-                    key={tipo}
-                    type="linear"
-                    dataKey={tipo}
-                    stroke={colores[tipo] || "#000000"}
-                    strokeWidth={2}
-                    dot={{ r: 4 }}
-                    activeDot={{ r: 6 }}
-                    animationDuration={500}
-                    label={({ x, y, value }) => (
-                      <text
-                        x={x}
-                        y={y - 10}
-                        fill={colores[tipo]}
-                        fontSize={12}
-                        fontWeight="bold"
-                        textAnchor="middle"
-                      >{`${value} `}</text>
-                    )}
-                  />
-                ))}
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Contenedor derecho */}
-        <div className="flex flex-col gap-1 min-w-0 min-h-0 max-sm:w-full max-sm:gap-2">
-          {/* Tabla SGTE PALET */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden max-sm:rounded-lg">
-            <div className="px-12 py-1">
-              <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider">
-                SGTE PALET
-              </h2>
-            </div>
-            <div className="overflow-x-auto">
-              <div className="h-auto max-h-[75vh] overflow-y-auto">
-                <table className="w-full">
-                  <thead className="sticky top-0 z-10">
-                    <tr className="bg-teal-600 text-white">
-                      <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
-                        PALET
-                      </th>
-                      <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
-                        VAR
-                      </th>
-                      <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
-                        CAB
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {dataSgtePalet.length > 0 ? (
-                      dataSgtePalet.map((row, index) => (
-                        <tr
-                          key={`proximoPalet-${index}`}
-                          className={`transition-colors  ${
-                            index === 0
-                              ? "animate-blink text-green-700"
-                              : "border-transparent"
-                          }`}
-                        >
-                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
-                            {row.palet || "N/A"}
-                          </td>
-                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
-                            {row.varsgt || "N/A"}
-                          </td>
-                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
-                            {row.cabsgt || "N/A"}
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="3"
-                          className="px-4 py-3 text-center text-sm sm:text-base text-red-500 italic"
-                        >
-                          Ningún dato disponible
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          {/* Medidor */}
-          <div className="flex justify-center bg-white rounded-xl shadow-lg">
-            <div className="w-full max-w-[300px]">
-              <h4 className="uppercase text-2xl text-center font-bold text-gray-800">
-                porcentaje avance
+          {/* COLUMNA DERECHA - Medidores */}
+          <div className="w-full lg:w-1/6 flex flex-col gap-2 overflow-y-auto">
+            <div className="bg-white rounded-xl shadow-lg flex-1 flex flex-col justify-center sm:min-w-[100px] sm:h-[50px]">
+              <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
+                {" "}
+                % conforme{" "}
               </h4>
               <GaugeChart
-                value={progressValue}
+                value={progressValuePesoNormal}
                 colors={{
-                  progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                  progress:
+                    progressValuePesoNormal > 80 ? "#4CAF50" : "#FFC107",
                   remaining: "#F5F5F5",
                   needle: "#E91E63",
-                  text: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                  text: progressValuePesoNormal > 80 ? "#4CAF50" : "#FFC107",
                   labelColor: "#757575",
                 }}
                 label="Progress"
@@ -1054,18 +1035,46 @@ const TablaNuevo = () => {
                 thickness="65%"
               />
             </div>
-          </div>
 
-          {/* TN PROMEDIO */}
-          <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center ">
-            <h4 className="uppercase text-2xl text-center font-bold text-gray-800">
-              AVANCE HR ACUMULADO
-            </h4>
-            <NumeroUnico
-              value={dataLineaTnTotal?.[0]?.tnTotal || 0}
-              color="#007BFF"
-              duration={3}
-            />
+            <div className="bg-white rounded-xl shadow-lg flex-1 flex flex-col justify-center sm:min-w-[100px] sm:h-[50px]">
+              <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
+                {" "}
+                % bajopeso{" "}
+              </h4>
+              <GaugeChart
+                value={progressValueBajoPeso}
+                colors={{
+                  progress: progressValueBajoPeso > 80 ? "#4CAF50" : "#FFC107",
+                  remaining: "#F5F5F5",
+                  needle: "#E91E63",
+                  text: progressValueBajoPeso > 80 ? "#4CAF50" : "#FFC107",
+                  labelColor: "#757575",
+                }}
+                label="Progress"
+                fontSize="24px"
+                thickness="65%"
+              />
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg flex-1 flex flex-col justify-center sm:min-w-[100px] sm:h-[50px]">
+              <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
+                {" "}
+                % sobrepeso{" "}
+              </h4>
+              <GaugeChart
+                value={progressValueSobrePeso}
+                colors={{
+                  progress: progressValueSobrePeso > 80 ? "#4CAF50" : "#FFC107",
+                  remaining: "#F5F5F5",
+                  needle: "#E91E63",
+                  text: progressValueSobrePeso > 80 ? "#4CAF50" : "#FFC107",
+                  labelColor: "#757575",
+                }}
+                label="Progress"
+                fontSize="24px"
+                thickness="65%"
+              />
+            </div>
           </div>
         </div>
       </div>
