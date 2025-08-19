@@ -709,48 +709,48 @@ const TablaNuevo = () => {
               </div>
 
               <div className="overflow-x-auto">
-                <div className="overflow-y-auto max-h-[75vh]">
-                  <table className="w-full table-auto">
-                    <thead className="sticky top-0 z-10 bg-teal-600 text-white">
-                      <tr>
-                        {["PALET", "VAR", "CAB"].map((h, i) => (
-                          <th
-                            key={i}
-                            className="px-2 py-1 text-center font-semibold text-sm sm:text-base md:text-lg uppercase"
-                          >
-                            {h}
-                          </th>
-                        ))}
+                <div className="h-auto max-h-[75vh] overflow-y-auto">
+                  <table className="w-full">
+                    <thead className="sticky top-0 z-10">
+                      <tr className="bg-teal-600 text-white">
+                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                          PALET
+                        </th>
+                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                          VAR
+                        </th>
+                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                          CAB
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       {dataSgtePalet.length > 0 ? (
                         dataSgtePalet.map((row, index) => (
                           <tr
-                            key={index}
-                            className={
-                              index === 0 ? "animate-blink text-green-700" : ""
-                            }
+                            key={`proximoPalet-${index}`}
+                            className={`transition-colors  ${
+                              index === 0
+                                ? "animate-blink text-green-700"
+                                : "border-transparent"
+                            }`}
                           >
-                            {[
-                              row.palet || "N/A",
-                              row.varsgt || "N/A",
-                              row.cabsgt || "N/A",
-                            ].map((cell, i) => (
-                              <td
-                                key={i}
-                                className="px-2 py-1 text-center text-sm sm:text-base md:text-lg text-gray-800 font-medium"
-                              >
-                                {cell}
-                              </td>
-                            ))}
+                            <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
+                              {row.palet || "N/A"}
+                            </td>
+                            <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
+                              {row.varsgt || "N/A"}
+                            </td>
+                            <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
+                              {row.cabsgt || "N/A"}
+                            </td>
                           </tr>
                         ))
                       ) : (
                         <tr>
                           <td
                             colSpan="3"
-                            className="px-2 py-2 text-center text-sm sm:text-base text-red-500 italic"
+                            className="px-4 py-3 text-center text-sm sm:text-base text-red-500 italic"
                           >
                             Ningún dato disponible
                           </td>
