@@ -567,7 +567,8 @@ const TablaNuevo = () => {
               </div>
 
               {/* Cabecera de la tabla */}
-              <div className="overflow-x-auto w-full">
+              {/* Cabecera de la tabla */}
+              <div className="w-full">
                 <table className="w-full table-auto border-collapse">
                   <thead className="sticky top-0 z-10 bg-indigo-600 text-white">
                     <tr>
@@ -575,7 +576,7 @@ const TablaNuevo = () => {
                         (header, i) => (
                           <th
                             key={i}
-                            className="px-2 py-1 text-center font-semibold text-sm sm:text-base md:text-lg uppercase max-sm:text-xs"
+                            className="px-4 py-3 text-center font-bold text-lg sm:text-xl md:text-2xl uppercase tracking-wide"
                           >
                             {header}
                           </th>
@@ -761,38 +762,41 @@ const TablaNuevo = () => {
               </div>
             </div>
 
-            {/* Medidor de porcentaje avance */}
-            <div className="flex justify-center bg-white rounded-xl shadow-lg w-full">
-              <div className="w-full max-w-[300px]">
+            {/* Contenedor principal dividido en dos partes */}
+            <div className="flex flex-col lg:flex-row gap-4 w-full">
+              {/* Medidor de porcentaje avance */}
+              <div className="flex justify-center bg-white rounded-xl shadow-lg flex-1 p-4">
+                <div className="w-full max-w-[300px]">
+                  <h4 className="uppercase text-xl sm:text-2xl text-center font-bold text-gray-800">
+                    porcentaje avance
+                  </h4>
+                  <GaugeChart
+                    value={progressValue}
+                    colors={{
+                      progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                      remaining: "#F5F5F5",
+                      needle: "#E91E63",
+                      text: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                      labelColor: "#757575",
+                    }}
+                    label="Progress"
+                    fontSize="24px"
+                    thickness="65%"
+                  />
+                </div>
+              </div>
+
+              {/* TN PROMEDIO / Avance HR Acumulado */}
+              <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center flex-1 p-4">
                 <h4 className="uppercase text-xl sm:text-2xl text-center font-bold text-gray-800">
-                  porcentaje avance
+                  AVANCE HR ACUMULADO
                 </h4>
-                <GaugeChart
-                  value={progressValue}
-                  colors={{
-                    progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                    remaining: "#F5F5F5",
-                    needle: "#E91E63",
-                    text: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                    labelColor: "#757575",
-                  }}
-                  label="Progress"
-                  fontSize="24px"
-                  thickness="65%"
+                <NumeroUnico
+                  value={dataLineaTnTotal?.[0]?.tnTotal || 0}
+                  color="#007BFF"
+                  duration={3}
                 />
               </div>
-            </div>
-
-            {/* TN PROMEDIO / Avance HR Acumulado */}
-            <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center w-full">
-              <h4 className="uppercase text-xl sm:text-2xl text-center font-bold text-gray-800">
-                AVANCE HR ACUMULADO
-              </h4>
-              <NumeroUnico
-                value={dataLineaTnTotal?.[0]?.tnTotal || 0}
-                color="#007BFF"
-                duration={3}
-              />
             </div>
           </div>
         </div>
