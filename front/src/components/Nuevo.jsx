@@ -713,13 +713,13 @@ const TablaNuevo = () => {
                   <table className="w-full">
                     <thead className="sticky top-0 z-10">
                       <tr className="bg-teal-600 text-white">
-                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-xl uppercase">
                           PALET
                         </th>
-                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-xl uppercase">
                           VAR
                         </th>
-                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-3xl uppercase">
+                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-xl uppercase">
                           CAB
                         </th>
                       </tr>
@@ -735,13 +735,13 @@ const TablaNuevo = () => {
                                 : "border-transparent"
                             }`}
                           >
-                            <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
+                            <td className="px-4 py-2 text-center text-sm sm:text-xl text-white-800 font-medium">
                               {row.palet || "N/A"}
                             </td>
-                            <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
+                            <td className="px-4 py-2 text-center text-sm sm:text-xl text-white-800 font-medium">
                               {row.varsgt || "N/A"}
                             </td>
-                            <td className="px-4 py-2 text-center text-sm sm:text-3xl text-white-800 font-medium">
+                            <td className="px-4 py-2 text-center text-sm sm:text-xl text-white-800 font-medium">
                               {row.cabsgt || "N/A"}
                             </td>
                           </tr>
