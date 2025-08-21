@@ -306,8 +306,8 @@ const TablaRecepcion = () => {
         <div className="flex flex-wrap justify-evenly items-center gap-4">
           {/* Medidor */}
           <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/4 max-w-full bg-white rounded-lg shadow-md flex flex-col items-center ">
-            <h4 className="text-lg font-semibold text-gray-700 mb-3 text-center sm:text-left uppercase">
-              Porcentaje cumplimiento
+            <h4 className="text-2xl font-bold text-black  uppercase tracking-wider text-center">
+              Porcentaje <br /> cumplimiento
             </h4>
             <GaugeChart
               value={progressValue}
