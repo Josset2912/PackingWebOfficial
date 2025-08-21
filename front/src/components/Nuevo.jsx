@@ -468,29 +468,27 @@ const TablaNuevo = () => {
   return (
     <>
       {/* Selectores de filtro */}
-      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full mt-1 ">
+      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full mt-1">
         {/* SEDE */}
         <FiltroSelect
           id="sede"
           label="SEDE"
-          value={
-            dataSedes.some((row) => row.sede === filters.sede)
-              ? filters.sede
-              : "TODOS"
-          }
+          value={dataSedes.some((row) => row.sede === sede) ? sede : "TODOS"}
           options={["TODOS", ...dataSedes.map((r) => r.sede)]}
-          onChange={(val) => handleFilterChange("sede", val)}
+          onChange={setSedes}
         />
-        {/* CULTIVO */}
+
         {/* CULTIVO */}
         <FiltroSelect
           id="cultivo"
           label="CULTIVO"
           value={dataCultivo.some((row) => row.cultivo === fruta) ? fruta : ""}
           options={dataCultivo.map((r) => r.cultivo)}
+          displayEmpty
           onChange={setFruta}
         />
-        {/* maquina */}
+
+        {/* MAQUINA */}
         <FiltroSelect
           id="maquina"
           label="MAQUINA"
@@ -498,24 +496,30 @@ const TablaNuevo = () => {
             dataMaquina.some((row) => row.maquina === maquina) ? maquina : ""
           }
           options={dataMaquina.map((r) => r.maquina)}
+          displayEmpty
           onChange={setMaquina}
         />
+
         {/* FILER */}
         <FiltroSelect
           id="filer"
           label="FILER"
           value={dataFiler.some((row) => row.filer === filer) ? filer : ""}
           options={dataFiler.map((r) => r.filer)}
+          displayEmpty
           onChange={setFiler}
         />
+
         {/* TURNO */}
         <FiltroSelect
           id="turno"
           label="TURNO"
           value={dataTurno.some((row) => row.turno === turno) ? turno : ""}
           options={dataTurno.map((r) => r.turno)}
+          displayEmpty
           onChange={setTurno}
         />
+
         {/* PRESENTACION */}
         <FiltroSelect
           id="presentacion"
@@ -525,9 +529,13 @@ const TablaNuevo = () => {
               ? presentacion
               : "SELECCIONE"
           }
-          options={dataPresentacion.map((r) => r.presentacion)}
+          options={[
+            "SELECCIONE",
+            ...dataPresentacion.map((r) => r.presentacion),
+          ]}
           onChange={setPresentacion}
         />
+
         {/* FECHA */}
         <div className="w-full sm:w-auto">
           <Box sx={{ minWidth: 190, width: "100%" }}>
@@ -550,7 +558,7 @@ const TablaNuevo = () => {
               />
             </FormControl>
           </Box>
-        </div>{" "}
+        </div>
       </div>
 
       <div className=" flex-1 flex flex-col gap-3">
@@ -566,7 +574,6 @@ const TablaNuevo = () => {
                 </h2>
               </div>
 
-              {/* Cabecera de la tabla */}
               {/* Cabecera de la tabla */}
               <div className="w-full">
                 <table className="w-full table-auto border-collapse">
@@ -763,9 +770,9 @@ const TablaNuevo = () => {
             </div>
 
             {/* Contenedor principal dividido en dos partes */}
-            <div className="flex flex-col lg:flex-row gap-4 w-full">
+            <div className="flex flex-col lg:flex-row gap-2 w-full">
               {/* Medidor de porcentaje avance */}
-              <div className="flex justify-center bg-white rounded-xl shadow-lg flex-1 p-4">
+              <div className="flex justify-center bg-white rounded-xl shadow-lg flex-1">
                 <div className="w-full max-w-[300px]">
                   <h4 className="uppercase text-xl sm:text-2xl text-center font-bold text-gray-800">
                     porcentaje avance
@@ -787,7 +794,7 @@ const TablaNuevo = () => {
               </div>
 
               {/* TN PROMEDIO / Avance HR Acumulado */}
-              <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center flex-1 p-4">
+              <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center flex-1 ">
                 <h4 className="uppercase text-xl sm:text-2xl text-center font-bold text-gray-800">
                   AVANCE HR ACUMULADO
                 </h4>
@@ -804,27 +811,27 @@ const TablaNuevo = () => {
         <div className="flex flex-col lg:flex-row gap-3 w-full h-auto max-sm:h-auto  ">
           {/* Contenedor superior: ocupa 50% de la pantalla */}{" "}
           {/* COLUMNA IZQUIERDA - Tabla */}
-          <div className="w-full lg:w-1/2 overflow-x-auto rounded-xl shadow-lg  max-sm:mt-1 max-sm:rounded-lg">
+          <div className="w-full lg:w-1/2 h-[40vh] max-sm:h-[300px] overflow-x-auto overflow-y-auto rounded-xl shadow-lg max-sm:mt-1 max-sm:rounded-lg">
             <div className=" max-h-[calc(48vh-70px)] max-sm:max-h-[300px]">
               <table className="w-full min-w-[200px] ">
                 <thead className="sticky top-0 z-10">
                   <tr className="bg-blue-600 text-white">
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs">
+                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs">
                       <span className="max-sm:hidden">LINEA</span>
                       <span className="hidden max-sm:inline">LN</span>
                     </th>
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs">
+                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs">
                       <span className="max-sm:hidden">PRESENTACIÓN</span>
                       <span className="hidden max-sm:inline">PRES</span>
                     </th>
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs">
+                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs">
                       <span className="max-sm:hidden">TIPO PESO</span>
                       <span className="hidden max-sm:inline">PESO</span>
                     </th>
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs">
+                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs">
                       %
                     </th>
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs">
+                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs">
                       CANT
                     </th>
                   </tr>
@@ -836,14 +843,14 @@ const TablaNuevo = () => {
                         key={index}
                         className="hover:bg-gray-50 transition-colors border-b-2 border-cyan-600 "
                       >
-                        <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs">
+                        <td className="px-2 py-2 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
                           {row.linea}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs">
+                        <td className="px-2 py-2 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
                           {row.presentacion || ""}
                         </td>
                         <td
-                          className={`px-2 py-2 text-center text-sm sm:text-2xl font-medium max-sm:text-xs ${
+                          className={`px-2 py-2 text-center text-sm sm:text-xl font-medium max-sm:text-xs ${
                             row.tipO_PESO === "BAJO PESO"
                               ? "text-red-500"
                               : row.tipO_PESO === "SOBRE PESO"
@@ -854,7 +861,7 @@ const TablaNuevo = () => {
                           {row.tipO_PESO || "--"}
                         </td>
                         <td
-                          className={`px-2 py-2 text-center text-sm sm:text-2xl font-medium max-sm:text-xs ${
+                          className={`px-2 py-2 text-center text-sm sm:text-xl font-medium max-sm:text-xs ${
                             row.porcentaje >= 5 && row.porcentaje < 7
                               ? "text-green-500"
                               : row.porcentaje >= 7 && row.porcentaje < 10
@@ -868,7 +875,7 @@ const TablaNuevo = () => {
                             ? `${row.porcentaje} %`
                             : "--"}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs">
+                        <td className="px-2 py-2 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
                           {row.cantidad || "--"}
                         </td>
                       </tr>
@@ -892,7 +899,7 @@ const TablaNuevo = () => {
             {/* Gráfico 1 */}
             <div className="bg-white rounded-xl shadow-lg flex-1 min-h-0">
               <div className="bg-blue-500 rounded-t-xl">
-                <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-2xl font-bold mb-1 uppercase text-white max-sm:text-xs">
+                <h2 className="text-center text-lg sm:text-xl md:text-2xl font-bold mb-1 uppercase text-white">
                   % por rango de hora
                 </h2>
               </div>
@@ -900,7 +907,7 @@ const TablaNuevo = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                     data={dataAgrupada}
-                    margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
+                    margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
                   >
                     <CartesianGrid strokeDasharray="2 2" />
                     <XAxis dataKey="rango" />
@@ -957,7 +964,7 @@ const TablaNuevo = () => {
             {/* Gráfico 2 */}
             <div className="bg-white rounded-xl shadow-lg flex-1 min-h-0">
               <div className="bg-blue-500 rounded-t-xl">
-                <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-2xl font-bold mb-1 uppercase text-white max-sm:text-xs">
+                <h2 className="text-center text-lg sm:text-xl md:text-2xl font-bold mb-1 uppercase text-white">
                   % por filer
                 </h2>
               </div>
@@ -965,17 +972,18 @@ const TablaNuevo = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                     data={dataAgrupadaFilerOrdenada}
-                    margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
+                    margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
                   >
                     <CartesianGrid strokeDasharray="2 2" />
                     <XAxis dataKey="rangofiler" />
                     <YAxis tick={false} />
                     <Tooltip
-                      formatter={(value) => `${value} %`}
+                      formatter={(value) => `${value} `}
                       contentStyle={{
                         borderRadius: "8px",
                         background: "#ffffffdd",
                         backdropFilter: "blur(4px)",
+                        border: "1px solid #dddddd",
                       }}
                     />
                     <Legend
@@ -1018,11 +1026,10 @@ const TablaNuevo = () => {
             </div>
           </div>
           {/* COLUMNA DERECHA - Medidores */}
-          <div className="w-full lg:w-1/6 flex flex-col gap-2 overflow-y-auto">
-            <div className="bg-white rounded-xl shadow-lg flex-1 flex flex-col justify-center sm:min-w-[100px] sm:h-[50px]">
-              <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
-                {" "}
-                % conforme{" "}
+          <div className="w-full lg:w-1/7 flex flex-col gap-2 overflow-y-auto">
+            <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center min-w-[80px] h-[150px] p-2">
+              <h4 className="uppercase text-lg font-bold text-gray-800 text-center">
+                % conforme
               </h4>
               <GaugeChart
                 value={progressValuePesoNormal}
@@ -1035,15 +1042,14 @@ const TablaNuevo = () => {
                   labelColor: "#757575",
                 }}
                 label="Progress"
-                fontSize="24px"
-                thickness="65%"
+                fontSize="16px"
+                thickness="50%"
               />
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg flex-1 flex flex-col justify-center sm:min-w-[100px] sm:h-[50px]">
-              <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
-                {" "}
-                % bajopeso{" "}
+            <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center min-w-[80px] h-[150px] p-2">
+              <h4 className="uppercase text-lg font-bold text-gray-800 text-center">
+                % bajo peso
               </h4>
               <GaugeChart
                 value={progressValueBajoPeso}
@@ -1055,15 +1061,14 @@ const TablaNuevo = () => {
                   labelColor: "#757575",
                 }}
                 label="Progress"
-                fontSize="24px"
-                thickness="65%"
+                fontSize="16px"
+                thickness="50%"
               />
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg flex-1 flex flex-col justify-center sm:min-w-[100px] sm:h-[50px]">
-              <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
-                {" "}
-                % sobrepeso{" "}
+            <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center min-w-[80px] h-[150px] p-2">
+              <h4 className="uppercase text-lg font-bold text-gray-800 text-center">
+                % sobre peso
               </h4>
               <GaugeChart
                 value={progressValueSobrePeso}
@@ -1075,8 +1080,8 @@ const TablaNuevo = () => {
                   labelColor: "#757575",
                 }}
                 label="Progress"
-                fontSize="24px"
-                thickness="65%"
+                fontSize="16px"
+                thickness="50%"
               />
             </div>
           </div>

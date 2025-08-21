@@ -28,7 +28,8 @@ export default function Sidebar({
 
       {/* Navegación Packing */}
       <nav className="flex-1 overflow-y-auto px-4 py-6">
-        <div className="mb-8">
+              <div className="mb-8">
+                  
           <button
             onClick={() => setPackingExpanded(!packingExpanded)}
             className={`w-full flex items-center p-3 rounded-md cursor-pointer ${
