@@ -407,8 +407,8 @@ const TablaLineaVolcado = () => {
           </div> */}
           <div
             className="bg-white rounded-xl overflow-hidden flex flex-col 
-    max-h-[30vh] md:max-h-[60vh] sm:max-h-[35vh] 
-     shadow-lg align-middle justify-between"
+  h-[22vh] md:h-[55vh] sm:h-[60vh]  
+  shadow-lg align-middle justify-between"
           >
             {/* Encabezado */}
             <div className="px-6 py-1 max-sm:px-3 max-sm:py-1">
