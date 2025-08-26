@@ -499,7 +499,7 @@ const TablaRecepcion = () => {
                     textAlign: "center",
                     width: "100%",
                     left: 0,
-                    fontSize: "0.8rem",
+                    fontSize: "1.2rem",
                     sm: "1rem",
                   }}
                 />

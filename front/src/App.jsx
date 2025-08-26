@@ -26,6 +26,8 @@ const getLazyTabla = (tablaName) => {
       return lazy(() => import("./components/Nuevo"));
     case "GASIFICADO PRE FRÍO":
       return lazy(() => import("./components/TablaGasificado"));
+    case "PUCHOS PT":
+      return lazy(() => import("./components/TablaPuchosPT"));
     case "VOLCADO/ESPERA":
       return lazy(() => import("./components/TablaEspera"));
     case "VOLCADO/LÍNEA":
@@ -58,6 +60,7 @@ const App = () => {
     "RECEPCION NISIRA",
     "RESUMEN RECEPCION ",
     "GASIFICADO PRE FRÍO",
+    "PUCHOS PT",
     "CALIDAD",
     "VOLCADO-MUESTRA",
     {

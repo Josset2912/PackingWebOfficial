@@ -506,6 +506,15 @@ export function fetchRecepcionRango(sede, cultivo, empaque, variedad, fecha) {
   });
 }
 
+export function fetchPuchosPT(sede, cultivo) {
+  const sedeValida = sede?.trim() || "todos";
+  const cultivoValido = cultivo?.trim() || "arandano";
+
+  return axios.get(`${BASE_URL}/packing/puchospt`, {
+    params: { sede: sedeValida, cultivo: cultivoValido, cod: "1" },
+  });
+}
+
 //=============================//
 //EXPORTANDO FETCH'S
 export default {
@@ -542,6 +551,7 @@ export default {
   fetchRecepcionResumen,
   fetchRecepcionVariedad,
   fetchRecepcionRango,
+  fetchPuchosPT,
 };
 
 //const isLocalhost = window.location.hostname === "10.51.51.15";
