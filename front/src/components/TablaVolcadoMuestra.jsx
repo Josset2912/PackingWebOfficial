@@ -5,8 +5,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import GaugeChart from "./Medidor";
-import RecepcionResumen from "./TablaRecepcionResumen";
-import Calidad from "./TablaCalidad";
 import NumeroUnico from "./NumeroUnico";
 
 import {
@@ -21,16 +19,19 @@ import {
   LabelList,
 } from "recharts";
 import {
+  //FILTROS
   fetchSedes,
   fetchCultivos,
   fetchMaquina,
   fetchFiler,
   fetchTurno,
   fetchPresentacion,
+  //TABLA CALIDAD
   fetchCalidad,
   fetchCalidadRango,
   fetchCalidadRangoFiler,
   fetchCalidadPorcentajeMuestras,
+  //TABLA LINEA VOLCADO
   fetchEsperaLineaProg,
   fetchEsperaLineaSgtePalet,
   fetchEsperaLineaPorcentaje,
@@ -39,13 +40,15 @@ import {
 } from "../utils/api";
 
 const TablaNuevo = () => {
-  const [sede, setSedes] = useState("TODOS");
-  const [dataSedes, setDataSedes] = useState([]);
-  // Estados para filtros
+  /* ----------------------- filtros ----------------------- */
+
   const [fruta, setFruta] = useState("ARANDANO");
   const [dataCultivo, setDataCultivo] = useState([]);
 
-  const [maquina, setMaquina] = useState("SELECCIONE"); //maquina
+  const [sede, setSedes] = useState("FUNDO SANTA AZUL");
+  const [dataSedes, setDataSedes] = useState([]);
+
+  const [maquina, setMaquina] = useState("SELECCIONE");
   const [dataMaquina, setDataMaquina] = useState([]);
 
   const [filer, setFiler] = useState("SELECCIONE");
@@ -61,30 +64,32 @@ const TablaNuevo = () => {
     new Date().toLocaleDateString("en-CA")
   );
 
-  const [dataCalidadRango, setDataCalidadRango] = useState([]);
+  /* ----------------------- Estados de Calidad ----------------------- */
   const [dataCalidad, setDataCalidad] = useState([]);
-
+  const [dataCalidadRango, setDataCalidadRango] = useState([]);
   const [dataCalidadRangoFiler, setDataCalidadRangoFiler] = useState([]);
-
   const [dataCalidadPorcentaje, setDataCalidadPorcentaje] = useState([]);
   const [progressValueBajoPeso, setProgressValueBajoPeso] = useState(0);
   const [progressValuePesoNormal, setProgressValuePesoNormal] = useState(0);
   const [progressValueSobrePeso, setProgressValueSobrePeso] = useState(0);
-  /* ----------------------- estados ----------------------- */
+  /* ----------------------- Estados de Tabla Linea Volcado ----------------------- */
   const [dataLineaTnTotal, setDataLineaTnTotal] = useState([]);
-
   const [dataLineaVolcado, setDataLineaVolcado] = useState([]);
-
   const [dataSgtePalet, setDataSgtePalet] = useState([]);
-
   const [dataPorcentaje, setDataPorcentaje] = useState([]);
-
   const [progressValue, setProgressValue] = useState(0);
-
   const [dataLineaRango, setDataLineaRango] = useState([]);
-  // ========================
-  // 1. Tipos únicos
-  // TABLA CALIDAD
+
+  /* ----------------------- Constantes ----------------------- */
+  /* ------------------- Constantes Calidad -------------------- */
+  const tiposPeso = Array.isArray(dataCalidadRango)
+    ? [
+        ...new Set(
+          dataCalidadRango.map((row) => row.tipO_PESO?.trim().toUpperCase())
+        ),
+      ]
+    : [];
+
   const tiposFiler = Array.isArray(dataCalidadRangoFiler)
     ? [
         ...new Set(
@@ -93,14 +98,7 @@ const TablaNuevo = () => {
       ]
     : [];
 
-  const tiposPeso = Array.isArray(dataCalidadRango)
-    ? [
-        ...new Set(
-          dataCalidadRango.map((row) => row.tipO_PESO?.trim().toUpperCase())
-        ),
-      ]
-    : [];
-  //TABLA LINEA VOLCADO
+  /* ------------------- Constante Linea Volcado -------------------- */
   const tiposPesosLinea = Array.isArray(dataLineaRango)
     ? [
         ...new Set(
@@ -109,9 +107,9 @@ const TablaNuevo = () => {
       ]
     : [];
 
-  // ========================
-  // 2. Agrupar datos tabla calidad (por tipO_PESO)
+  /* ------------------- Constantes Calidad DataAgrupada -------------------- */
   const dataAgrupada = [];
+
   dataCalidadRango.forEach(({ rango, tipO_PESO, porcentajetotal }) => {
     const tipo = tipO_PESO?.trim().toUpperCase();
     if (!rango || !tipo) return;
@@ -124,33 +122,13 @@ const TablaNuevo = () => {
   });
   dataAgrupada.forEach((item) => {
     tiposPeso.forEach((tipo) => {
-      if (!(tipo in item)) item[tipo] = 0;
+      if (!(tipo in item)) {
+        item[tipo] = 0;
+      }
     });
   });
 
-  // ========================
-  // 3. Agrupar datos tabla línea volcado (por maquina)
-  //TABLA LINEA VOLCADO
-  const dataAgrupadasLinea = [];
-  dataLineaRango.forEach(({ rango, maquina, avance }) => {
-    const tipo = maquina?.trim().toUpperCase();
-    if (!rango || !tipo) return;
-    let existente = dataAgrupadasLinea.find((item) => item.rango === rango);
-    if (!existente) {
-      existente = { rango };
-      dataAgrupadasLinea.push(existente);
-    }
-    existente[tipo] = avance;
-  });
-  dataAgrupadasLinea.forEach((item) => {
-    tiposPesosLinea.forEach((tipo) => {
-      if (!(tipo in item)) item[tipo] = 0;
-    });
-  });
-
-  // ========================
-  // 4. Agrupar datos tabla calidad filer
-  //TABLA CALIDAD
+  /* ------------------- Constantes Calidad dataAgrupadaFiler -------------------- */
   const dataAgrupadaFiler = [];
   dataCalidadRangoFiler.forEach(({ rangofiler, filer, avance }) => {
     const tipo = filer?.trim().toUpperCase();
@@ -170,13 +148,34 @@ const TablaNuevo = () => {
     });
   });
 
-  // Ordenar dataAgrupadaFiler por hora de inicio
+  /* -------------------  Ordenar dataAgrupadaFiler por hora de inicio -------------------- */
   const dataAgrupadaFilerOrdenada = [...dataAgrupadaFiler].sort((a, b) => {
-    const getStartHour = (rango) => parseInt(rango.split("-")[0].trim(), 10);
+    const getStartHour = (rango) => {
+      const [horaInicio] = rango.split("-");
+      return parseInt(horaInicio.trim(), 10);
+    };
+
     return getStartHour(a.rangofiler) - getStartHour(b.rangofiler);
   });
+  /* ---------------------------------------------------------------------------- */
 
-  // ========================
+  const dataAgrupadasLinea = [];
+  dataLineaRango.forEach(({ rango, maquina, avance }) => {
+    const tipo = maquina?.trim().toUpperCase();
+    if (!rango || !tipo) return;
+    let existente = dataAgrupadasLinea.find((item) => item.rango === rango);
+    if (!existente) {
+      existente = { rango };
+      dataAgrupadasLinea.push(existente);
+    }
+    existente[tipo] = avance;
+  });
+  dataAgrupadasLinea.forEach((item) => {
+    tiposPesosLinea.forEach((tipo) => {
+      if (!(tipo in item)) item[tipo] = 0;
+    });
+  });
+
   // 5. Colores
   const coloresBase = [
     "#1f77b4",
@@ -194,12 +193,13 @@ const TablaNuevo = () => {
   ];
 
   const colores = {};
-  tiposPeso.forEach(
-    (tipo, index) => (colores[tipo] = coloresBase[index % coloresBase.length])
-  );
-  tiposFiler.forEach(
-    (tipo, index) => (colores[tipo] = coloresBase[index % coloresBase.length])
-  );
+
+  tiposPeso.forEach((tipO_PESO, index) => {
+    colores[tipO_PESO] = coloresBase[index % coloresBase.length];
+  });
+  tiposFiler.forEach((filer, index) => {
+    colores[filer] = coloresBase[index % coloresBase.length];
+  });
   tiposPesosLinea.forEach(
     (tipo, index) => (colores[tipo] = coloresBase[index % coloresBase.length])
   );
@@ -248,9 +248,19 @@ const TablaNuevo = () => {
       const sedeParam = sede === "TODOS" ? "" : sede;
       const frutaLower = fruta.toLowerCase();
       const maquinaParam = maquina === "UNITEC" ? "" : maquina;
-      const filerParam = filer === "SELECCIONE" ? "" : filer;
+      const filerParam = filer === "F1" ? "" : filer;
       const presentacionParam =
         presentacion === "SELECCIONE" ? "" : presentacion;
+
+      // DEBUG: Mostrar los parámetros que se envían
+      /*  console.log("Parámetros enviados a API:", {
+        sede: sedeParam,
+        cultivo: frutaLower,
+        maquina: maquinaParam,
+        filer: filerParam,
+        presentacion: presentacionParam,
+        fecha: fecha,
+      }); */
       // Llamadas paralelas
       const [
         resSede,
@@ -260,9 +270,11 @@ const TablaNuevo = () => {
         resTurno,
         resPresentacion,
         resCalidad,
+
         resCalidadRango,
         resCalidadRangoFiler,
         resCalidadPorcentajeMuestras,
+
         resLineaVolcadoProg,
         resLineaVolcadoSgtePalet,
         resLineaVolcadoPorcentaje,
@@ -272,9 +284,15 @@ const TablaNuevo = () => {
         fetchSedes(),
         fetchCultivos(),
         fetchMaquina(frutaLower),
-        fetchFiler(),
+        fetchFiler(maquinaParam),
         fetchTurno(),
-        fetchPresentacion(sedeParam, frutaLower, maquinaParam, filerParam),
+        fetchPresentacion(
+          sedeParam,
+          frutaLower,
+          maquinaParam,
+          filerParam,
+          fecha
+        ),
         fetchCalidad(
           sedeParam,
           frutaLower,
@@ -807,6 +825,8 @@ const TablaNuevo = () => {
             </div>
           </div>
         </div>
+
+        {/* ==================== */}
         {/* TABLA CALIDAD */}
         <div className="flex flex-col lg:flex-row gap-3 w-full h-auto max-sm:h-auto  ">
           {/* Contenedor superior: ocupa 50% de la pantalla */}{" "}
@@ -907,7 +927,7 @@ const TablaNuevo = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                     data={dataAgrupada}
-                    margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
+                    margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
                   >
                     <CartesianGrid strokeDasharray="2 2" />
                     <XAxis dataKey="rango" />
@@ -919,7 +939,7 @@ const TablaNuevo = () => {
                         background: "#ffffffdd",
                         backdropFilter: "blur(4px)",
                       }}
-                    />
+                    />{" "}
                     <Legend
                       align="center"
                       layout="horizontal"
@@ -929,7 +949,7 @@ const TablaNuevo = () => {
                         width: "100%",
                         left: 0,
                       }}
-                    />
+                    />{" "}
                     {tiposPeso.map((tipo) => (
                       <Line
                         key={tipo}

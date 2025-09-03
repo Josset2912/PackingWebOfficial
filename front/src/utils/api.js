@@ -40,6 +40,8 @@ export const fetchTurno = () =>
 //API CULTIVO
 export const fetchCultivos = () => axios.get(`${BASE_URL}/packing/cultivo`);
 //API SEDE
+export const fetchEmpresa = () => axios.get(`${BASE_URL}/maestros/empresa`);
+//API SEDE
 export const fetchSedes = () =>
   axios.get(`${BASE_URL}/packing/sede`, {
     params: { emp: "TODOS" },
@@ -135,12 +137,20 @@ export const fetchCabezalNisira = (sede, cultivo, empaque, variedad) => {
 };
 //=====================================
 //API CALIDAD VARIEDAD
-export const fetchCalidad = (sede, cultivo, maquina, linea, presentacion) => {
+export const fetchCalidad = (
+  sede,
+  cultivo,
+  maquina,
+  linea,
+  presentacion,
+  fecha
+) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
   const maquinaValida = maquina?.trim() || "UNITEC";
   const lineaValida = linea?.trim() || "F1";
   const presentacionValida = presentacion?.trim() || "SELECCIONE";
+  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
   return axios.get(`${BASE_URL}/packing/calidad`, {
     params: {
@@ -149,6 +159,7 @@ export const fetchCalidad = (sede, cultivo, maquina, linea, presentacion) => {
       maquina: maquinaValida,
       linea: lineaValida,
       presentacion: presentacionValida,
+      fecha: fechaValida,
       id: 1,
     },
   });
@@ -159,13 +170,15 @@ export const fetchCalidadRango = (
   cultivo,
   maquina,
   linea,
-  presentacion
+  presentacion,
+  fecha
 ) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
   const maquinaValida = maquina?.trim() || "UNITEC";
   const lineaValida = linea?.trim() || "F1";
   const presentacionValida = presentacion?.trim() || "SELECCIONE";
+  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
   return axios.get(`${BASE_URL}/packing/calidad`, {
     params: {
@@ -174,6 +187,7 @@ export const fetchCalidadRango = (
       maquina: maquinaValida,
       linea: lineaValida,
       presentacion: presentacionValida,
+      fecha: fechaValida,
       id: 2,
     },
   });
@@ -184,13 +198,15 @@ export const fetchCalidadRangoFiler = (
   cultivo,
   maquina,
   linea,
-  presentacion
+  presentacion,
+  fecha
 ) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
   const maquinaValida = maquina?.trim() || "UNITEC";
   const lineaValida = linea?.trim() || "F1";
   const presentacionValida = presentacion?.trim() || "SELECCIONE";
+  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
   return axios.get(`${BASE_URL}/packing/calidad`, {
     params: {
@@ -199,6 +215,7 @@ export const fetchCalidadRangoFiler = (
       maquina: maquinaValida,
       linea: lineaValida,
       presentacion: presentacionValida,
+      fecha: fechaValida,
       id: 3, //
     },
   });
@@ -209,14 +226,15 @@ export const fetchCalidadPorcentajeMuestras = (
   cultivo,
   maquina,
   linea,
-  presentacion
+  presentacion,
+  fecha
 ) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
   const maquinaValida = maquina?.trim() || "UNITEC";
   const lineaValida = linea?.trim() || "F1";
   const presentacionValida = presentacion?.trim() || "SELECCIONE";
-
+  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
   return axios.get(`${BASE_URL}/packing/calidad`, {
     params: {
       sede: sedeValida,
@@ -224,6 +242,7 @@ export const fetchCalidadPorcentajeMuestras = (
       maquina: maquinaValida,
       linea: lineaValida,
       presentacion: presentacionValida,
+      fecha: fechaValida,
       id: 4, //
     },
   });
@@ -518,6 +537,7 @@ export function fetchPuchosPT(sede, cultivo) {
 //=============================//
 //EXPORTANDO FETCH'S
 export default {
+  fetchEmpresa,
   fetchEmpaqFiltro,
   fetchVariedadFiltro,
   fetchPresentacion,

@@ -4,7 +4,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { fetchCultivos, fetchSedes, fetchPuchosPT } from "../utils/api";
+import { fetchCultivos, fetchPuchosPT, fetchEmpresa } from "../utils/api";
 
 const TablaPuchosPT = () => {
   // Estado para fruta y sede
@@ -12,8 +12,12 @@ const TablaPuchosPT = () => {
   const [fruta, setFruta] = useState("ARANDANO");
   const [dataCultivo, setDataCultivo] = useState([]);
 
-  const [sede, setSede] = useState("TODOS");
-  const [dataSedes, setDataSedes] = useState([]);
+  const [empresa, setEmpresa] = useState("TODOS");
+  const [dataEmpresa, setDataEmpresa] = useState([]);
+
+  /*   const [sede, setSede] = useState("TODOS");
+  const [dataSedes, setDataSedes] = useState([]); */
+
   const [dataPuchos, setDataPuchos] = useState([]);
 
   // Función para cargar todos los datos
@@ -21,12 +25,12 @@ const TablaPuchosPT = () => {
     try {
       // Convertir valores a minúsculas para la API si lo requiere
       const frutaLower = fruta.toLowerCase();
-      const sedeParam = sede === "TODOS" ? "" : sede;
+      const empresaParam = empresa === "TODOS" ? "" : empresa;
 
-      const [resSede, resCultivo, resPuchos] = await Promise.all([
-        fetchSedes(),
+      const [resEmpresa, resCultivo, resPuchos] = await Promise.all([
+        fetchEmpresa(),
         fetchCultivos(),
-        fetchPuchosPT(sedeParam, frutaLower),
+        fetchPuchosPT(empresaParam, frutaLower),
       ]);
 
       // Verificar si las respuestas son válidas y asignar los datos
@@ -34,12 +38,12 @@ const TablaPuchosPT = () => {
 
       // Las respuestas de axios ya traen el objeto data
 
-      setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
+      setDataEmpresa(Array.isArray(resEmpresa.data) ? resEmpresa.data : []);
       setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
       setDataPuchos(Array.isArray(resPuchos.data) ? resPuchos.data : []);
     } catch (err) {
       console.error("Error fetching data:", err);
-      setDataSedes([]);
+      setDataEmpresa([]);
       setDataCultivo([]);
       setDataPuchos([]);
     }
@@ -54,7 +58,7 @@ const TablaPuchosPT = () => {
     }, 10000);
 
     return () => clearInterval(intervaloId); // Limpieza del intervalo
-  }, [fruta, sede]);
+  }, [fruta, empresa]);
 
   return (
     <div className="P-4 dark:text-gray-100">
@@ -81,18 +85,18 @@ const TablaPuchosPT = () => {
                 },
               }}
             >
-              <InputLabel id="sede-select-label">SEDE</InputLabel>
+              <InputLabel id="empresa-select-label">EMPRESA</InputLabel>
               <Select
-                labelId="sede-select-label"
-                id="sede-select"
-                value={sede}
-                label="SEDE"
-                onChange={(e) => setSede(e.target.value)}
+                labelId="empresa-select-label"
+                id="empresa-select"
+                value={empresa}
+                label="EMPRESA"
+                onChange={(e) => setEmpresa(e.target.value)}
               >
                 <MenuItem value="TODOS">TODOS</MenuItem>
-                {dataSedes.map((row, idx) => (
-                  <MenuItem key={idx} value={row.sede}>
-                    {row.sede}
+                {dataEmpresa.map((row, idx) => (
+                  <MenuItem key={idx} value={row.empresa}>
+                    {row.empresa}
                   </MenuItem>
                 ))}
               </Select>
@@ -154,16 +158,8 @@ const TablaPuchosPT = () => {
                   <span className="hidden max-sm:inline">OR</span>
                 </th>
                 <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
-                  <span className="max-sm:hidden">CODIGO PALET</span>
-                  <span className="hidden max-sm:inline">COP</span>
-                </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
-                  <span className="max-sm:hidden">CODIGO SALDO</span>
-                  <span className="hidden max-sm:inline">CAS</span>
-                </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
-                  <span className="max-sm:hidden">PRESENTACION</span>
-                  <span className="hidden max-sm:inline">PRE</span>
+                  <span className="max-sm:hidden">PRESENTACIÓN</span>
+                  <span className="hidden max-sm:inline">PRES</span>
                 </th>
                 <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">VARIEDAD</span>
@@ -171,11 +167,20 @@ const TablaPuchosPT = () => {
                 </th>
                 <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">CAJAS</span>
-                  <span className="hidden max-sm:inline">CAJAS</span>
+                  <span className="hidden max-sm:inline">CAJ</span>
                 </th>
+
                 <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">EQUIVALENCIA</span>
                   <span className="hidden max-sm:inline">EQUI</span>
+                </th>
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">CAJAS TOTAL</span>
+                  <span className="hidden max-sm:inline">CAJAST</span>
+                </th>
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">CAJAS PENDIENTE</span>
+                  <span className="hidden max-sm:inline">CAJASP</span>
                 </th>
               </tr>
             </thead>
@@ -209,22 +214,22 @@ const TablaPuchosPT = () => {
                           {row.orden || ""}
                         </td>
                         <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
-                          {row.codigopalet || ""}
+                          {row.presentacion || ""}
                         </td>
                         <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
-                          {row.codigosaldo || ""}
-                        </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
-                          {row.presentacion || "--"}
-                        </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
-                          {row.variedad || "--"}
+                          {row.variedad || ""}
                         </td>
                         <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.cajas || "--"}
                         </td>
                         <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.equivalencia || "--"}
+                        </td>
+                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          {row.cajastotal || "--"}
+                        </td>
+                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          {row.cajaspendiente || "--"}
                         </td>
                       </tr>
                     );

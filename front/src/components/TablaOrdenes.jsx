@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
+
 const TablaOrdenes = () => {
   const [dataOrdenPRD, setDataOrdenPRD] = useState([]);
 
@@ -145,50 +146,31 @@ const TablaOrdenes = () => {
         <div className="overflow-y-auto max-h-[calc(100vh-140px)] max-sm:max-h-[calc(100vh-160px)] lg:max-h-[calc(100vh-180px)]">
           <table className="w-full min-w-[300px] border-collapse">
             <thead className="sticky top-0 z-10 bg-teal-600 text-white">
-              <tr>
-                {[
-                  "ORDEN",
-                  "PRIORIDAD",
-                  "DESTINO",
-                  "PRESENTACIÓN",
-                  "EJEC.PROY",
-                  "F.DESPACHO",
-                ].map((col, i) => (
-                  <th
-                    key={i}
-                    className="px-4 py-3 text-sm sm:text-xl md:text-2xl lg:text-3xl font-semibold uppercase tracking-wider text-center max-sm:px-2 max-sm:py-1 max-sm:text-xs"
-                  >
-                    <span className="max-sm:hidden xl:inline">{col}</span>
-                    {/* Versiones cortas para móvil y tablet */}
-                    <span className="hidden max-sm:inline sm:hidden md:inline lg:hidden xl:hidden">
-                      {i === 0
-                        ? "ORD"
-                        : i === 1
-                        ? "PRIOR"
-                        : i === 2
-                        ? "DEST"
-                        : i === 3
-                        ? "PRES"
-                        : i === 4
-                        ? "PROY"
-                        : "FECHA"}
-                    </span>
-                    {/* Versiones para tablet */}
-                    <span className="hidden sm:inline md:hidden">
-                      {i === 0
-                        ? "ORDEN"
-                        : i === 1
-                        ? "PRIOR."
-                        : i === 2
-                        ? "DESTINO"
-                        : i === 3
-                        ? "PRESEN."
-                        : i === 4
-                        ? "PROYEC."
-                        : "FECHA"}
-                    </span>
-                  </th>
-                ))}
+              <tr className="bg-teal-600 text-white  ">
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">ORDEN</span>
+                  <span className="hidden max-sm:inline">OR</span>
+                </th>
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">PRIORIDAD</span>
+                  <span className="hidden max-sm:inline">PRIO</span>
+                </th>
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">DESTINO</span>
+                  <span className="hidden max-sm:inline">DES</span>
+                </th>
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">PRESENTACIÓN</span>
+                  <span className="hidden max-sm:inline">PRES</span>
+                </th>
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">EJEC. PROY</span>
+                  <span className="hidden max-sm:inline">EJEC</span>
+                </th>
+                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <span className="max-sm:hidden">F. DESPACHO</span>
+                  <span className="hidden max-sm:inline">DESP</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -201,22 +183,22 @@ const TablaOrdenes = () => {
                     } hover:bg-cyan-50 active:bg-cyan-100`}
                   >
                     <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-800 font-medium max-sm:px-2 max-sm:py-1 max-sm:text-xs">
-                      {row.orden}
+                      {row.Orden}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-800 font-medium max-sm:px-2 max-sm:py-1 max-sm:text-xs">
-                      {row.prioridad}
+                      {row.Prioridad}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 truncate max-w-[120px] mx-auto max-sm:px-2 max-sm:py-1 max-sm:text-xs max-sm:max-w-[80px]">
-                      {row.destino}
+                      {row.Destino}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 truncate max-w-[150px] mx-auto max-sm:px-2 max-sm:py-1 max-sm:text-xs max-sm:max-w-[90px]">
-                      {row.presentacion}
+                      {row.Presentacion}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 max-sm:px-2 max-sm:py-1 max-sm:text-xs">
-                      {row.ejec_proy}
+                      {row.Ejec_Proy}
                     </td>
                     <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 max-sm:px-2 max-sm:py-1 max-sm:text-xs">
-                      {row.f_despacho}
+                      {row.F_Despacho}
                     </td>
                   </tr>
                 ))

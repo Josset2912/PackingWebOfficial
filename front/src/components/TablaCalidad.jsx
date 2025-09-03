@@ -44,17 +44,17 @@ const TablaCalidad = () => {
   const [presentacion, setPresentacion] = useState("SELECCIONE"); //presentacion
   const [dataPresentacion, setDataPresentacion] = useState([]);
 
-  const [dataCalidadRango, setDataCalidadRango] = useState([]);
+  const [fecha, setFecha] = useState(() =>
+    new Date().toLocaleDateString("en-CA")
+  );
+  /* ----------------------- Estados de Calidad ----------------------- */
   const [dataCalidad, setDataCalidad] = useState([]);
-
+  const [dataCalidadRango, setDataCalidadRango] = useState([]);
   const [dataCalidadRangoFiler, setDataCalidadRangoFiler] = useState([]);
-
   const [dataCalidadPorcentaje, setDataCalidadPorcentaje] = useState([]);
   const [progressValueBajoPeso, setProgressValueBajoPeso] = useState(0);
   const [progressValuePesoNormal, setProgressValuePesoNormal] = useState(0);
   const [progressValueSobrePeso, setProgressValueSobrePeso] = useState(0);
-
-  //  los tipos de filer
   //  los tipos de filer
   const tiposFiler = Array.isArray(dataCalidadRangoFiler)
     ? [
@@ -104,6 +104,38 @@ const TablaCalidad = () => {
         ),
       ]
     : [];
+
+  const selectSx = {
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "8px",
+      "& fieldset": { borderColor: "green" },
+      "&:hover fieldset": { borderColor: "darkgreen" },
+      "&.Mui-focused fieldset": { borderColor: "green" },
+    },
+  };
+
+  const FiltroSelect = ({ id, label, value, options, onChange }) => (
+    <div className="w-full sm:w-auto">
+      <Box sx={{ minWidth: 190, width: "100%" }}>
+        <FormControl fullWidth size="small" sx={selectSx}>
+          <InputLabel id={`${id}-label`}>{label}</InputLabel>
+          <Select
+            labelId={`${id}-label`}
+            id={id}
+            value={value}
+            label={label}
+            onChange={(e) => onChange(e.target.value)}
+          >
+            {options.map((option, idx) => (
+              <MenuItem key={idx} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+    </div>
+  );
 
   // Agrupar los datos por rango y tipo de peso
   const dataAgrupada = [];
@@ -171,8 +203,8 @@ const TablaCalidad = () => {
         resMaquina,
         resFiler,
         resPresentacion,
-          resCalidad,
-        
+        resCalidad,
+
         resCalidadRango,
         resCalidadRangoFiler,
         resCalidadPorcentajeMuestras,
@@ -181,34 +213,44 @@ const TablaCalidad = () => {
         fetchCultivos(),
         fetchMaquina(frutaLower),
         fetchFiler(maquinaParam),
-        fetchPresentacion(sedeParam, frutaLower, maquinaParam, filerParam),
+        fetchPresentacion(
+          sedeParam,
+          frutaLower,
+          maquinaParam,
+          filerParam,
+          fecha
+        ),
         fetchCalidad(
           sedeParam,
           frutaLower,
           maquinaParam,
           filerParam,
-          presentacionParam
+          presentacionParam,
+          fecha
         ),
         fetchCalidadRango(
           sedeParam,
           frutaLower,
           maquinaParam,
           filerParam,
-          presentacionParam
+          presentacionParam,
+          fecha
         ),
         fetchCalidadRangoFiler(
           sedeParam,
           frutaLower,
           maquinaParam,
           filerParam,
-          presentacionParam
+          presentacionParam,
+          fecha
         ),
         fetchCalidadPorcentajeMuestras(
           sedeParam,
           frutaLower,
           maquinaParam,
           filerParam,
-          presentacionParam
+          presentacionParam,
+          fecha
         ),
       ]);
 
@@ -287,7 +329,7 @@ const TablaCalidad = () => {
     }, 10000);
 
     return () => clearInterval(intervaloId); // Limpieza del intervalo
-  }, [sede, fruta, maquina, filer, presentacion]);
+  }, [sede, fruta, maquina, filer, presentacion, fecha]);
 
   return (
     <div className="p-3 sm:p-2  max-sm:p-2 max-sm:mt-0">
@@ -520,6 +562,30 @@ const TablaCalidad = () => {
             </FormControl>
           </Box>
         </div>
+
+        {/* FECHA */}
+        <div className="w-full sm:w-auto">
+          <Box sx={{ minWidth: 190, width: "100%" }}>
+            <FormControl fullWidth size="small" sx={selectSx}>
+              <InputLabel shrink htmlFor="fecha-input">
+                FECHA
+              </InputLabel>
+              <input
+                id="fecha-input"
+                type="date"
+                value={fecha}
+                onChange={(e) => setFecha(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #4caf50",
+                  fontSize: "16px",
+                }}
+              />
+            </FormControl>
+          </Box>
+        </div>
       </div>
 
       {/* GRAFICOS */}
@@ -529,23 +595,23 @@ const TablaCalidad = () => {
           <div className="overflow-y-auto max-h-[calc(100vh-100px)] max-sm:max-h-[300px]">
             <table className="w-full min-w-[200px] ">
               <thead className="sticky top-0 z-10">
-                <tr className="bg-blue-600 text-white">
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs">
+                <tr className="bg-blue-600 text-white ">
+                  <th className="px-1 py-1 textter font-bold text-base sm:text-2xl uppercase max-sm:text-xs ">
                     <span className="max-sm:hidden">LINEA</span>
                     <span className="hidden max-sm:inline">LN</span>
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs">
+                  <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
                     <span className="max-sm:hidden">PRESENTACIÓN</span>
                     <span className="hidden max-sm:inline">PRES</span>
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs">
+                  <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
                     <span className="max-sm:hidden">TIPO PESO</span>
                     <span className="hidden max-sm:inline">PESO</span>
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs">
+                  <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
                     %
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs">
+                  <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
                     CANT
                   </th>
                 </tr>
@@ -555,16 +621,16 @@ const TablaCalidad = () => {
                   dataCalidad.map((row, index) => (
                     <tr
                       key={index}
-                      className="hover:bg-gray-50 transition-colors border-b-2 border-cyan-600 "
+                      className="hover:bg-gray-50 transition-colors border-b-1 border-cyan-600 "
                     >
-                      <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs">
+                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
                         {row.linea}
                       </td>
-                      <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs">
+                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
                         {row.presentacion || ""}
                       </td>
                       <td
-                        className={`px-2 py-2 text-center text-sm sm:text-2xl font-medium max-sm:text-xs ${
+                        className={`px-1 py-1 text-center text-sm sm:text-xl font-medium max-sm:text-xs ${
                           row.tipO_PESO === "BAJO PESO"
                             ? "text-red-500"
                             : row.tipO_PESO === "SOBRE PESO"
@@ -575,7 +641,7 @@ const TablaCalidad = () => {
                         {row.tipO_PESO || "--"}
                       </td>
                       <td
-                        className={`px-2 py-2 text-center text-sm sm:text-2xl font-medium max-sm:text-xs ${
+                        className={`px-1 py-1 text-center text-sm sm:text-xl font-medium max-sm:text-xs ${
                           row.porcentaje >= 5 && row.porcentaje < 7
                             ? "text-green-500"
                             : row.porcentaje >= 7 && row.porcentaje < 10
@@ -587,7 +653,7 @@ const TablaCalidad = () => {
                       >
                         {row.porcentaje != null ? `${row.porcentaje} %` : "--"}
                       </td>
-                      <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs">
+                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
                         {row.cantidad || "--"}
                       </td>
                     </tr>

@@ -23,7 +23,7 @@ const getLazyTabla = (tablaName) => {
       return lazy(() => import("./components/TablaCalidad"));
 
     case "VOLCADO-MUESTRA":
-      return lazy(() => import("./components/Nuevo"));
+      return lazy(() => import("./components/TablaVolcadoMuestra"));
     case "GASIFICADO PRE FRÍO":
       return lazy(() => import("./components/TablaGasificado"));
     case "PUCHOS PT":
