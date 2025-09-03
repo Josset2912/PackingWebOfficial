@@ -306,7 +306,7 @@ const TablaRecepcion = () => {
         <div className="flex flex-wrap justify-evenly items-center gap-4">
           {/* Medidor */}
           <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/4 max-w-full bg-white rounded-lg shadow-md flex flex-col items-center ">
-            <h4 className="text-2xl font-bold text-black  uppercase tracking-wider text-center">
+            <h4 className="text-3xl font-bold text-black  uppercase tracking-wider text-center">
               Porcentaje <br /> cumplimiento
             </h4>
             <GaugeChart
@@ -406,16 +406,16 @@ const TablaRecepcion = () => {
             <table className="w-full min-w-[300px] border-collapse">
               <thead className="sticky top-0 z-10">
                 <tr className="bg-blue-600 text-white">
-                  <th className="px-2 py-2 text-center font-semibold text-xs sm:text-lg lg:text-xl xl:text-2xl uppercase">
+                  <th className="px-2 py-2 text-center font-bold text-xs sm:text-lg lg:text-xl xl:text-trxl uppercase">
                     VAR
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-xs sm:text-lg lg:text-xl xl:text-2xl uppercase">
+                  <th className="px-1 py-1 text-center font-bold text-xs sm:text-lg lg:text-xl xl:text-trxl uppercase">
                     KG PROG
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-xs sm:text-lg lg:text-xl xl:text-2xl uppercase">
+                  <th className="px-1 py-1 text-center font-bold text-xs sm:text-lg lg:text-xl xl:text-trxl uppercase">
                     KG EJEC
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-xs sm:text-lg lg:text-xl xl:text-2xl uppercase">
+                  <th className="px-1 py-1 text-center font-bold text-xs sm:text-lg lg:text-xl xl:text-trxl uppercase">
                     % CUMP
                   </th>
                 </tr>
@@ -428,18 +428,21 @@ const TablaRecepcion = () => {
                     return (
                       <tr
                         key={index}
-                        className="hover:bg-gray-50 transition-colors"
+                        className={`hover:bg-gray-50 transition-colors 
+                            ? "font-bold text-blue-900 border-t-2 border-blue-400"
+                            : "border-b-1 border-cyan-600 "
+                        }`}
                       >
-                        <td className="px-2 py-2 text-center text-xs sm:text-base lg:text-lg xl:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 font-bold">
                           {row.variedad || "--"}
                         </td>
-                        <td className="px-2 py-2 text-center text-xs sm:text-base lg:text-lg xl:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 font-bold">
                           {row.kgprog || "--"}
                         </td>
-                        <td className="px-2 py-2 text-center text-xs sm:text-base lg:text-lg xl:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 font-bold">
                           {row.kgejec || "--"}
                         </td>
-                        <td className="px-2 py-2 text-center text-xs sm:text-base lg:text-lg xl:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 font-bold">
                           {cumplimiento >= 100 ? "✅" : "❌"}{" "}
                           {cumplimiento.toFixed(2)} %
                         </td>

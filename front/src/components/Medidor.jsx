@@ -24,7 +24,7 @@ export const GaugeChart = ({ value, max = 100, colors = {} }) => {
         alignItems: "center",
         position: "relative",
         margin: "0",
-        padding: "3px",
+        padding: "4px",
         overflow: "hidden",
       }}
     >
@@ -55,7 +55,7 @@ export const GaugeChart = ({ value, max = 100, colors = {} }) => {
           top: "70%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          fontSize: "30px",
+          fontSize: "27px",
           fontWeight: "bold",
           color: "#333",
           lineHeight: 1,

@@ -145,13 +145,13 @@ const TablaEspera = () => {
           <table className="w-full min-w-[300px]  ">
             <thead className="sticky top-0 z-10">
               <tr className="bg-gradient-to-r from-cyan-600 to-blue-700 text-white">
-                <th className="px-4 py-2 text-center font-semibold text-base sm:text-4xl uppercase tracking-wider">
+                <th className="px-4 py-2 text-center font-bold text-base sm:text-4xl uppercase tracking-wider">
                   PALET
                 </th>
-                <th className="px-4 py-2 text-center font-semibold text-base sm:text-4xl uppercase tracking-wider">
+                <th className="px-4 py-2 text-center font-bold text-base sm:text-4xl uppercase tracking-wider">
                   ESPERA
                 </th>
-                <th className="px-4 py-2 text-center font-semibold text-base sm:text-4xl uppercase tracking-wider">
+                <th className="px-4 py-2 text-center font-bold text-base sm:text-4xl uppercase tracking-wider">
                   TOTAL
                 </th>
               </tr>
@@ -165,13 +165,13 @@ const TablaEspera = () => {
                       index % 2 === 0 ? "" : ""
                     } hover:bg-cyan-50`}
                   >
-                    <td className="px-4 py-2 text-center text-sm sm:text-3xl  font-medium">
+                    <td className="px-4 py-2 text-center text-sm sm:text-3xl  font-bold">
                       {row.palet}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-3xl  font-medium">
+                    <td className="px-4 py-2 text-center text-sm sm:text-3xl  font-bold">
                       {row.espera}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-3xl ">
+                    <td className="px-4 py-2 text-center text-sm sm:text-3xl font-bold">
                       {row.total}
                     </td>
                   </tr>

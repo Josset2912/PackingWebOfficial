@@ -252,15 +252,6 @@ const TablaNuevo = () => {
       const presentacionParam =
         presentacion === "SELECCIONE" ? "" : presentacion;
 
-      // DEBUG: Mostrar los parámetros que se envían
-      /*  console.log("Parámetros enviados a API:", {
-        sede: sedeParam,
-        cultivo: frutaLower,
-        maquina: maquinaParam,
-        filer: filerParam,
-        presentacion: presentacionParam,
-        fecha: fecha,
-      }); */
       // Llamadas paralelas
       const [
         resSede,
@@ -298,28 +289,32 @@ const TablaNuevo = () => {
           frutaLower,
           maquinaParam,
           filerParam,
-          presentacionParam
+          presentacionParam,
+          fecha
         ),
         fetchCalidadRango(
           sedeParam,
           frutaLower,
           maquinaParam,
           filerParam,
-          presentacionParam
+          presentacionParam,
+          fecha
         ),
         fetchCalidadRangoFiler(
           sedeParam,
           frutaLower,
           maquinaParam,
           filerParam,
-          presentacionParam
+          presentacionParam,
+          fecha
         ),
         fetchCalidadPorcentajeMuestras(
           sedeParam,
           frutaLower,
           maquinaParam,
           filerParam,
-          presentacionParam
+          presentacionParam,
+          fecha
         ),
         fetchEsperaLineaProg(fecha, sedeParam, frutaLower, turno, maquinaParam),
         fetchEsperaLineaSgtePalet(
@@ -584,68 +579,73 @@ const TablaNuevo = () => {
         <div className="flex flex-col lg:flex-row gap-2 w-full h-auto max-sm:h-auto">
           {/* Contenedor izquierdo */}
           <div className="flex flex-col flex-1 gap-3 w-full">
+            {/**----------------------------------------------- */}
             {/* Tabla KG PROG VS EJEC */}
             <div className="bg-white rounded-xl shadow-lg flex flex-col w-full max-h-[250px] overflow-hidden">
+              {/* Encabezado */}
               <div className="px-4 py-1 max-sm:px-2 max-sm:py-1">
                 <h2 className="text-center font-bold text-base sm:text-2xl md:text-3xl text-black uppercase tracking-wider max-sm:text-sm">
                   KG PROG VS EJEC
                 </h2>
               </div>
 
-              {/* Cabecera de la tabla */}
-              <div className="w-full">
-                <table className="w-full table-auto border-collapse">
+              {/* Contenedor con scroll */}
+              <div className="overflow-y-auto flex-1 min-h-0 ">
+                <table className="w-full min-w-[260px] border-collapse">
+                  {/* Encabezados sticky */}
                   <thead className="sticky top-0 z-10 bg-indigo-600 text-white">
                     <tr>
-                      {["EMPAQUE", "VAR", "KG PROG", "EJEC", "%"].map(
-                        (header, i) => (
-                          <th
-                            key={i}
-                            className="px-4 py-3 text-center font-bold text-lg sm:text-xl md:text-2xl uppercase tracking-wide"
-                          >
-                            {header}
-                          </th>
-                        )
-                      )}
+                      <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                        EMPAQUE
+                      </th>
+                      <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                        VAR
+                      </th>
+                      <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                        KG PROG
+                      </th>
+                      <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                        EJEC
+                      </th>
+                      <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                        %
+                      </th>
                     </tr>
                   </thead>
-                </table>
-              </div>
 
-              {/* Cuerpo de la tabla con scroll */}
-              <div className="overflow-y-auto flex-1 w-full">
-                <table className="w-full table-auto border-collapse">
+                  {/* Cuerpo */}
                   <tbody className="divide-y divide-gray-200">
                     {Array.isArray(dataLineaVolcado) &&
                     dataLineaVolcado.length > 0 ? (
                       dataLineaVolcado.map((row, index) => (
                         <tr
-                          key={index}
-                          className={`${
+                          key={`lineaAvance-${index}`}
+                          className={`transition-colors ${
                             index % 2 === 0 ? "bg-white" : "bg-indigo-50"
                           } hover:bg-indigo-100`}
                         >
-                          {[
-                            row.empaque || "",
-                            row.var || "",
-                            row.prog || "0",
-                            row.ejec || "0",
-                            `${row.porcentaje || "0"} %`,
-                          ].map((cell, i) => (
-                            <td
-                              key={i}
-                              className="px-2 py-1 text-center text-sm sm:text-base md:text-lg text-gray-800 font-medium max-sm:text-xs"
-                            >
-                              {cell}
-                            </td>
-                          ))}
+                          <td className="px-4 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                            {row.empaque || ""}
+                          </td>
+                          <td className="px-4 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                            {row.var || ""}
+                          </td>
+                          <td className="px-4 py-1 text-center text-sm sm:text-2xl text-gray-700 font-bold max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                            {row.prog || "0"}
+                          </td>
+                          <td className="px-4 py-1 text-center text-sm sm:text-2xl text-gray-700 font-bold max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                            {row.ejec || "0"}
+                          </td>
+                          <td className="px-4 py-1 text-center text-sm sm:text-2xl text-gray-700 font-bold max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                            {row.porcentaje || "0"} %
+                          </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
                         <td
                           colSpan="5"
-                          className="px-2 py-2 text-center text-sm sm:text-base text-gray-500 italic max-sm:text-xs"
+                          className="px-4 py-3 text-center text-sm sm:text-base text-gray-500 italic max-sm:text-xs max-sm:py-2"
                         >
                           Ningún dato disponible
                         </td>
@@ -659,7 +659,7 @@ const TablaNuevo = () => {
             {/* Gráfico de línea */}
             <div className="rounded-xl border border-gray-400 shadow-lg flex flex-col w-full max-h-[250px] overflow-hidden">
               {/* Cabecera sticky */}
-              <div className="p-1 bg-blue-500 rounded-t-xl sticky top-0 z-20">
+              <div className=" bg-blue-500 rounded-t-xl sticky top-0 z-20">
                 <h2 className="text-center text-lg sm:text-xl md:text-2xl font-bold mb-1 uppercase text-white">
                   AVANCE TN POR HORA
                 </h2>
@@ -737,19 +737,19 @@ const TablaNuevo = () => {
                 <div className="h-auto max-h-[75vh] overflow-y-auto">
                   <table className="w-full">
                     <thead className="sticky top-0 z-10">
-                      <tr className="bg-teal-600 text-white">
-                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-xl uppercase">
+                      <tr className="bg-teal-600 text-white font-bold">
+                        <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase">
                           PALET
                         </th>
-                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-xl uppercase">
+                        <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase">
                           VAR
                         </th>
-                        <th className="px-4 py-2 text-center font-semibold text-sm sm:text-xl uppercase">
+                        <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase">
                           CAB
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-200 font-bold">
                       {dataSgtePalet.length > 0 ? (
                         dataSgtePalet.map((row, index) => (
                           <tr
@@ -760,13 +760,13 @@ const TablaNuevo = () => {
                                 : "border-transparent"
                             }`}
                           >
-                            <td className="px-4 py-2 text-center text-sm sm:text-xl text-white-800 font-medium">
+                            <td className="px-4 py-1 text-center text-sm sm:text-2xl text-white-800 font-bold">
                               {row.palet || "N/A"}
                             </td>
-                            <td className="px-4 py-2 text-center text-sm sm:text-xl text-white-800 font-medium">
+                            <td className="px-4 py-1 text-center text-sm sm:text-2xl text-white-800 font-bold">
                               {row.varsgt || "N/A"}
                             </td>
-                            <td className="px-4 py-2 text-center text-sm sm:text-xl text-white-800 font-medium">
+                            <td className="px-4 py-1 text-center text-sm sm:text-2xl text-white-800 font-bold">
                               {row.cabsgt || "N/A"}
                             </td>
                           </tr>
@@ -775,7 +775,7 @@ const TablaNuevo = () => {
                         <tr>
                           <td
                             colSpan="3"
-                            className="px-4 py-3 text-center text-sm sm:text-base text-red-500 italic"
+                            className="px-4 py-3 text-center text-sm sm:text-base font-bold text-red-500 italic"
                           >
                             Ningún dato disponible
                           </td>
@@ -836,22 +836,22 @@ const TablaNuevo = () => {
               <table className="w-full min-w-[200px] ">
                 <thead className="sticky top-0 z-10">
                   <tr className="bg-blue-600 text-white">
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs">
+                    <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
                       <span className="max-sm:hidden">LINEA</span>
                       <span className="hidden max-sm:inline">LN</span>
                     </th>
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs">
+                    <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
                       <span className="max-sm:hidden">PRESENTACIÓN</span>
                       <span className="hidden max-sm:inline">PRES</span>
                     </th>
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs">
+                    <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
                       <span className="max-sm:hidden">TIPO PESO</span>
                       <span className="hidden max-sm:inline">PESO</span>
                     </th>
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs">
+                    <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
                       %
                     </th>
-                    <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs">
+                    <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
                       CANT
                     </th>
                   </tr>
@@ -863,14 +863,14 @@ const TablaNuevo = () => {
                         key={index}
                         className="hover:bg-gray-50 transition-colors border-b-2 border-cyan-600 "
                       >
-                        <td className="px-2 py-2 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
+                        <td className="px-2 py-1 text-center text-sm sm:text-2xl  text-gray-800 font-bold max-sm:text-xs">
                           {row.linea}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
+                        <td className="px-2 py-1 text-center text-sm sm:text-2xl  text-gray-800 font-bold max-sm:text-xs">
                           {row.presentacion || ""}
                         </td>
                         <td
-                          className={`px-2 py-2 text-center text-sm sm:text-xl font-medium max-sm:text-xs ${
+                          className={`px-2 py-1 text-center text-sm sm:text-2xl  font-bold max-sm:text-xs ${
                             row.tipO_PESO === "BAJO PESO"
                               ? "text-red-500"
                               : row.tipO_PESO === "SOBRE PESO"
@@ -881,7 +881,7 @@ const TablaNuevo = () => {
                           {row.tipO_PESO || "--"}
                         </td>
                         <td
-                          className={`px-2 py-2 text-center text-sm sm:text-xl font-medium max-sm:text-xs ${
+                          className={`px-2 py-1 text-center text-sm sm:text-2xl  font-bold max-sm:text-xs ${
                             row.porcentaje >= 5 && row.porcentaje < 7
                               ? "text-green-500"
                               : row.porcentaje >= 7 && row.porcentaje < 10
@@ -895,7 +895,7 @@ const TablaNuevo = () => {
                             ? `${row.porcentaje} %`
                             : "--"}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
+                        <td className="px-2 py-1 text-center text-sm sm:text-2xl  text-gray-800 font-bold max-sm:text-xs">
                           {row.cantidad || "--"}
                         </td>
                       </tr>
@@ -1048,7 +1048,7 @@ const TablaNuevo = () => {
           {/* COLUMNA DERECHA - Medidores */}
           <div className="w-full lg:w-1/7 flex flex-col gap-2 overflow-y-auto">
             <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center min-w-[80px] h-[150px] p-2">
-              <h4 className="uppercase text-lg font-bold text-gray-800 text-center">
+              <h4 className="uppercase text-2xl font-bold text-gray-800 text-center">
                 % conforme
               </h4>
               <GaugeChart
@@ -1062,13 +1062,13 @@ const TablaNuevo = () => {
                   labelColor: "#757575",
                 }}
                 label="Progress"
-                fontSize="16px"
+                fontSize="10px"
                 thickness="50%"
               />
             </div>
 
             <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center min-w-[80px] h-[150px] p-2">
-              <h4 className="uppercase text-lg font-bold text-gray-800 text-center">
+              <h4 className="uppercase text-2xl font-bold text-gray-800 text-center">
                 % bajo peso
               </h4>
               <GaugeChart
@@ -1081,13 +1081,13 @@ const TablaNuevo = () => {
                   labelColor: "#757575",
                 }}
                 label="Progress"
-                fontSize="16px"
+                fontSize="10px"
                 thickness="50%"
               />
             </div>
 
             <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center min-w-[80px] h-[150px] p-2">
-              <h4 className="uppercase text-lg font-bold text-gray-800 text-center">
+              <h4 className="uppercase text-2xl font-bold text-gray-800 text-center">
                 % sobre peso
               </h4>
               <GaugeChart
@@ -1100,7 +1100,7 @@ const TablaNuevo = () => {
                   labelColor: "#757575",
                 }}
                 label="Progress"
-                fontSize="16px"
+                fontSize="10px"
                 thickness="50%"
               />
             </div>

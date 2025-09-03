@@ -153,32 +153,32 @@ const TablaPuchosPT = () => {
           <table className="w-full min-w-[300px] border-collapse overflow-x-auto ">
             <thead className="sticky top-0 z-10 bg-blue-600 text-white">
               <tr className="bg-blue-600 text-white  ">
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="px-2 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">ORDEN</span>
                   <span className="hidden max-sm:inline">OR</span>
                 </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="px-2 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">PRESENTACIÓN</span>
                   <span className="hidden max-sm:inline">PRES</span>
                 </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="px-2 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">VARIEDAD</span>
                   <span className="hidden max-sm:inline">VAR</span>
                 </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="px-2 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">CAJAS</span>
                   <span className="hidden max-sm:inline">CAJ</span>
                 </th>
 
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="px-2 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">EQUIVALENCIA</span>
                   <span className="hidden max-sm:inline">EQUI</span>
                 </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="px-2 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">CAJAS TOTAL</span>
                   <span className="hidden max-sm:inline">CAJAST</span>
                 </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="px-2 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">CAJAS PENDIENTE</span>
                   <span className="hidden max-sm:inline">CAJASP</span>
                 </th>
@@ -210,25 +210,25 @@ const TablaPuchosPT = () => {
                             : "border-b-1 border-cyan-600 "
                         }`}
                       >
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                        <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.orden || ""}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                        <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.presentacion || ""}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                        <td className="px-1 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.variedad || ""}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                        <td className="px-1 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.cajas || "--"}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                        <td className="px-1 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.equivalencia || "--"}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                        <td className="px-1 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.cajastotal || "--"}
                         </td>
-                        <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                        <td className="px-1 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.cajaspendiente || "--"}
                         </td>
                       </tr>

@@ -274,19 +274,19 @@ const TablaRecepcionNisira = () => {
             <table className="w-full min-w-[300px]  overflow-x-auto">
               <thead className="sticky top-0 z-10 bg-blue-600 text-white">
                 <tr className="bg-blue-600 text-white">
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <th className="px-2 py-2 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                     <span className="max-sm:hidden">EMPAQUE</span>
                     <span className="hidden max-sm:inline">EMP</span>
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <th className="px-2 py-2 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                     <span className="max-sm:hidden">VARIEDAD</span>
                     <span className="hidden max-sm:inline">VAR</span>
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <th className="px-2 py-2 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                     <span className="max-sm:hidden">CABEZAL</span>
                     <span className="hidden max-sm:inline">CAB</span>
                   </th>
-                  <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                  <th className="px-2 py-2 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                     <span className="max-sm:hidden">PESO NETO</span>
                     <span className="hidden max-sm:inline">PESO</span>
                   </th>
@@ -318,16 +318,16 @@ const TablaRecepcionNisira = () => {
                               : "border-b-1 border-cyan-600 "
                           }`}
                         >
-                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                             {row.empaque}
                           </td>
-                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                             {row.var}
                           </td>
-                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                             {row.cabezal || ""}
                           </td>
-                          <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                             {row.pesoneto || "--"} Kg
                           </td>
                         </tr>
@@ -337,7 +337,7 @@ const TablaRecepcionNisira = () => {
                     <tr>
                       <td
                         colSpan="4"
-                        className="px-4 py-6 text-center text-sm sm:text-base text-gray-500 max-sm:text-xs max-sm:py-3"
+                        className="px-4 py-4 text-center text-sm sm:text-base text-gray-500 max-sm:text-xs max-sm:py-3"
                       >
                         No hay datos disponibles
                       </td>

@@ -623,14 +623,14 @@ const TablaCalidad = () => {
                       key={index}
                       className="hover:bg-gray-50 transition-colors border-b-1 border-cyan-600 "
                     >
-                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
+                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-bold max-sm:text-xs">
                         {row.linea}
                       </td>
-                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
+                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-bold max-sm:text-xs">
                         {row.presentacion || ""}
                       </td>
                       <td
-                        className={`px-1 py-1 text-center text-sm sm:text-xl font-medium max-sm:text-xs ${
+                        className={`px-1 py-1 text-center text-sm sm:text-xl font-bold max-sm:text-xs ${
                           row.tipO_PESO === "BAJO PESO"
                             ? "text-red-500"
                             : row.tipO_PESO === "SOBRE PESO"
@@ -641,7 +641,7 @@ const TablaCalidad = () => {
                         {row.tipO_PESO || "--"}
                       </td>
                       <td
-                        className={`px-1 py-1 text-center text-sm sm:text-xl font-medium max-sm:text-xs ${
+                        className={`px-1 py-1 text-center text-sm sm:text-xl font-bold max-sm:text-xs ${
                           row.porcentaje >= 5 && row.porcentaje < 7
                             ? "text-green-500"
                             : row.porcentaje >= 7 && row.porcentaje < 10
@@ -653,7 +653,7 @@ const TablaCalidad = () => {
                       >
                         {row.porcentaje != null ? `${row.porcentaje} %` : "--"}
                       </td>
-                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-medium max-sm:text-xs">
+                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-bold max-sm:text-xs">
                         {row.cantidad || "--"}
                       </td>
                     </tr>

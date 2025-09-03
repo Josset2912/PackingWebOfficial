@@ -192,10 +192,10 @@ const TablaGasificado = () => {
               <table className="w-full min-w-[260px] xs:min-w-[280px] sm:min-w-[300px] border-collapse">
                 <thead className="sticky top-0 z-10 bg-indigo-600 shadow-md">
                   <tr className="text-white">
-                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-bold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       PALET
                     </th>
-                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-bold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       ESPERA
                     </th>
                   </tr>
@@ -218,10 +218,10 @@ const TablaGasificado = () => {
                           index % 2 === 0 ? "bg-white" : "bg-indigo-50"
                         } hover:bg-indigo-100`}
                       >
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
                           {row.palet || "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700 font-bold">
                           {row.espera ?? "N/A"}
                         </td>
                       </tr>
@@ -253,13 +253,13 @@ const TablaGasificado = () => {
                 {/* ✅ Sticky header con fondo y sombra para que no se pierda al hacer scroll */}
                 <thead className="sticky top-0 z-10 bg-indigo-600 text-white shadow-md">
                   <tr className="text-white">
-                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-bold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       BATCH
                     </th>
-                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-bold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       PALETS
                     </th>
-                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-bold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       TIME
                     </th>
                   </tr>
@@ -282,13 +282,13 @@ const TablaGasificado = () => {
                           index % 2 === 0 ? "bg-white" : "bg-indigo-50"
                         } hover:bg-indigo-100`}
                       >
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
                           {row.batch || "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
                           {row.palets ?? "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700 font-bold">
                           {row.time ?? "N/A"}
                         </td>
                       </tr>
@@ -324,13 +324,13 @@ const TablaGasificado = () => {
                 {/* ✅ Cabecera sticky con fondo y sombra */}
                 <thead className="sticky top-0 z-10 bg-teal-600 text-white shadow-md">
                   <tr className="bg-teal-600 text-white">
-                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-bold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       PALET
                     </th>
-                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-bold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       ESPERA
                     </th>
-                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-bold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       TOTAL
                     </th>
                   </tr>
@@ -344,13 +344,13 @@ const TablaGasificado = () => {
                           index % 2 === 0 ? "bg-white" : "bg-teal-50"
                         } hover:bg-teal-100`}
                       >
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
                           {row.palet || "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
                           {row.espera ?? "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 ">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
                           {row.total ?? "N/A"}
                         </td>
                       </tr>
@@ -382,13 +382,13 @@ const TablaGasificado = () => {
                 {/* ✅ Cabecera sticky con fondo y sombra */}
                 <thead className="sticky top-0 z-10 bg-teal-600 text-white shadow-md">
                   <tr className="bg-teal-600 text-white">
-                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-bold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       BATCH
                     </th>
-                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-bold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       PALETS
                     </th>
-                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-semibold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
+                    <th className="px-2 xs:px-3 sm:px-4 py-2 text-center font-bold text-xl xs:text-2xl sm:text-3xl md:text-4xl uppercase">
                       TIME
                     </th>
                   </tr>
@@ -411,13 +411,13 @@ const TablaGasificado = () => {
                           index % 2 === 0 ? "bg-white" : "bg-teal-50"
                         } hover:bg-teal-100`}
                       >
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
                           {row.batch || "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-medium">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
                           {row.palets ?? "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
                           {row.time ?? "N/A"}
                         </td>
                       </tr>
