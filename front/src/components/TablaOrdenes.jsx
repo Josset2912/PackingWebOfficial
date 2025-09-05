@@ -6,7 +6,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-
 const TablaOrdenes = () => {
   const [dataOrdenPRD, setDataOrdenPRD] = useState([]);
 
@@ -58,7 +57,7 @@ const TablaOrdenes = () => {
       {/* Selector de cultivo y sede */}
       <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full max-sm:gap-2 max-sm:mb-2">
         {/* SEDE */}
-        <div className="w-full sm:w-auto max-sm:w-full">
+        {/*  <div className="w-full sm:w-auto max-sm:w-full">
           <Box sx={{ minWidth: 190, width: "100%" }}>
             <FormControl
               fullWidth
@@ -97,7 +96,7 @@ const TablaOrdenes = () => {
               </Select>
             </FormControl>
           </Box>
-        </div>
+        </div> */}
 
         {/* CULTIVO */}
         <div className="w-full sm:w-auto max-sm:w-full">
@@ -144,32 +143,36 @@ const TablaOrdenes = () => {
       {/* Tabla */}
       <div className="overflow-x-auto rounded-xl shadow-lg max-sm:rounded-lg max-sm:shadow-md">
         <div className="overflow-y-auto max-h-[calc(100vh-140px)] max-sm:max-h-[calc(100vh-160px)] lg:max-h-[calc(100vh-180px)]">
-          <table className="w-full min-w-[300px] border-collapse">
+          <table className="w-full min-w-[600px] sm:min-w-full border-collapse text-sm sm:text-base">
             <thead className="sticky top-0 z-10 bg-teal-600 text-white">
-              <tr className="bg-teal-600 text-white  ">
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+              <tr className="bg-gradient-to-r from-cyan-600 to-blue-700">
+                <th className="py-1 px-2 text-center font-bold text-xs sm:text-3xl uppercase">
+                  <span className="max-sm:hidden">EMPRESA</span>
+                  <span className="sm:hidden">EMP</span>
+                </th>
+                <th className="py-1 px-2 text-center font-bold text-xs sm:text-3xl uppercase">
                   <span className="max-sm:hidden">ORDEN</span>
-                  <span className="hidden max-sm:inline">OR</span>
+                  <span className="sm:hidden">ORDEN</span>
                 </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="py-1 px-2 text-center font-bold text-xs sm:text-3xl uppercase">
                   <span className="max-sm:hidden">PRIORIDAD</span>
-                  <span className="hidden max-sm:inline">PRIO</span>
+                  <span className="sm:hidden">PRIORIDAD</span>
                 </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="py-1 PX-1  text-center font-bold text-xs sm:text-3xl uppercase">
                   <span className="max-sm:hidden">DESTINO</span>
-                  <span className="hidden max-sm:inline">DES</span>
+                  <span className="sm:hidden">DESTINO</span>
                 </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
-                  <span className="max-sm:hidden">PRESENTACIÓN</span>
-                  <span className="hidden max-sm:inline">PRES</span>
+                <th className="py-1 px-2 text-center font-bold text-xs sm:text-3xl uppercase">
+                  <span className="max-sm:hidden">PRESENTACION</span>
+                  <span className="sm:hidden">PRESENTACION</span>
                 </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
-                  <span className="max-sm:hidden">EJEC. PROY</span>
-                  <span className="hidden max-sm:inline">EJEC</span>
+                <th className="py-1 px-2 text-center font-bold text-xs sm:text-3xl uppercase">
+                  <span className="max-sm:hidden">EJEC / PROY</span>
+                  <span className="sm:hidden">EJEC / PROY</span>
                 </th>
-                <th className="px-2 py-2 text-center font-semibold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
-                  <span className="max-sm:hidden">F. DESPACHO</span>
-                  <span className="hidden max-sm:inline">DESP</span>
+                <th className="py-1 px-2 text-center font-bold text-xs sm:text-3xl uppercase">
+                  <span className="max-sm:hidden">F.DESPACHO</span>
+                  <span className="sm:hidden">F.DESPACHO</span>
                 </th>
               </tr>
             </thead>
@@ -178,39 +181,54 @@ const TablaOrdenes = () => {
                 dataOrdenPRD.map((row, index) => (
                   <tr
                     key={index}
-                    className={`border-b border-gray-200 transition duration-200 ${
-                      index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                    } hover:bg-cyan-50 active:bg-cyan-100`}
+                    className={`hover:bg-gray-50 
+                      
+                        ? "font-bold text-black border-t-1 border-blue-400"
+                        : "border-b-1 border-cyan-600 "
+                    transition-colors `}
                   >
-                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-800 font-medium max-sm:px-2 max-sm:py-1 max-sm:text-xs">
-                      {row.Orden}
+                    <td className="px-1 py-1 text-center font-bold text-xs sm:text-2xl truncate max-w-[100px]">
+                      {row.empresa}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-800 font-medium max-sm:px-2 max-sm:py-1 max-sm:text-xs">
-                      {row.Prioridad}
+                    <td className="px-1 py-1 text-center font-bold text-xs sm:text-2xl">
+                      {row.orden}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 truncate max-w-[120px] mx-auto max-sm:px-2 max-sm:py-1 max-sm:text-xs max-sm:max-w-[80px]">
-                      {row.Destino}
+                    <td className="px-1 py-1 text-center font-bold text-xs sm:text-2xl">
+                      {row.prioridad}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 truncate max-w-[150px] mx-auto max-sm:px-2 max-sm:py-1 max-sm:text-xs max-sm:max-w-[90px]">
-                      {row.Presentacion}
+                    <td className=" py-1 text-center font-bold text-xs sm:text-2xl truncate max-w-[90px]">
+                      {row.destino}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 max-sm:px-2 max-sm:py-1 max-sm:text-xs">
-                      {row.Ejec_Proy}
+                    <td className="px-1 py-1 text-center font-bold text-xs sm:text-2xl truncate max-w-[100px]">
+                      {row.presentacion}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 max-sm:px-2 max-sm:py-1 max-sm:text-xs">
-                      {row.F_Despacho}
+                    <td
+                      className={`px-1 py-1 text-center font-bold text-xs sm:text-2xl ${
+                        (parseFloat(row.ejec) || 0) ===
+                        (parseFloat(row.proy) || 0)
+                          ? "text-green-500"
+                          : (parseFloat(row.ejec) || 0) >=
+                            (parseFloat(row.proy) || 0)
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {row.ejec_Proy}
+                    </td>
+                    <td className="px-1 py-1 text-center font-bold text-xs sm:text-2xl">
+                      {row.f_Despacho}
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
                   <td
-                    colSpan="6"
-                    className="px-4 py-6 text-center text-sm sm:text-base md:text-lg text-gray-500 italic max-sm:px-2 max-sm:py-3 max-sm:text-xs"
+                    colSpan="7"
+                    className="px-4 py-6 text-center text-xs sm:text-base text-gray-500 italic"
                   >
                     <div className="flex flex-col items-center justify-center space-y-2">
                       <svg
-                        className="w-8 h-8 text-gray-400"
+                        className="w-6 h-6 text-gray-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

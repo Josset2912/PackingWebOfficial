@@ -270,19 +270,19 @@ const TablaRecepcion = () => {
           <table className="w-full min-w-[300px] border-collapse overflow-x-auto ">
             <thead className="sticky top-0 z-10 bg-blue-600 text-white">
               <tr className="bg-blue-600 text-white  ">
-                <th className="px-2 py-2 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="px-2 py-2 text-center font-bold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">EMPAQUE</span>
                   <span className="hidden max-sm:inline">EMP</span>
                 </th>
-                <th className="px-2 py-2 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="px-2 py-2 text-center font-bold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">VARIEDAD</span>
                   <span className="hidden max-sm:inline">VAR</span>
                 </th>
-                <th className="px-2 py-2 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="px-2 py-2 text-center font-bold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">CABEZAL</span>
                   <span className="hidden max-sm:inline">CAB</span>
                 </th>
-                <th className="px-2 py-2 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <th className="px-2 py-2 text-center font-bold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">PESO NETO</span>
                   <span className="hidden max-sm:inline">PESO</span>
                 </th>

@@ -406,16 +406,16 @@ const TablaRecepcion = () => {
             <table className="w-full min-w-[300px] border-collapse">
               <thead className="sticky top-0 z-10">
                 <tr className="bg-blue-600 text-white">
-                  <th className="px-2 py-2 text-center font-bold text-xs sm:text-lg lg:text-xl xl:text-trxl uppercase">
+                  <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
                     VAR
                   </th>
-                  <th className="px-1 py-1 text-center font-bold text-xs sm:text-lg lg:text-xl xl:text-trxl uppercase">
+                  <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
                     KG PROG
                   </th>
-                  <th className="px-1 py-1 text-center font-bold text-xs sm:text-lg lg:text-xl xl:text-trxl uppercase">
+                  <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
                     KG EJEC
                   </th>
-                  <th className="px-1 py-1 text-center font-bold text-xs sm:text-lg lg:text-xl xl:text-trxl uppercase">
+                  <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
                     % CUMP
                   </th>
                 </tr>
@@ -467,7 +467,7 @@ const TablaRecepcion = () => {
         {/* TABLA LINEA - DERECHA */}
         <div className="lg:w-1/2 w-full overflow-x-auto rounded-xl shadow-lg">
           <div className="p-1 bg-blue-500 rounded-t-xl">
-            <h2 className="text-center text-sm sm:text-lg md:text-xl lg:text-2xl font-bold mb-1 uppercase text-white">
+            <h2 className="text-center text-sm sm:text-lg md:text-xl lg:text-3xl font-bold mb-1 uppercase text-white">
               Porcentaje por rango de hora
             </h2>
           </div>
