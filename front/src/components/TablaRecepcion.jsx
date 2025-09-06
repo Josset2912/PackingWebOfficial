@@ -94,7 +94,7 @@ const TablaRecepcion = () => {
   }, [fruta, sede, empaqueFiltro, variedadFiltro]);
 
   return (
-    <div className="P-4 dark:text-gray-100">
+    <div className="P-4">
       {/* Selectores de filtro */}
       <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full mt-1 p-2">
         {/* SEDE */}

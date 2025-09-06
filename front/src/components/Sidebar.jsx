@@ -23,8 +23,7 @@ export default function Sidebar({
       onMouseLeave={handleMouseLeave}
       style={{ minWidth: sidebarOpen ? 220 : 50 }}
     >
-      {/* Header */}
-      {/* ... tu header aquí ... */}
+
 
       {/* Navegación Packing */}
       <nav className="flex-1 overflow-y-auto px-4 py-6">

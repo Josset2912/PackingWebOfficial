@@ -248,7 +248,7 @@ const TablaNuevo = () => {
       const sedeParam = sede === "TODOS" ? "" : sede;
       const frutaLower = fruta.toLowerCase();
       const maquinaParam = maquina === "UNITEC" ? "" : maquina;
-      const filerParam = filer === "F1" ? "" : filer;
+      const filerParam = filer === "SLECCIONE" ? "" : filer;
       const presentacionParam =
         presentacion === "SELECCIONE" ? "" : presentacion;
 
@@ -581,9 +581,9 @@ const TablaNuevo = () => {
           <div className="flex flex-col flex-1 gap-3 w-full">
             {/**----------------------------------------------- */}
             {/* Tabla KG PROG VS EJEC */}
-            <div className="bg-white rounded-xl shadow-lg flex flex-col w-full max-h-[250px] overflow-hidden">
+            <div className="bg-white rounded-xl shadow-lg flex flex-col w-full max-h-[235px] overflow-hidden">
               {/* Encabezado */}
-              <div className="px-4 py-1 max-sm:px-2 max-sm:py-1">
+              <div className="px-4  max-sm:px-2 max-sm:py-1">
                 <h2 className="text-center font-bold text-base sm:text-2xl md:text-3xl text-black uppercase tracking-wider max-sm:text-sm">
                   KG PROG VS EJEC
                 </h2>
@@ -595,19 +595,19 @@ const TablaNuevo = () => {
                   {/* Encabezados sticky */}
                   <thead className="sticky top-0 z-10 bg-indigo-600 text-white">
                     <tr>
-                      <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                      <th className="px-4 py- text-center font-bold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
                         EMPAQUE
                       </th>
-                      <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                      <th className="px-4 py- text-center font-bold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
                         VAR
                       </th>
-                      <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                      <th className="px-4 py- text-center font-bold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
                         KG PROG
                       </th>
-                      <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                      <th className="px-4 py- text-center font-bold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
                         EJEC
                       </th>
-                      <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                      <th className="px-4 py- text-center font-bold text-sm sm:text-3xl uppercase max-sm:text-xs max-sm:px-2 max-sm:py-1">
                         %
                       </th>
                     </tr>
@@ -620,9 +620,9 @@ const TablaNuevo = () => {
                       dataLineaVolcado.map((row, index) => (
                         <tr
                           key={`lineaAvance-${index}`}
-                          className={`transition-colors ${
-                            index % 2 === 0 ? "bg-white" : "bg-indigo-50"
-                          } hover:bg-indigo-100`}
+                          className={`transition-colors font-bold text-blue-900 border-t-1.5 border-purple-600 ${
+                            index % 2 === 0 ? "bg-white" : ""
+                          }`}
                         >
                           <td className="px-4 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-2 max-sm:py-1">
                             {row.empaque || ""}
@@ -660,14 +660,14 @@ const TablaNuevo = () => {
             <div className="rounded-xl border border-gray-400 shadow-lg flex flex-col w-full max-h-[250px] overflow-hidden">
               {/* Cabecera sticky */}
               <div className=" bg-blue-500 rounded-t-xl sticky top-0 z-20">
-                <h2 className="text-center text-lg sm:text-xl md:text-2xl font-bold mb-1 uppercase text-white">
+                <h2 className="text-center text-lg sm:text-xl md:text-2xl font-bold uppercase text-white">
                   AVANCE TN POR HORA
                 </h2>
               </div>
 
               {/* Contenedor scroll del gráfico */}
               <div className="overflow-x-auto w-full flex-1">
-                <ResponsiveContainer width="100%" height={200}>
+                <ResponsiveContainer width="100%" height={170}>
                   <LineChart
                     data={dataAgrupadasLinea}
                     margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
@@ -727,7 +727,7 @@ const TablaNuevo = () => {
           <div className="flex flex-col gap-3 w-full lg:w-[40%]">
             {/* Tabla SGTE PALET */}
             <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-              <div className="px-4 py-1">
+              <div className="px-4 py-">
                 <h2 className="text-center font-bold text-base sm:text-2xl md:text-3xl text-black uppercase tracking-wider">
                   SGTE PALET
                 </h2>
@@ -738,13 +738,13 @@ const TablaNuevo = () => {
                   <table className="w-full">
                     <thead className="sticky top-0 z-10">
                       <tr className="bg-teal-600 text-white font-bold">
-                        <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase">
+                        <th className="px-4 py- text-center font-bold text-sm sm:text-3xl uppercase">
                           PALET
                         </th>
-                        <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase">
+                        <th className="px-4 py- text-center font-bold text-sm sm:text-3xl uppercase">
                           VAR
                         </th>
-                        <th className="px-4 py-1 text-center font-bold text-sm sm:text-2xl uppercase">
+                        <th className="px-4 py- text-center font-bold text-sm sm:text-3xl uppercase">
                           CAB
                         </th>
                       </tr>
@@ -828,90 +828,160 @@ const TablaNuevo = () => {
 
         {/* ==================== */}
         {/* TABLA CALIDAD */}
-        <div className="flex flex-col lg:flex-row gap-3 w-full h-auto max-sm:h-auto  ">
+        <div className="flex flex-col lg:flex-row gap-2 w-full h-auto max-sm:h-auto  ">
           {/* Contenedor superior: ocupa 50% de la pantalla */}{" "}
           {/* COLUMNA IZQUIERDA - Tabla */}
-          <div className="w-full lg:w-1/2 h-[40vh] max-sm:h-[300px] overflow-x-auto overflow-y-auto rounded-xl shadow-lg max-sm:mt-1 max-sm:rounded-lg">
-            <div className=" max-h-[calc(48vh-70px)] max-sm:max-h-[300px]">
-              <table className="w-full min-w-[200px] ">
-                <thead className="sticky top-0 z-10">
-                  <tr className="bg-blue-600 text-white">
-                    <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
-                      <span className="max-sm:hidden">LINEA</span>
-                      <span className="hidden max-sm:inline">LN</span>
-                    </th>
-                    <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
-                      <span className="max-sm:hidden">PRESENTACIÓN</span>
-                      <span className="hidden max-sm:inline">PRES</span>
-                    </th>
-                    <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
-                      <span className="max-sm:hidden">TIPO PESO</span>
-                      <span className="hidden max-sm:inline">PESO</span>
-                    </th>
-                    <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
-                      %
-                    </th>
-                    <th className="px-1 py-1 text-center font-bold text-base sm:text-2xl uppercase max-sm:text-xs">
-                      CANT
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {dataCalidad.length > 0 ? (
-                    dataCalidad.map((row, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-gray-50 transition-colors border-b-2 border-cyan-600 "
-                      >
-                        <td className="px-2 py-1 text-center text-sm sm:text-2xl  text-gray-800 font-bold max-sm:text-xs">
-                          {row.linea}
-                        </td>
-                        <td className="px-2 py-1 text-center text-sm sm:text-2xl  text-gray-800 font-bold max-sm:text-xs">
-                          {row.presentacion || ""}
-                        </td>
-                        <td
-                          className={`px-2 py-1 text-center text-sm sm:text-2xl  font-bold max-sm:text-xs ${
-                            row.tipO_PESO === "BAJO PESO"
-                              ? "text-red-500"
-                              : row.tipO_PESO === "SOBRE PESO"
-                              ? "text-yellow-500"
-                              : "text-gray-800"
-                          }`}
+          <div className="flex flex-col gap-2 w-full max-w-[800px]">
+            {/* Primera tabla */}
+            <div className="w-full h-[15vh] min-h-[100px] max-h-[400px] overflow-auto rounded-xl shadow-lg max-sm:rounded-lg">
+              <div className="h-full max-h-full min-w-[300px] w-full">
+                <table className="w-full min-w-[300px]">
+                  <thead className="sticky top-0 z-10">
+                    <tr className="bg-blue-600 text-white">
+                      <th className="px-1 sm:px-2 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
+                        <span className="sm:hidden">F1</span>
+                        <span className="hidden sm:inline">F1</span>
+                      </th>
+                      <th className="px- sm:px-2  text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
+                        <span className="sm:hidden">F2</span>
+                        <span className="hidden sm:inline">F2</span>
+                      </th>
+                      <th className="px- sm:px-2 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
+                        <span className="sm:hidden">F3</span>
+                        <span className="hidden sm:inline">F3</span>
+                      </th>
+                      <th className="px- sm:px-2  text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
+                        <span className="sm:hidden">PUL1</span>
+                        <span className="hidden sm:inline">PULMON 1</span>{" "}
+                      </th>
+                      <th className="px- sm:px-2  text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
+                        <span className="sm:hidden">PUL2</span>
+                        <span className="hidden sm:inline">PULMON 2</span>{" "}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {dataCalidad.length > 0 ? (
+                      dataCalidad.map((row, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-gray-50 transition-colors border-b-1 border-cyan-600 "
                         >
-                          {row.tipO_PESO || "--"}
-                        </td>
+                          <td className="px- sm:px-2  text-center text-xs sm:text-sm md:text-base lg:text-2xl text-gray-800 font-bold whitespace-nowrap">
+                            {row.f1 || "10"}
+                          </td>
+                          <td className="w-20 sm:w-24 md:w-32 lg:w-40 xl:w-48 px-2 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase">
+                            {row.f2 || "10"}
+                          </td>
+                          <td className="px- sm:px-2  text-center text-xs sm:text-sm md:text-base lg:text-2xl font-bold whitespace-nowrap">
+                            {row.f3 || "10"}
+                          </td>
+                          <td className="px- sm:px-2  text-center text-xs sm:text-sm md:text-base lg:text-2xl font-bold whitespace-nowrap">
+                            {row.pulmon1 || "10"}
+                          </td>
+                          <td className="w-20 sm:w-24 md:w-32 lg:w-40 xl:w-48 px-2 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase">
+                            {row.pulmon2 || "10"}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
                         <td
-                          className={`px-2 py-1 text-center text-sm sm:text-2xl  font-bold max-sm:text-xs ${
-                            row.porcentaje >= 5 && row.porcentaje < 7
-                              ? "text-green-500"
-                              : row.porcentaje >= 7 && row.porcentaje < 10
-                              ? "text-yellow-500"
-                              : row.porcentaje >= 10
-                              ? "text-red-500"
-                              : "text-gray-800"
-                          }`}
+                          colSpan="5"
+                          className="px-2 sm:px-4 py-4 sm:py-6 text-center text-xs sm:text-sm text-gray-500"
                         >
-                          {row.porcentaje != null
-                            ? `${row.porcentaje} %`
-                            : "--"}
-                        </td>
-                        <td className="px-2 py-1 text-center text-sm sm:text-2xl  text-gray-800 font-bold max-sm:text-xs">
-                          {row.cantidad || "--"}
+                          No hay datos de recepción disponibles
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td
-                        colSpan="5"
-                        className="px-4 py-6 text-center text-sm sm:text-base text-gray-500 max-sm:text-xs max-sm:py-3"
-                      >
-                        No hay datos de recepción disponibles
-                      </td>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Segunda tabla */}
+            <div className="w-full h-[34vh] min-h-[330px] max-h-[500px] overflow-auto rounded-xl shadow-lg max-sm:rounded-lg">
+              <div className="h-full max-h-full min-w-[300px] w-full">
+                <table className="w-full min-w-[300px]">
+                  <thead className="sticky top-0 z-10">
+                    <tr className="bg-blue-600 text-white">
+                      <th className="px-1 sm:px-2 py-1 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
+                        <span className="sm:hidden">LN</span>
+                        <span className="hidden sm:inline">LINEA</span>
+                      </th>
+                      <th className="px-1 sm:px-2 py-1 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
+                        <span className="sm:hidden">PRES</span>
+                        <span className="hidden sm:inline">PRESENTACIÓN</span>
+                      </th>
+                      <th className="px-1 sm:px-2 py-1 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
+                        <span className="sm:hidden">PESO</span>
+                        <span className="hidden sm:inline">TIPO PESO</span>
+                      </th>
+                      <th className="px-1 sm:px-2 py-1 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
+                        %
+                      </th>
+                      <th className="px-1 sm:px-2 py-1 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
+                        CANT
+                      </th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {dataCalidad.length > 0 ? (
+                      dataCalidad.map((row, index) => (
+                        <tr
+                          key={index}
+                          className="hover:bg-gray-50 transition-colors border-b-1 border-cyan-600 "
+                        >
+                          <td className="px- sm:px-1 py-1 text-center text-xs sm:text-sm md:text-base lg:text-2xl text-gray-800 font-bold whitespace-nowrap">
+                            {row.linea}
+                          </td>
+                          <td className="px- sm:px-1 py-1 text-center text-xs sm:text-sm md:text-base lg:text-2xl text-gray-800 font-bold whitespace-nowrap">
+                            {row.presentacion || ""}
+                          </td>
+                          <td
+                            className={`px sm:px-1 py-1 text-center text-xs sm:text-sm md:text-base lg:text-2xl font-bold whitespace-nowrap ${
+                              row.tipO_PESO === "BAJO PESO"
+                                ? "text-red-500"
+                                : row.tipO_PESO === "SOBRE PESO"
+                                ? "text-yellow-500"
+                                : "text-gray-800"
+                            }`}
+                          >
+                            {row.tipO_PESO || "--"}
+                          </td>
+                          <td
+                            className={`px- sm:px-1 py-1 text-center text-xs sm:text-sm md:text-base lg:text-2xl font-bold whitespace-nowrap ${
+                              row.porcentaje >= 5 && row.porcentaje < 7
+                                ? "text-green-500"
+                                : row.porcentaje >= 7 && row.porcentaje < 10
+                                ? "text-yellow-500"
+                                : row.porcentaje >= 10
+                                ? "text-red-500"
+                                : "text-gray-800"
+                            }`}
+                          >
+                            {row.porcentaje != null
+                              ? `${row.porcentaje} %`
+                              : "--"}
+                          </td>
+                          <td className="px- sm:px-1 py-1 text-center text-xs sm:text-sm md:text-base lg:text-2xl text-gray-800 font-bold whitespace-nowrap">
+                            {row.cantidad || "--"}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          className="px-2 sm:px-4 py-4 sm:py-6 text-center text-xs sm:text-sm text-gray-500"
+                        >
+                          No hay datos de recepción disponibles
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
           {/* COLUMNA CENTRAL - Gráficos */}
@@ -927,7 +997,7 @@ const TablaNuevo = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                     data={dataAgrupada}
-                    margin={{ top: 19, right: 19, left: -35, bottom: 0 }}
+                    margin={{ top: 14, right: 19, left: -35, bottom: 5 }}
                   >
                     <CartesianGrid strokeDasharray="2 2" />
                     <XAxis dataKey="rango" />
@@ -982,7 +1052,7 @@ const TablaNuevo = () => {
             </div>
 
             {/* Gráfico 2 */}
-            <div className="bg-white rounded-xl shadow-lg flex-1 min-h-0">
+            <div className="bg-white rounded-xl shadow-ms flex-1 min-h-0">
               <div className="bg-blue-500 rounded-t-xl">
                 <h2 className="text-center text-lg sm:text-xl md:text-2xl font-bold mb-1 uppercase text-white">
                   % por filer
@@ -992,7 +1062,7 @@ const TablaNuevo = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
                     data={dataAgrupadaFilerOrdenada}
-                    margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
+                    margin={{ top: 14, right: 22, left: -35, bottom: 20 }}
                   >
                     <CartesianGrid strokeDasharray="2 2" />
                     <XAxis dataKey="rangofiler" />
@@ -1046,7 +1116,7 @@ const TablaNuevo = () => {
             </div>
           </div>
           {/* COLUMNA DERECHA - Medidores */}
-          <div className="w-full lg:w-1/7 flex flex-col gap-2 overflow-y-auto">
+          <div className="w-full lg:w-1/6 flex flex-col gap-2 overflow-y-auto">
             <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center min-w-[80px] h-[150px] p-2">
               <h4 className="uppercase text-2xl font-bold text-gray-800 text-center">
                 % conforme

@@ -158,7 +158,7 @@ const TablaOrdenes = () => {
                   <span className="max-sm:hidden">PRIORIDAD</span>
                   <span className="sm:hidden">PRIORIDAD</span>
                 </th>
-                <th className="py-1 PX-1  text-center font-bold text-xs sm:text-3xl uppercase">
+                <th className="py-1 px-6 text-center font-bold text-xs sm:text-3xl uppercase">
                   <span className="max-sm:hidden">DESTINO</span>
                   <span className="sm:hidden">DESTINO</span>
                 </th>
@@ -199,7 +199,7 @@ const TablaOrdenes = () => {
                     <td className=" py-1 text-center font-bold text-xs sm:text-2xl truncate max-w-[90px]">
                       {row.destino}
                     </td>
-                    <td className="px-1 py-1 text-center font-bold text-xs sm:text-2xl truncate max-w-[100px]">
+                    <td className=" py-1 text-center font-bold text-xs sm:text-2xl truncate max-w-[100px]">
                       {row.presentacion}
                     </td>
                     <td
