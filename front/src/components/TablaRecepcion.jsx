@@ -13,7 +13,7 @@ import {
   fetchVariedadFiltro,
 } from "../utils/api";
 
-const TablaRecepcion = () => {
+const TablaRecepcion = ({ darkMode }) => {
   // Estados para filtros
   const [empaqueFiltro, setEmpaqueFiltro] = useState("TODOS");
   const [dataEmpaqueFiltro, setDataEmpaqueFiltro] = useState([]);
@@ -30,7 +30,7 @@ const TablaRecepcion = () => {
 
   // Datos obtenidos de APIs
   const [dataVariedad, setDataVariedad] = useState([]);
-  const [dataCabezal, setDataCabezal] = useState([]);
+  const [, setDataCabezal] = useState([]);
 
   // Función para cargar todos los datos
   const fetchData = async () => {
@@ -59,8 +59,6 @@ const TablaRecepcion = () => {
       ]);
       // Verificar si las respuestas son válidas y asignar los datos
       // si no, asignar un array vacío
-
-      // Las respuestas de axios ya traen el objeto data
       setDataVariedad(Array.isArray(resVariedad.data) ? resVariedad.data : []);
       setDataCabezal(Array.isArray(resCabezal.data) ? resCabezal.data : []);
       setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
@@ -94,7 +92,7 @@ const TablaRecepcion = () => {
   }, [fruta, sede, empaqueFiltro, variedadFiltro]);
 
   return (
-    <div className="P-4">
+    <div className="p-1 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       {/* Selectores de filtro */}
       <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full mt-1 p-2">
         {/* SEDE */}
@@ -106,15 +104,23 @@ const TablaRecepcion = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
+                  backgroundColor: darkMode ? "#1f2937" : "#ffffff", // fondo
+                  color: darkMode ? "#f9fafb" : "#111827", // texto
                   "& fieldset": {
-                    borderColor: "green",
+                    borderColor: darkMode ? "#4b5563" : "green",
                   },
                   "&:hover fieldset": {
-                    borderColor: "darkgreen",
+                    borderColor: darkMode ? "#9ca3af" : "darkgreen",
                   },
                   "&.Mui-focused fieldset": {
                     borderColor: "green",
                   },
+                },
+                "& .MuiInputLabel-root": {
+                  color: darkMode ? "#d1d5db" : "inherit",
+                },
+                "& .MuiSvgIcon-root": {
+                  color: darkMode ? "#f9fafb" : "inherit", // ícono flecha
                 },
               }}
             >
@@ -146,15 +152,23 @@ const TablaRecepcion = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
+                  backgroundColor: darkMode ? "#1f2937" : "#ffffff",
+                  color: darkMode ? "#f9fafb" : "#111827",
                   "& fieldset": {
-                    borderColor: "green",
+                    borderColor: darkMode ? "#4b5563" : "green",
                   },
                   "&:hover fieldset": {
-                    borderColor: "darkgreen",
+                    borderColor: darkMode ? "#9ca3af" : "darkgreen",
                   },
                   "&.Mui-focused fieldset": {
                     borderColor: "green",
                   },
+                },
+                "& .MuiInputLabel-root": {
+                  color: darkMode ? "#d1d5db" : "inherit",
+                },
+                "& .MuiSvgIcon-root": {
+                  color: darkMode ? "#f9fafb" : "inherit",
                 },
               }}
             >
@@ -187,15 +201,23 @@ const TablaRecepcion = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
+                  backgroundColor: darkMode ? "#1f2937" : "#ffffff",
+                  color: darkMode ? "#f9fafb" : "#111827",
                   "& fieldset": {
-                    borderColor: "green",
+                    borderColor: darkMode ? "#4b5563" : "green",
                   },
                   "&:hover fieldset": {
-                    borderColor: "darkgreen",
+                    borderColor: darkMode ? "#9ca3af" : "darkgreen",
                   },
                   "&.Mui-focused fieldset": {
                     borderColor: "green",
                   },
+                },
+                "& .MuiInputLabel-root": {
+                  color: darkMode ? "#d1d5db" : "inherit",
+                },
+                "& .MuiSvgIcon-root": {
+                  color: darkMode ? "#f9fafb" : "inherit",
                 },
               }}
             >
@@ -229,15 +251,23 @@ const TablaRecepcion = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
+                  backgroundColor: darkMode ? "#1f2937" : "#ffffff",
+                  color: darkMode ? "#f9fafb" : "#111827",
                   "& fieldset": {
-                    borderColor: "green",
+                    borderColor: darkMode ? "#4b5563" : "green",
                   },
                   "&:hover fieldset": {
-                    borderColor: "darkgreen",
+                    borderColor: darkMode ? "#9ca3af" : "darkgreen",
                   },
                   "&.Mui-focused fieldset": {
                     borderColor: "green",
                   },
+                },
+                "& .MuiInputLabel-root": {
+                  color: darkMode ? "#d1d5db" : "inherit",
+                },
+                "& .MuiSvgIcon-root": {
+                  color: darkMode ? "#f9fafb" : "inherit",
                 },
               }}
             >
@@ -264,12 +294,11 @@ const TablaRecepcion = () => {
       </div>
 
       {/* Tabla y contenido */}
-      {/* Tabla y contenido */}
-      <div className="overflow-x-auto rounded-xl  gap-2 max-sm:mt-1">
+      <div className="overflow-x-auto rounded-xl gap-2 max-sm:mt-1">
         <div className="overflow-y-auto max-h-[calc(100vh-100px)] max-sm:max-h-[calc(844px-200px)]">
-          <table className="w-full min-w-[300px] border-collapse overflow-x-auto ">
-            <thead className="sticky top-0 z-10 bg-blue-600 text-white">
-              <tr className="bg-blue-600 text-white  ">
+          <table className="w-full min-w-[300px] border-collapse overflow-x-auto">
+            <thead className="sticky top-0 z-10 bg-blue-600 text-white dark:bg-blue-800 dark:text-gray-100">
+              <tr>
                 <th className="px-2 py-2 text-center font-bold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   <span className="max-sm:hidden">EMPAQUE</span>
                   <span className="hidden max-sm:inline">EMP</span>
@@ -288,7 +317,7 @@ const TablaRecepcion = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {(() => {
                 const totalRow = dataVariedad.find(
                   (row) => row.empaque?.toLowerCase() === "total"
@@ -308,22 +337,22 @@ const TablaRecepcion = () => {
                     return (
                       <tr
                         key={index}
-                        className={`hover:bg-gray-50 transition-colors ${
+                        className={`hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
                           isTotalRow
-                            ? "font-bold text-blue-900 border-t-4 border-blue-400"
-                            : "border-b-1 border-cyan-600 "
+                            ? "font-bold text-blue-900 dark:text-blue-300 border-t-4 border-blue-400 dark:border-blue-600"
+                            : "border-b-1 border-cyan-600 dark:border-cyan-400"
                         }`}
                       >
-                        <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                        <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 dark:text-gray-100 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.empaque || ""}
                         </td>
-                        <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                        <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 dark:text-gray-100 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.var || ""}
                         </td>
-                        <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                        <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 dark:text-gray-100 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.cabezal || ""}
                         </td>
-                        <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                        <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 dark:text-gray-100 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
                           {row.ejec || "--"} kg
                         </td>
                       </tr>
@@ -333,7 +362,7 @@ const TablaRecepcion = () => {
                   <tr>
                     <td
                       colSpan="4"
-                      className="px-4 py-6 text-center text-sm sm:text-base text-gray-500 max-sm:text-xs max-sm:py-3 font-bold"
+                      className="px-4 py-6 text-center text-sm sm:text-base text-gray-500 dark:text-gray-400 max-sm:text-xs max-sm:py-3 font-bold"
                     >
                       No hay datos disponibles
                     </td>
@@ -394,10 +423,10 @@ export default TablaRecepcion;
                                 : ""
                             }`}
                           >
-                            <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
+                            <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 dark:text-gray-200 font-medium">
                               {row.cabezal || "VACÍO"}
                             </td>
-                            <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium">
+                            <td className="px-2 py-2 text-center text-sm sm:text-3xl text-gray-800 dark:text-gray-200 font-medium">
                               {row.ejec || "--"} Kg
                             </td>
                           </tr>

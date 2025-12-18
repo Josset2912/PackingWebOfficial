@@ -3,16 +3,29 @@
 import axios from "axios";
 
 //=======================================================
-const BASE_URL = "http://190.119.200.124:45490";
+let baseUrl = "http://190.119.200.124:45490";
+const fallbackUrl = "http://181.66.254.221:45490";
+
+(async () => {
+  try {
+    await axios.get(`${baseUrl}/maestros/empaque`, { timeout: 5000 });
+  } catch (error) {
+    console.log(
+      "Primary URL not responding, switching to fallback:",
+      error.message
+    );
+    baseUrl = fallbackUrl;
+  }
+})();
 //=======================================================
 //API EMPAQUE
 export const fetchEmpaqFiltro = () =>
-  axios.get(`${BASE_URL}/maestros/empaque`, {
+  axios.get(`${baseUrl}/maestros/empaque`, {
     params: {},
   });
 //API VARIEDAD
 export const fetchVariedadFiltro = () =>
-  axios.get(`${BASE_URL}/maestros/variedad`, {
+  axios.get(`${baseUrl}/maestros/variedad`, {
     params: {},
   });
 
@@ -22,7 +35,7 @@ export const fetchPresentacion = (sede, cultivo, maquina, filer) => {
   const cultivoValido = cultivo?.trim() || "ARANDANO";
   const maquinaValida = maquina?.trim() || "SELECCIONE";
   const lineaValida = filer?.trim() || "SELECCIONE";
-  return axios.get(`${BASE_URL}/packing/presentacion`, {
+  return axios.get(`${baseUrl}/packing/presentacion`, {
     params: {
       sede: sedeValido,
       cultivo: cultivoValido,
@@ -33,31 +46,31 @@ export const fetchPresentacion = (sede, cultivo, maquina, filer) => {
 };
 //API TURNO
 export const fetchTurno = () =>
-  axios.get(`${BASE_URL}/packing/turno`, {
+  axios.get(`${baseUrl}/packing/turno`, {
     params: { turno: "" },
   });
 
 //API CULTIVO
-export const fetchCultivos = () => axios.get(`${BASE_URL}/packing/cultivo`);
+export const fetchCultivos = () => axios.get(`${baseUrl}/packing/cultivo`);
 //API SEDE
-export const fetchEmpresa = () => axios.get(`${BASE_URL}/maestros/empresa`);
+export const fetchEmpresa = () => axios.get(`${baseUrl}/maestros/empresa`);
 //API SEDE
 export const fetchSedes = () =>
-  axios.get(`${BASE_URL}/packing/sede`, {
+  axios.get(`${baseUrl}/packing/sede`, {
     params: { emp: "TODOS" },
   });
 //API MAQUINA
 export const fetchMaquina = (cultivo) => {
   const cultivoValido = cultivo?.trim() || "arandano";
 
-  return axios.get(`${BASE_URL}/packing/maquina`, {
+  return axios.get(`${baseUrl}/packing/maquina`, {
     params: { cultivo: cultivoValido },
   });
 };
 //API FILTER-FILTRO
 export const fetchFiler = (maquina) => {
   const maquinaValida = maquina?.trim() || "UNITEC";
-  return axios.get(`${BASE_URL}/packing/filer`, {
+  return axios.get(`${baseUrl}/packing/filer`, {
     params: { maquina: maquinaValida },
   });
 };
@@ -69,7 +82,7 @@ export const fetchVariedad = (sede, cultivo, empaque, variedad) => {
   const empaqueValido = empaque?.trim() || "TODOS";
   const variedadValida = variedad?.trim() || "TODOS";
 
-  return axios.get(`${BASE_URL}/packing/recepcion`, {
+  return axios.get(`${baseUrl}/packing/recepcion`, {
     params: {
       cod: "1",
       sede: sedeValida,
@@ -87,7 +100,7 @@ export const fetchCabezal = (sede, cultivo, empaque, variedad) => {
   const empaqueValido = empaque?.trim() || "TODOS";
   const variedadValida = variedad?.trim() || "TODOS";
 
-  return axios.get(`${BASE_URL}/packing/recepcion`, {
+  return axios.get(`${baseUrl}/packing/recepcion`, {
     params: {
       cod: "1",
       sede: sedeValida,
@@ -106,7 +119,7 @@ export const fetchVariedadNisira = (sede, cultivo, empaque, variedad) => {
   const empaqueValido = empaque?.trim() || "todos";
   const variedadValida = variedad?.trim() || "todos";
 
-  return axios.get(`${BASE_URL}/packing/recepcionNisira`, {
+  return axios.get(`${baseUrl}/packing/recepcionNisira`, {
     params: {
       cod: "1",
       sede: sedeValida,
@@ -124,7 +137,7 @@ export const fetchCabezalNisira = (sede, cultivo, empaque, variedad) => {
   const empaqueValido = empaque?.trim() || "todos";
   const variedadValida = variedad?.trim() || "todos";
 
-  return axios.get(`${BASE_URL}/packing/recepcionNisira`, {
+  return axios.get(`${baseUrl}/packing/recepcionNisira`, {
     params: {
       cod: "1",
       sede: sedeValida,
@@ -152,7 +165,7 @@ export const fetchCalidad = (
   const presentacionValida = presentacion?.trim() || "SELECCIONE";
   const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
-  return axios.get(`${BASE_URL}/packing/calidad`, {
+  return axios.get(`${baseUrl}/packing/calidad`, {
     params: {
       sede: sedeValida,
       cultivo: cultivoValido,
@@ -180,7 +193,7 @@ export const fetchCalidadRango = (
   const presentacionValida = presentacion?.trim() || "SELECCIONE";
   const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
-  return axios.get(`${BASE_URL}/packing/calidad`, {
+  return axios.get(`${baseUrl}/packing/calidad`, {
     params: {
       sede: sedeValida,
       cultivo: cultivoValido,
@@ -208,7 +221,7 @@ export const fetchCalidadRangoFiler = (
   const presentacionValida = presentacion?.trim() || "SELECCIONE";
   const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
-  return axios.get(`${BASE_URL}/packing/calidad`, {
+  return axios.get(`${baseUrl}/packing/calidad`, {
     params: {
       sede: sedeValida,
       cultivo: cultivoValido,
@@ -235,7 +248,7 @@ export const fetchCalidadPorcentajeMuestras = (
   const lineaValida = linea?.trim() || "F1";
   const presentacionValida = presentacion?.trim() || "SELECCIONE";
   const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
-  return axios.get(`${BASE_URL}/packing/calidad`, {
+  return axios.get(`${baseUrl}/packing/calidad`, {
     params: {
       sede: sedeValida,
       cultivo: cultivoValido,
@@ -255,7 +268,7 @@ export const fetchEsperaGasificado = (sede, cultivo) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
 
-  return axios.get(`${BASE_URL}/packing/gasificado`, {
+  return axios.get(`${baseUrl}/packing/gasificado`, {
     params: { cod: "1", sede: sedeValida, cultivo: cultivoValido },
   });
 };
@@ -265,7 +278,7 @@ export const fetchEsperaBatchGasificado = (sede, cultivo) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
 
-  return axios.get(`${BASE_URL}/packing/gasificadoBatch`, {
+  return axios.get(`${baseUrl}/packing/gasificadoBatch`, {
     params: { cod: "1", sede: sedeValida, cultivo: cultivoValido },
   });
 };
@@ -275,7 +288,7 @@ export const fetchEsperaPreFrio = (sede, cultivo) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
 
-  return axios.get(`${BASE_URL}/packing/prefrio`, {
+  return axios.get(`${baseUrl}/packing/prefrio`, {
     params: { cod: "1", sede: sedeValida, cultivo: cultivoValido },
   });
 };
@@ -285,7 +298,7 @@ export const fetchBatchPreFrio = (sede, cultivo) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
 
-  return axios.get(`${BASE_URL}/packing/prefrioBatch`, {
+  return axios.get(`${baseUrl}/packing/prefrioBatch`, {
     params: { cod: "1", sede: sedeValida, cultivo: cultivoValido },
   });
 };
@@ -295,7 +308,7 @@ export const fetchEspera = (sede, cultivo) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
 
-  return axios.get(`${BASE_URL}/packing/esperavolcado`, {
+  return axios.get(`${baseUrl}/packing/esperavolcado`, {
     params: { cod: "1", sede: sedeValida, cultivo: cultivoValido },
   });
 };
@@ -307,7 +320,7 @@ export const fetchEsperaLineaProg = (fecha, sede, cultivo, turno, maquina) => {
   const turnoValido = turno?.trim() || "TARDE";
   const maquinaValida = maquina?.trim() || "UNITEC";
 
-  return axios.get(`${BASE_URL}/packing/esperalinea`, {
+  return axios.get(`${baseUrl}/packing/esperalinea`, {
     params: {
       fecha: fechaValida,
       sede: sedeValida,
@@ -332,7 +345,7 @@ export const fetchEsperaLineaSgtePalet = (
   const turnoValido = turno?.trim() || "TARDE";
   const maquinaValida = maquina?.trim() || "UNITEC";
 
-  return axios.get(`${BASE_URL}/packing/esperalinea`, {
+  return axios.get(`${baseUrl}/packing/esperalinea`, {
     params: {
       fecha: fechaValida,
       sede: sedeValida,
@@ -357,7 +370,7 @@ export const fetchEsperaLineaPorcentaje = (
   const turnoValido = turno?.trim() || "TARDE";
   const maquinaValida = maquina?.trim() || "UNITEC";
 
-  return axios.get(`${BASE_URL}/packing/esperalinea`, {
+  return axios.get(`${baseUrl}/packing/esperalinea`, {
     params: {
       fecha: fechaValida,
       sede: sedeValida,
@@ -376,7 +389,7 @@ export const fetchEsperaLineaRatio = (fecha, sede, cultivo, turno, maquina) => {
   const turnoValido = turno?.trim() || "TARDE";
   const maquinaValida = maquina?.trim() || "UNITEC";
 
-  return axios.get(`${BASE_URL}/packing/esperalinea`, {
+  return axios.get(`${baseUrl}/packing/esperalinea`, {
     params: {
       fecha: fechaValida,
       sede: sedeValida,
@@ -401,7 +414,7 @@ export const fetchEsperaLineaTnTotal = (
   const turnoValido = turno?.trim() || "TARDE";
   const maquinaValida = maquina?.trim() || "UNITEC";
 
-  return axios.get(`${BASE_URL}/packing/esperalinea`, {
+  return axios.get(`${baseUrl}/packing/esperalinea`, {
     params: {
       fecha: fechaValida,
       sede: sedeValida,
@@ -419,7 +432,7 @@ export const fetchEsperaFrio = (sede, cultivo) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
 
-  return axios.get(`${BASE_URL}/packing/esperafrio`, {
+  return axios.get(`${baseUrl}/packing/esperafrio`, {
     params: { cod: "1", sede: sedeValida, cultivo: cultivoValido, id: 2 },
   });
 };
@@ -429,7 +442,7 @@ export const fetchEnfriando = (sede, cultivo) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
 
-  return axios.get(`${BASE_URL}/packing/enfriando`, {
+  return axios.get(`${baseUrl}/packing/enfriando`, {
     params: { cod: "1", sede: sedeValida, cultivo: cultivoValido, id: 2 },
   });
 };
@@ -439,7 +452,7 @@ export const fetchBatchEnfriando = (sede, cultivo) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
 
-  return axios.get(`${BASE_URL}/packing/enfriandoBatch`, {
+  return axios.get(`${baseUrl}/packing/enfriandoBatch`, {
     params: { cod: "1", sede: sedeValida, cultivo: cultivoValido },
   });
 };
@@ -450,7 +463,7 @@ export const fetchOrdenes = (sede, cultivo) => {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
 
-  return axios.get(`${BASE_URL}/packing/ordenesPRD`, {
+  return axios.get(`${baseUrl}/packing/ordenesPRD`, {
     params: { cod: "1", sede: sedeValida, cultivo: cultivoValido },
   });
 };
@@ -469,7 +482,7 @@ export const fetchRecepcionResumen = (
   const variedadValida = variedad?.trim() || "todos";
   const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
-  return axios.get(`${BASE_URL}/packing/resumenrecepcion`, {
+  return axios.get(`${baseUrl}/packing/resumenrecepcion`, {
     params: {
       sede: sedeValida,
       cultivo: cultivoValido,
@@ -494,7 +507,7 @@ export function fetchRecepcionVariedad(
   const variedadValida = variedad?.trim() || "todos";
   const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
-  return axios.get(`${BASE_URL}/packing/resumenrecepcion`, {
+  return axios.get(`${baseUrl}/packing/resumenrecepcion`, {
     params: {
       sede: sedeValida,
       cultivo: cultivoValido,
@@ -513,7 +526,7 @@ export function fetchRecepcionRango(sede, cultivo, empaque, variedad, fecha) {
   const variedadValida = variedad?.trim() || "todos";
   const fechaValida = fecha?.trim() || new Date().toLocaleDateString("en-CA");
 
-  return axios.get(`${BASE_URL}/packing/resumenrecepcion`, {
+  return axios.get(`${baseUrl}/packing/resumenrecepcion`, {
     params: {
       sede: sedeValida,
       cultivo: cultivoValido,
@@ -524,13 +537,67 @@ export function fetchRecepcionRango(sede, cultivo, empaque, variedad, fecha) {
     },
   });
 }
-
-export function fetchPuchosPT(sede, cultivo) {
+//PUCHOS PT
+export function fetchPuchosPT(fecha, sede, cultivo) {
   const sedeValida = sede?.trim() || "todos";
   const cultivoValido = cultivo?.trim() || "arandano";
+  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
-  return axios.get(`${BASE_URL}/packing/puchospt`, {
-    params: { sede: sedeValida, cultivo: cultivoValido, cod: "1" },
+  return axios.get(`${baseUrl}/packing/puchospt`, {
+    params: {
+      fecha: fechaValida,
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      cod: "1",
+    },
+  });
+}
+
+export function fetchPuchosPTGrafico(fecha, sede, cultivo) {
+  const sedeValida = sede?.trim() || "todos";
+  const cultivoValido = cultivo?.trim() || "arandano";
+  const fechaValida = fecha?.trim() || new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
+
+  return axios.get(`${baseUrl}/packing/puchospt`, {
+    params: {
+      fecha: fechaValida,
+      sede: sedeValida,
+      cultivo: cultivoValido,
+      cod: "2",
+    },
+  });
+}
+
+//=============================================
+//FETCH PULMON
+
+export function fetchTablaPulmon(cultivo, maquina, fecha) {
+  // ✅ valor válido por defecto
+  const cultivoValido = cultivo?.trim() || "arandano";
+  const maquinaValida = maquina?.trim() || "unitec"; // evitar "SELECCIONE"
+  const fechaValida = fecha?.trim() || new Date().toLocaleDateString("en-CA");
+
+  // ✅ función que convierte YYYY-MM-DD → DD-MM-YY
+  /* function formatFecha(fechaISO) {
+    if (!fechaISO) {
+      const hoy = new Date();
+      const yyyy = hoy.getFullYear().toString().slice(-2);
+      const mm = String(hoy.getMonth() + 1).padStart(2, "0");
+      const dd = String(hoy.getDate()).padStart(2, "0");
+      return `${dd}-${mm}-${yyyy}`; // ejemplo: 09-09-25
+    }
+    const [year, month, day] = fechaISO.split("-");
+    return `${day}-${month}-${year.slice(-2)}`; // ejemplo: 09-09-25
+  }
+
+  const fechaValida = formatFecha(fecha); */
+
+  return axios.get(`${baseUrl}/packing/tablapulmon`, {
+    params: {
+      cultivo: cultivoValido, // 👈 parámetro correcto
+      maquina: maquinaValida,
+      fecha: fechaValida,
+    },
   });
 }
 
@@ -572,6 +639,8 @@ export default {
   fetchRecepcionVariedad,
   fetchRecepcionRango,
   fetchPuchosPT,
+  fetchPuchosPTGrafico,
+  fetchTablaPulmon,
 };
 
 //const isLocalhost = window.location.hostname === "10.51.51.15";
@@ -581,12 +650,12 @@ export default {
 //const baseURL = "http://10.51.51.15:8643";
 //const baseURL = "http://10.250.200.9 :8643"; // producción en IIS con tu IP y puerto `${baseURL}/api/${endpoint}`
 /* 
-const BASE_URL = "http://10.250.200.9:8650/api/";
-/* const BASE_URL = "http://10.250.200.9 :8650/api/"; */
+const baseUrl = "http://10.250.200.9:8650/api/";
+/* const baseUrl = "http://10.250.200.9 :8650/api/"; */
 
 /* export const fetchData = async (endpoint) => {
   try {
-    const response = await fetch(`${BASE_URL}${endpoint}`);
+    const response = await fetch(`${baseUrl}${endpoint}`);
     if (!response.ok) {
       throw new Error(`Error en la petición: ${response.status}`);
     }

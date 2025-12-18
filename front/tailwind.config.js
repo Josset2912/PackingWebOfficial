@@ -1,6 +1,6 @@
 // tailwind.config.js
 export default {
-  darkMode: "class", // <- activamos el modo oscuro por clase
+  darkMode: ["class", '[data-theme="dark"]'], // acepta clase o atributo
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {

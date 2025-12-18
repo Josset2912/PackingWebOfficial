@@ -37,7 +37,10 @@ import {
   fetchEsperaLineaPorcentaje,
   fetchEsperaLineaRatio,
   fetchEsperaLineaTnTotal,
+  //TABLA PULMON
 } from "../utils/api";
+
+import { fetchTablaPulmon } from "../utils/api";
 
 const TablaNuevo = () => {
   /* ----------------------- filtros ----------------------- */
@@ -68,7 +71,7 @@ const TablaNuevo = () => {
   const [dataCalidad, setDataCalidad] = useState([]);
   const [dataCalidadRango, setDataCalidadRango] = useState([]);
   const [dataCalidadRangoFiler, setDataCalidadRangoFiler] = useState([]);
-  const [dataCalidadPorcentaje, setDataCalidadPorcentaje] = useState([]);
+  const [, setDataCalidadPorcentaje] = useState([]);
   const [progressValueBajoPeso, setProgressValueBajoPeso] = useState(0);
   const [progressValuePesoNormal, setProgressValuePesoNormal] = useState(0);
   const [progressValueSobrePeso, setProgressValueSobrePeso] = useState(0);
@@ -76,9 +79,12 @@ const TablaNuevo = () => {
   const [dataLineaTnTotal, setDataLineaTnTotal] = useState([]);
   const [dataLineaVolcado, setDataLineaVolcado] = useState([]);
   const [dataSgtePalet, setDataSgtePalet] = useState([]);
-  const [dataPorcentaje, setDataPorcentaje] = useState([]);
+  const [, setDataPorcentaje] = useState([]);
   const [progressValue, setProgressValue] = useState(0);
   const [dataLineaRango, setDataLineaRango] = useState([]);
+
+  /* ----------------------- Estados de Tabla  Pulmon ----------------------- */
+  const [dataPulmon, setDataPulmon] = useState([]);
 
   /* ----------------------- Constantes ----------------------- */
   /* ------------------- Constantes Calidad -------------------- */
@@ -271,6 +277,8 @@ const TablaNuevo = () => {
         resLineaVolcadoPorcentaje,
         resLineaVolcadoRatio,
         resLineaTnTotal,
+
+        resPulmon,
       ] = await Promise.all([
         fetchSedes(),
         fetchCultivos(),
@@ -345,6 +353,7 @@ const TablaNuevo = () => {
           turno,
           maquinaParam
         ),
+        fetchTablaPulmon(frutaLower, maquinaParam, fecha),
       ]);
       // Verificar si las respuestas son válidas y asignar los datos
       // si no, asignar un array vacío
@@ -393,6 +402,7 @@ const TablaNuevo = () => {
       setDataLineaTnTotal(
         Array.isArray(resLineaTnTotal.data) ? resLineaTnTotal.data : []
       );
+      setDataPulmon(Array.isArray(resPulmon.data) ? resPulmon.data : []);
       const criterio = "BAJO PESO"; // Cambia esto por el criterio adecuado
       const criterio2 = "PESO NORMAL"; // Cambia esto por el criterio adecuado
       const criterio3 = "SOBRE PESO"; // Cambia esto por el criterio adecuado
@@ -448,10 +458,12 @@ const TablaNuevo = () => {
       setDataPorcentaje([]);
       setDataLineaRango([]);
       setDataLineaTnTotal([]);
+      setDataPulmon([]);
     }
+    // Mapeo de encabezados según la máquina
   };
 
-  const [filters, setFilters] = useState({
+  /* const [filters, setFilters] = useState({
     sede: "TODOS",
     cultivo: "",
     maquina: "",
@@ -465,7 +477,7 @@ const TablaNuevo = () => {
       ...prev,
       [key]: value,
     }));
-  };
+  }; */
 
   // Ejecutar fetchData cuando cambie fruta o sede
   useEffect(() => {
@@ -536,16 +548,14 @@ const TablaNuevo = () => {
         {/* PRESENTACION */}
         <FiltroSelect
           id="presentacion"
-          label="PRESENTACION"
+          label="PRESENTACIÓN"
           value={
             dataPresentacion.some((row) => row.presentacion === presentacion)
               ? presentacion
-              : "SELECCIONE"
+              : ""
           }
-          options={[
-            "SELECCIONE",
-            ...dataPresentacion.map((r) => r.presentacion),
-          ]}
+          options={dataPresentacion.map((r) => r.presentacion)}
+          displayEmpty
           onChange={setPresentacion}
         />
 
@@ -833,55 +843,111 @@ const TablaNuevo = () => {
           {/* COLUMNA IZQUIERDA - Tabla */}
           <div className="flex flex-col gap-2 w-full max-w-[800px]">
             {/* Primera tabla */}
-            <div className="w-full h-[15vh] min-h-[100px] max-h-[400px] overflow-auto rounded-xl shadow-lg max-sm:rounded-lg">
+            <div className="w-full h-[40vh] sm:h-[10vh] min-h-[70px] max-h-[20px] overflow-auto rounded-lg sm:rounded-xl shadow-lg">
               <div className="h-full max-h-full min-w-[300px] w-full">
                 <table className="w-full min-w-[300px]">
                   <thead className="sticky top-0 z-10">
                     <tr className="bg-blue-600 text-white">
-                      <th className="px-1 sm:px-2 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
-                        <span className="sm:hidden">F1</span>
-                        <span className="hidden sm:inline">F1</span>
-                      </th>
-                      <th className="px- sm:px-2  text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
-                        <span className="sm:hidden">F2</span>
-                        <span className="hidden sm:inline">F2</span>
-                      </th>
-                      <th className="px- sm:px-2 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
-                        <span className="sm:hidden">F3</span>
-                        <span className="hidden sm:inline">F3</span>
-                      </th>
-                      <th className="px- sm:px-2  text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
-                        <span className="sm:hidden">PUL1</span>
-                        <span className="hidden sm:inline">PULMON 1</span>{" "}
-                      </th>
-                      <th className="px- sm:px-2  text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap">
-                        <span className="sm:hidden">PUL2</span>
-                        <span className="hidden sm:inline">PULMON 2</span>{" "}
-                      </th>
+                      {(() => {
+                        const columnasPorMaquina = {
+                          UNITEC: ["F1", "F2", "F3", "Pulmon 1", "Pulmon 2"],
+                          "DUAL KATO 1": [
+                            "F4",
+                            "F5",
+                            "F6",
+                            "Pulmon 1",
+                            "Pulmon 2",
+                          ],
+                          "DUAL KATO 2": [
+                            "F7",
+                            "F8",
+                            "F9",
+                            "Pulmon 1",
+                            "Pulmon 2",
+                          ],
+                          "DUAL KATO 3": [
+                            "f10",
+                            "f11",
+                            "f12",
+                            "pulmon1",
+                            "pulmon2",
+                          ],
+
+                          SELECCIONE: [
+                            "F1",
+                            "F2",
+                            "F3",
+                            "Pulmon 1",
+                            "Pulmon 2",
+                          ], // default
+                        };
+                        const encabezados =
+                          columnasPorMaquina[maquina] ||
+                          columnasPorMaquina["SELECCIONE"];
+                        return encabezados.map((col, index) => (
+                          <th
+                            key={index}
+                            className="px-1 sm:px-2 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase whitespace-nowrap"
+                          >
+                            <span className="sm:hidden">{col}</span>
+                            <span className="hidden sm:inline">{col}</span>
+                          </th>
+                        ));
+                      })()}
                     </tr>
                   </thead>
+
                   <tbody className="divide-y divide-gray-200">
-                    {dataCalidad.length > 0 ? (
-                      dataCalidad.map((row, index) => (
+                    {dataPulmon.length > 0 ? (
+                      dataPulmon.map((row, index) => (
                         <tr
                           key={index}
-                          className="hover:bg-gray-50 transition-colors border-b-1 border-cyan-600 "
+                          className="hover:bg-gray-50 transition-colors border-b-1 border-cyan-600"
                         >
-                          <td className="px- sm:px-2  text-center text-xs sm:text-sm md:text-base lg:text-2xl text-gray-800 font-bold whitespace-nowrap">
-                            {row.f1 || "10"}
-                          </td>
-                          <td className="w-20 sm:w-24 md:w-32 lg:w-40 xl:w-48 px-2 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase">
-                            {row.f2 || "10"}
-                          </td>
-                          <td className="px- sm:px-2  text-center text-xs sm:text-sm md:text-base lg:text-2xl font-bold whitespace-nowrap">
-                            {row.f3 || "10"}
-                          </td>
-                          <td className="px- sm:px-2  text-center text-xs sm:text-sm md:text-base lg:text-2xl font-bold whitespace-nowrap">
-                            {row.pulmon1 || "10"}
-                          </td>
-                          <td className="w-20 sm:w-24 md:w-32 lg:w-40 xl:w-48 px-2 text-center font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl uppercase">
-                            {row.pulmon2 || "10"}
-                          </td>
+                          {(() => {
+                            const columnasPorMaquina = {
+                              UNITEC: ["f1", "f2", "f3", "pulmon1", "pulmon2"],
+                              "DUAL KATO 1": [
+                                "f1",
+                                "f2",
+                                "f3",
+                                "pulmon1",
+                                "pulmon2",
+                              ],
+                              "DUAL KATO 2": [
+                                "f1",
+                                "f2",
+                                "f3",
+                                "pulmon1",
+                                "pulmon2",
+                              ],
+                              "DUAL KATO 3": [
+                                "f1",
+                                "f2",
+                                "f3",
+                                "pulmon1",
+                                "pulmon2",
+                              ],
+                              SELECCIONE: [
+                                "f1",
+                                "f2",
+                                "f3",
+                                "pulmon1",
+                                "pulmon2",
+                              ],
+                            };
+                            const keys =
+                              columnasPorMaquina[maquina] ||
+                              columnasPorMaquina["SELECCIONE"];
+                            return keys.map((key, i) => (
+                              <td
+                                key={i}
+                                className="px-1 sm:px-2 text-center text-xs sm:text-sm md:text-base lg:text-2xl text-gray-800 font-bold whitespace-nowrap"
+                              >
+                                {row[key] || ""}
+                              </td>
+                            ));
+                          })()}
                         </tr>
                       ))
                     ) : (

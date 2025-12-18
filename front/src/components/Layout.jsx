@@ -17,7 +17,7 @@ const Layout = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 dark:bg-gray-700">
       {/* Sidebar */}
       <motion.aside
         className="bg-gray-800 text-white flex flex-col"
@@ -131,8 +131,8 @@ const Layout = () => {
 
         <main className="flex-1 overflow-y-auto p-4 bg-gray-50">
           {selectedSection ? (
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">
                 Tablas de {selectedSection}
               </h2>
 
@@ -155,7 +155,7 @@ const Layout = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200">
                     {/* Datos de ejemplo */}
                     {[1, 2, 3].map((item) => (
                       <tr key={item}>

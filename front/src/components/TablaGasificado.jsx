@@ -181,10 +181,10 @@ const TablaGasificado = () => {
         {/*Gasificado */}
         <div className="overflow-y-auto max-h-[calc(100vh-100px)] ">
           {/*tabla Gasificado */}
-          <div className="mb-1 bg-white rounded-xl shadow-lg overflow-hidden flex flex-col max-h-[calc(60vh-70px)]">
+          <div className="mb-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col max-h-[calc(60vh-70px)]">
             {/* Título */}
             <div className="px-3 xs:px-4 sm:px-6 py-1">
-              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
+              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black dark:text-white uppercase">
                 ESPERA GASIFICADO
               </h2>
             </div>
@@ -215,13 +215,13 @@ const TablaGasificado = () => {
                       <tr
                         key={`gasificado-${index}`}
                         className={`transition-colors ${
-                          index % 2 === 0 ? "bg-white" : "bg-indigo-50"
+                          index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-indigo-50"
                         } hover:bg-indigo-100`}
                       >
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 dark:text-gray-200 font-bold">
                           {row.palet || "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700 font-bold">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700 dark:text-gray-300 font-bold">
                           {row.espera ?? "N/A"}
                         </td>
                       </tr>
@@ -242,9 +242,9 @@ const TablaGasificado = () => {
           </div>
 
           {/* Tabla Gasificado Batch */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col max-h-[calc(40vh-35px)]">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col max-h-[calc(40vh-35px)]">
             <div className="px-3 xs:px-4 sm:px-6 py-1">
-              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
+              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black dark:text-white uppercase">
                 BATCH GASIFICADO
               </h2>
             </div>
@@ -279,16 +279,16 @@ const TablaGasificado = () => {
                       <tr
                         key={`gasificado-batch-${index}`}
                         className={`transition-colors ${
-                          index % 2 === 0 ? "bg-white" : "bg-indigo-50"
+                          index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-indigo-50"
                         } hover:bg-indigo-100`}
                       >
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 dark:text-gray-200 font-bold">
                           {row.batch || "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 dark:text-gray-200 font-bold">
                           {row.palets ?? "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700 font-bold">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-700 dark:text-gray-300 font-bold">
                           {row.time ?? "N/A"}
                         </td>
                       </tr>
@@ -313,9 +313,9 @@ const TablaGasificado = () => {
 
         {/* Espera Pre Frío */}
         <div className="overflow-y-auto max-h-[calc(100vh-100px)] ">
-          <div className="mb-1 bg-white rounded-xl shadow-lg overflow-hidden flex flex-col max-h-[calc(60vh-70px)] ">
+          <div className="mb-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col max-h-[calc(60vh-70px)] ">
             <div className="px-3 xs:px-4 sm:px-6 py-1">
-              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
+              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black dark:text-white uppercase">
                 ESPERA PRE FRÍO
               </h2>
             </div>
@@ -341,16 +341,16 @@ const TablaGasificado = () => {
                       <tr
                         key={`frio-${index}`}
                         className={`transition-colors ${
-                          index % 2 === 0 ? "bg-white" : "bg-teal-50"
+                          index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-teal-50"
                         } hover:bg-teal-100`}
                       >
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 dark:text-gray-200 font-bold">
                           {row.palet || "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 dark:text-gray-200 font-bold">
                           {row.espera ?? "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 dark:text-gray-200 font-bold">
                           {row.total ?? "N/A"}
                         </td>
                       </tr>
@@ -371,9 +371,9 @@ const TablaGasificado = () => {
           </div>
 
           {/* Tabla Pre Frío Batch */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col max-h-[calc(40vh-35px)]">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col max-h-[calc(40vh-35px)]">
             <div className="px-3 xs:px-4 sm:px-6 py-1">
-              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black uppercase">
+              <h2 className="text-center font-bold text-base xs:text-lg sm:text-xl md:text-2xl text-black dark:text-white uppercase">
                 BATCH PRE FRIO
               </h2>
             </div>
@@ -408,16 +408,16 @@ const TablaGasificado = () => {
                       <tr
                         key={`frio-batch-${index}`}
                         className={`transition-colors ${
-                          index % 2 === 0 ? "bg-white" : "bg-teal-50"
+                          index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-teal-50"
                         } hover:bg-teal-100`}
                       >
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 dark:text-gray-200 font-bold">
                           {row.batch || "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 dark:text-gray-200 font-bold">
                           {row.palets ?? "N/A"}
                         </td>
-                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 font-bold">
+                        <td className="px-2 xs:px-3 sm:px-4 py-2 text-center text-base xs:text-lg sm:text-xl md:text-3xl text-gray-800 dark:text-gray-200 font-bold">
                           {row.time ?? "N/A"}
                         </td>
                       </tr>

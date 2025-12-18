@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import LineChartComponent from "./LineChartDual";
 import { ResponsiveContainer } from "recharts";
 import GaugeChart from "./Medidor";
@@ -51,7 +51,6 @@ const TablaCalidad = () => {
   const [dataCalidad, setDataCalidad] = useState([]);
   const [dataCalidadRango, setDataCalidadRango] = useState([]);
   const [dataCalidadRangoFiler, setDataCalidadRangoFiler] = useState([]);
-  const [dataCalidadPorcentaje, setDataCalidadPorcentaje] = useState([]);
   const [progressValueBajoPeso, setProgressValueBajoPeso] = useState(0);
   const [progressValuePesoNormal, setProgressValuePesoNormal] = useState(0);
   const [progressValueSobrePeso, setProgressValueSobrePeso] = useState(0);
@@ -186,7 +185,7 @@ const TablaCalidad = () => {
   //====
 
   // Función para cargar todos los datos
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       // Convertir valores a minúsculas para la API si lo requiere
       const frutaLower = fruta.toLowerCase();
@@ -272,11 +271,6 @@ const TablaCalidad = () => {
           ? resCalidadRangoFiler.data
           : []
       );
-      setDataCalidadPorcentaje(
-        Array.isArray(resCalidadPorcentajeMuestras.data)
-          ? resCalidadPorcentajeMuestras.data
-          : []
-      );
 
       // Definir el criterio para la fila que buscas
       const criterio = "BAJO PESO"; // Cambia esto por el criterio adecuado
@@ -316,9 +310,8 @@ const TablaCalidad = () => {
       setDataCalidad([]);
       setDataCalidadRango([]);
       setDataCalidadRangoFiler([]);
-      setDataCalidadPorcentaje([]);
     }
-  };
+  }, [sede, fruta, maquina, filer, presentacion, fecha]);
   // Combinar dataCalidadVariedad y dataCalidadCabezal para el gráfico
 
   useEffect(() => {
@@ -329,7 +322,7 @@ const TablaCalidad = () => {
     }, 10000);
 
     return () => clearInterval(intervaloId); // Limpieza del intervalo
-  }, [sede, fruta, maquina, filer, presentacion, fecha]);
+  }, [fetchData]);
 
   return (
     <div className="p-3 sm:p-2  max-sm:p-2 max-sm:mt-0">
@@ -621,12 +614,12 @@ const TablaCalidad = () => {
                   dataCalidad.map((row, index) => (
                     <tr
                       key={index}
-                      className="hover:bg-gray-50 transition-colors border-b-1 border-cyan-600 "
+                      className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border-b-1 border-cyan-600 "
                     >
-                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-bold max-sm:text-xs">
+                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 dark:text-gray-100 font-bold max-sm:text-xs">
                         {row.linea}
                       </td>
-                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-bold max-sm:text-xs">
+                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 dark:text-gray-100 font-bold max-sm:text-xs">
                         {row.presentacion || ""}
                       </td>
                       <td
@@ -635,25 +628,25 @@ const TablaCalidad = () => {
                             ? "text-red-500"
                             : row.tipO_PESO === "SOBRE PESO"
                             ? "text-yellow-500"
-                            : "text-gray-800"
+                            : "text-gray-800 dark:text-gray-200"
                         }`}
                       >
                         {row.tipO_PESO || "--"}
                       </td>
                       <td
-                        className={`px-1 py-1 text-center text-sm sm:text-xl font-bold max-sm:text-xs ${
+                        className={`px-1 py-1 text-center text-sm sm:text-xl font-bold max-sm:text-xs  ${
                           row.porcentaje >= 5 && row.porcentaje < 7
                             ? "text-green-500"
                             : row.porcentaje >= 7 && row.porcentaje < 10
                             ? "text-yellow-500"
                             : row.porcentaje >= 10
                             ? "text-red-500"
-                            : "text-gray-800"
+                            : "text-white-100"
                         }`}
                       >
                         {row.porcentaje != null ? `${row.porcentaje} %` : "--"}
                       </td>
-                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 font-bold max-sm:text-xs">
+                      <td className="px-1 py-1 text-center text-sm sm:text-xl text-gray-800 dark:text-gray-100 font-bold max-sm:text-xs">
                         {row.cantidad || "--"}
                       </td>
                     </tr>
@@ -676,7 +669,7 @@ const TablaCalidad = () => {
         {/* GRAFICOS - CENTRO */}
         <div className="w-full lg:w-1/3 flex flex-col gap-1 h-auto lg:h-[calc(100vh-100px)] lg:overflow-hidden max-sm:gap-1 max-sm:h-auto">
           {/* Gráfico 1 */}
-          <div className="rounded-xl shadow-lg bg-white h-[300px] sm:h-[400px] lg:h-[50%] max-sm:h-[250px]">
+          <div className="rounded-xl shadow-lg bg-white dark:bg-gray-800 h-[300px] sm:h-[400px] lg:h-[50%] max-sm:h-[250px]">
             <div className="bg-blue-500 rounded-t-xl">
               <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-2xl font-bold mb-1 uppercase text-white max-sm:text-xs">
                 % por rango de hora
@@ -741,7 +734,7 @@ const TablaCalidad = () => {
           </div>
 
           {/* Gráfico 2 */}
-          <div className="rounded-xl shadow-lg bg-white h-[300px] sm:h-[400px] lg:h-[50%] max-sm:h-[250px]">
+          <div className="rounded-xl shadow-lg bg-white dark:bg-gray-800 h-[300px] sm:h-[400px] lg:h-[50%] max-sm:h-[250px]">
             <div className="bg-blue-500 rounded-t-xl">
               <h2 className="text-center text-sm sm:text-base md:text-lg lg:text-2xl font-bold mb-1 uppercase text-white max-sm:text-xs">
                 % por filer
@@ -808,8 +801,8 @@ const TablaCalidad = () => {
         {/* GRAFICOS DERECHA */}
         <div className="w-full lg:w-1/5 flex flex-col gap-1 h-auto lg:h-[calc(100vh-100px)] lg:overflow-hidden justify-center items-center sm:gap-2 sm:py-2">
           {/* medidor conforme */}
-          <div className="w-full flex-1 bg-white rounded-xl shadow-lg flex flex-col justify-center sm:min-w-[120px] sm:h-[200px]">
-            <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
+          <div className="w-full flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg flex flex-col justify-center sm:min-w-[120px] sm:h-[200px]">
+            <h4 className="uppercase text-2xl text-center font-bold text-gray-800 dark:text-gray-200 sm:text">
               % conforme
             </h4>
             <GaugeChart
@@ -828,8 +821,8 @@ const TablaCalidad = () => {
           </div>
 
           {/* medidor bajopeso */}
-          <div className="w-full flex-1 bg-white rounded-xl shadow-lg flex flex-col justify-center sm:min-w-[120px] sm:h-[200px]">
-            <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
+          <div className="w-full flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg flex flex-col justify-center sm:min-w-[120px] sm:h-[200px]">
+            <h4 className="uppercase text-2xl text-center font-bold text-gray-800 dark:text-gray-200 sm:text">
               % bajopeso
             </h4>
             <GaugeChart
@@ -848,8 +841,8 @@ const TablaCalidad = () => {
           </div>
 
           {/* medidor sobrepeso */}
-          <div className="w-full flex-1 bg-white rounded-xl shadow-lg flex flex-col justify-center sm:min-w-[120px] sm:h-[200px] ">
-            <h4 className="uppercase text-2xl text-center font-bold text-gray-800 sm:text">
+          <div className="w-full flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg flex flex-col justify-center sm:min-w-[120px] sm:h-[200px] ">
+            <h4 className="uppercase text-2xl text-center font-bold text-gray-800 dark:text-gray-200 sm:text">
               % sobrepeso
             </h4>
             <GaugeChart

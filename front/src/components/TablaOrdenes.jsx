@@ -12,8 +12,8 @@ const TablaOrdenes = () => {
   const [fruta, setFruta] = useState("ARANDANO"); // Fruta por defecto
   const [dataCultivo, setDataCultivo] = useState([]);
 
-  const [sedes, setSedes] = useState("FUNDO SANTA AZUL");
-  const [dataSedes, setDataSedes] = useState([]);
+  const [sedes] = useState("FUNDO SANTA AZUL");
+  const [, setDataSedes] = useState([]);
 
   // Move fetchData outside so it's accessible in both useEffects
   // Función para cargar todos los datos
@@ -171,6 +171,10 @@ const TablaOrdenes = () => {
                   <span className="sm:hidden">EJEC / PROY</span>
                 </th>
                 <th className="py-1 px-2 text-center font-bold text-xs sm:text-3xl uppercase">
+                  <span className="max-sm:hidden">% avance</span>
+                  <span className="sm:hidden">%</span>
+                </th>
+                <th className="py-1 px-2 text-center font-bold text-xs sm:text-3xl uppercase">
                   <span className="max-sm:hidden">F.DESPACHO</span>
                   <span className="sm:hidden">F.DESPACHO</span>
                 </th>
@@ -181,9 +185,9 @@ const TablaOrdenes = () => {
                 dataOrdenPRD.map((row, index) => (
                   <tr
                     key={index}
-                    className={`hover:bg-gray-50 
+                    className={`hover:bg-gray-50  dark:hover:bg-gray-800
                       
-                        ? "font-bold text-black border-t-1 border-blue-400"
+                        ? "font-bold text-black dark:text-white border-t-1 border-blue-400"
                         : "border-b-1 border-cyan-600 "
                     transition-colors `}
                   >
@@ -215,6 +219,31 @@ const TablaOrdenes = () => {
                     >
                       {row.ejec_Proy}
                     </td>
+                    {/*  <td
+                      className={`px-1 py-1 text-center font-bold text-xs sm:text-2xl ${
+                        parseFloat(row.exportable) === 100
+                          ? "text-green-500"
+                          : parseFloat(row.exportable) >= 60
+                          ? "text-orange-300"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {row.exportable}%
+                    </td> */}
+                    <td
+                      className={`px-1 py-1 text-center font-bold text-xs sm:text-2xl
+                            ${
+                              parseFloat(row.exportable) === 100
+                                ? "text-white bg-green-400"
+                                : parseFloat(row.exportable) >= 60
+                                ? "text-white bg-yellow-500"
+                                : "text-white bg-red-400"
+                            }
+                        `}
+                    >
+                      {row.exportable}%
+                    </td>
+
                     <td className="px-1 py-1 text-center font-bold text-xs sm:text-2xl">
                       {row.f_Despacho}
                     </td>

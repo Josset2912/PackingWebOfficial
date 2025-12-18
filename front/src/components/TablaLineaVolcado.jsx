@@ -336,9 +336,9 @@ const TablaLineaVolcado = () => {
       <div className="flex flex-col lg:flex-row gap-3 w-full  overflow-x-auto">
         <div className="flex flex-col  flex-1 min-w-0 min-h-0">
           {/* Tabla Línea Avance */}{" "}
-          {/* <div className="flex-1 min-w-0 min-h-0 bg-white rounded-xl overflow-hidden flex flex-col max-sm:rounded-lg">
+          {/* <div className="flex-1 min-w-0 min-h-0 bg-white dark:bg-gray-800 rounded-xl overflow-hidden flex flex-col max-sm:rounded-lg">
             <div className="px-6 py-1 max-sm:px-3 max-sm:py-1">
-              <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider max-sm:text-sm">
+              <h2 className="text-center font-bold text-base sm:text-4xl text-black dark:text-white uppercase tracking-wider max-sm:text-sm">
                 KG PROG VS EJEC
               </h2>
             </div>
@@ -370,22 +370,22 @@ const TablaLineaVolcado = () => {
                         <tr
                           key={`lineaAvance-${index}`}
                           className={`transition-colors ${
-                            index % 2 === 0 ? "bg-white" : "bg-indigo-50"
+                            index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-indigo-50"
                           } hover:bg-indigo-100`}
                         >
-                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 dark:text-gray-200 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
                             {row.empaque || ""}
                           </td>
-                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 dark:text-gray-200 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
                             {row.var || ""}
                           </td>
-                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 dark:text-gray-300 max-sm:text-xs max-sm:px-2 max-sm:py-1">
                             {row.prog || "0"}
                           </td>
-                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 dark:text-gray-300 max-sm:text-xs max-sm:px-2 max-sm:py-1">
                             {row.ejec || "0"}
                           </td>
-                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                          <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 dark:text-gray-300 max-sm:text-xs max-sm:px-2 max-sm:py-1">
                             {row.porcentaje || "0"} %
                           </td>
                         </tr>
@@ -406,13 +406,13 @@ const TablaLineaVolcado = () => {
             </div>
           </div> */}
           <div
-            className="bg-white rounded-xl overflow-hidden flex flex-col 
+            className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden flex flex-col 
   h-[22vh] md:h-[55vh] sm:h-[60vh]  
   shadow-lg align-middle justify-between"
           >
             {/* Encabezado */}
             <div className="px-6 py-1 max-sm:px-3 max-sm:py-1">
-              <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider max-sm:text-sm">
+              <h2 className="text-center font-bold text-base sm:text-4xl text-black dark:text-white uppercase tracking-wider max-sm:text-sm">
                 KG PROG VS EJEC
               </h2>
             </div>
@@ -449,22 +449,22 @@ const TablaLineaVolcado = () => {
                       <tr
                         key={`lineaAvance-${index}`}
                         className={`transition-colors ${
-                          index % 2 === 0 ? "bg-white" : "bg-indigo-50"
+                          index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-indigo-50"
                         } hover:bg-indigo-100`}
                       >
-                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 dark:text-gray-200 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
                           {row.empaque || ""}
                         </td>
-                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-800 dark:text-gray-200 font-medium max-sm:text-xs max-sm:px-2 max-sm:py-1">
                           {row.var || ""}
                         </td>
-                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 dark:text-gray-300 max-sm:text-xs max-sm:px-2 max-sm:py-1">
                           {row.prog || "0"}
                         </td>
-                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 dark:text-gray-300 max-sm:text-xs max-sm:px-2 max-sm:py-1">
                           {row.ejec || "0"}
                         </td>
-                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 max-sm:text-xs max-sm:px-2 max-sm:py-1">
+                        <td className="px-4 py-2 text-center text-sm sm:text-3xl text-gray-700 dark:text-gray-300 max-sm:text-xs max-sm:px-2 max-sm:py-1">
                           {row.porcentaje || "0"} %
                         </td>
                       </tr>
@@ -548,9 +548,9 @@ const TablaLineaVolcado = () => {
         {/* Contenedor derecho */}
         <div className="flex flex-col gap-1 min-w-0 min-h-0 max-sm:w-full max-sm:gap-2">
           {/* Tabla SGTE PALET */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden max-sm:rounded-lg">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden max-sm:rounded-lg">
             <div className="px-12 py-1">
-              <h2 className="text-center font-bold text-base sm:text-4xl text-black uppercase tracking-wider">
+              <h2 className="text-center font-bold text-base sm:text-4xl text-black dark:text-white uppercase tracking-wider">
                 SGTE PALET
               </h2>
             </div>
@@ -609,9 +609,9 @@ const TablaLineaVolcado = () => {
           </div>
 
           {/* Medidor */}
-          <div className="flex justify-center bg-white rounded-xl shadow-lg">
+          <div className="flex justify-center bg-white dark:bg-gray-800 rounded-xl shadow-lg">
             <div className="w-full max-w-[300px]">
-              <h4 className="uppercase text-2xl text-center font-bold text-gray-800">
+              <h4 className="uppercase text-2xl text-center font-bold text-gray-800 dark:text-gray-200">
                 porcentaje avance
               </h4>
               <GaugeChart
@@ -631,8 +631,8 @@ const TablaLineaVolcado = () => {
           </div>
 
           {/* TN PROMEDIO */}
-          <div className="bg-white rounded-xl shadow-lg flex flex-col items-center justify-center p-4">
-            <h4 className="uppercase text-3xl text-center font-bold text-gray-800">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg flex flex-col items-center justify-center p-4">
+            <h4 className="uppercase text-3xl text-center font-bold text-gray-800 dark:text-gray-200">
               AVANCE HR <br /> ACUMULADO
             </h4>
             <NumeroUnico

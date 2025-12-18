@@ -5,6 +5,8 @@ import {
   fetchSedes,
   fetchCultivos,
 } from "./utils/api";
+import ThemeToggle from "./components/ThemeToggle";
+import { createTheme, ThemeProvider } from "@mui/material"; // ✅ Import corregido
 
 // Lazy loading componentes
 const Bienvenida = lazy(() => import("./components/Bienvenida"));
@@ -21,7 +23,6 @@ const getLazyTabla = (tablaName) => {
       return lazy(() => import("./components/TablaRecepcionResumen"));
     case "CALIDAD":
       return lazy(() => import("./components/TablaCalidad"));
-
     case "VOLCADO-MUESTRA":
       return lazy(() => import("./components/TablaVolcadoMuestra"));
     case "GASIFICADO PRE FRÍO":
@@ -36,7 +37,6 @@ const getLazyTabla = (tablaName) => {
       return lazy(() => import("./components/TablaFrio"));
     case "ORDEN PRD":
       return lazy(() => import("./components/TablaOrdenes"));
-
     default:
       return null;
   }
@@ -45,6 +45,13 @@ const getLazyTabla = (tablaName) => {
 const endpointMap = { Arandano: { RECEPCIÓN: "recepcion" } };
 
 const App = () => {
+  const isDarkMode = document.documentElement.classList.contains("dark");
+  const theme = createTheme({
+    palette: {
+      mode: isDarkMode ? "dark" : "light",
+    },
+  });
+
   const [mostrarBienvenida, setMostrarBienvenida] = useState(true);
   const [selectedOption] = useState("Arandano");
   const [selectedButton, setSelectedButton] = useState("RECEPCIÓN");
@@ -152,12 +159,6 @@ const App = () => {
                 d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
               />
             </svg>
-            <h3 className="mt-2 text-lg font-medium text-gray-900">
-              Selecciona una sección
-            </h3>
-            <p className="mt-1 text-gray-500">
-              Elige una sección del menú Packing para ver las tablas
-            </p>
           </div>
         </div>
       );
@@ -173,41 +174,48 @@ const App = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <Suspense
-        fallback={
-          <div className="absolute left-0 top-0 p-4">Cargando menú...</div>
-        }
-      >
-        <Sidebar
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
-          packingExpanded={packingExpanded}
-          setPackingExpanded={setPackingExpanded}
-          expandedVolcado={expandedVolcado}
-          setExpandedVolcado={setExpandedVolcado}
-          packingSections={packingSections}
-          selectedButton={selectedButton}
-          setSelectedButton={setSelectedButton}
-        />
-      </Suspense>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden relative">
+    <ThemeProvider theme={theme}>
+      <div className="flex h-screen bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300">
+        {/* Sidebar */}
         <Suspense
           fallback={
-            <div className="text-center p-6">Cargando bienvenida...</div>
+            <div className="absolute left-0 top-0 p-4">Cargando menú...</div>
           }
         >
-          {mostrarBienvenida ? (
-            <Bienvenida onStart={handleStart} />
-          ) : (
-            <main className="flex-1 overflow-y-auto p-2">{renderTablas()}</main>
-          )}
+          <Sidebar
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+            packingExpanded={packingExpanded}
+            setPackingExpanded={setPackingExpanded}
+            expandedVolcado={expandedVolcado}
+            setExpandedVolcado={setExpandedVolcado}
+            packingSections={packingSections}
+            selectedButton={selectedButton}
+            setSelectedButton={setSelectedButton}
+          />
         </Suspense>
+
+        {/* Contenido principal */}
+        <div className="flex-1 flex flex-col overflow-hidden relative">
+          {/* Header con toggle */}
+{/*           <ThemeToggle />
+ */}
+          <Suspense
+            fallback={
+              <div className="text-center p-6">Cargando bienvenida...</div>
+            }
+          >
+            {mostrarBienvenida ? (
+              <Bienvenida onStart={handleStart} />
+            ) : (
+              <main className="flex-1 overflow-y-auto p-2">
+                {renderTablas()}
+              </main>
+            )}
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 };
 

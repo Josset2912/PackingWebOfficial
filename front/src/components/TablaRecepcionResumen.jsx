@@ -176,7 +176,7 @@ const TablaRecepcion = () => {
       );
       setDataPorcentaje(
         Array.isArray(resRecepcionResumen.data) ? resRecepcionResumen.data : []
-      );
+      );    
 
       const pct = parseFloat(resRecepcionResumen.data?.[0]?.cumplimientototal);
       setProgressValue(!isNaN(pct) ? pct : 0);
@@ -305,8 +305,8 @@ const TablaRecepcion = () => {
         {/* Contenedor flex responsive */}
         <div className="flex flex-wrap justify-evenly items-center gap-4">
           {/* Medidor */}
-          <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/4 max-w-full bg-white rounded-lg shadow-md flex flex-col items-center ">
-            <h4 className="text-3xl font-bold text-black  uppercase tracking-wider text-center">
+          <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/4 max-w-full bg-white dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center ">
+            <h4 className="text-3xl font-bold text-black dark:text-white  uppercase tracking-wider text-center">
               Porcentaje <br /> cumplimiento
             </h4>
             <GaugeChart
@@ -325,13 +325,13 @@ const TablaRecepcion = () => {
           </div>
 
           {/* KG PROGRAMADO */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
             <div className="p-4 flex justify-between items-start">
               <div>
-                <h4 className="text-2xl font-bold text-black  uppercase tracking-wider">
+                <h4 className="text-2xl font-bold text-black dark:text-white  uppercase tracking-wider">
                   KG PROGRAMADO
                 </h4>
-                <div className="text-3xl font-bold text-gray-800 mt-1">
+                <div className="text-3xl font-bold text-gray-800 dark:text-gray-200 mt-1">
                   <NumeroUnico
                     value={dataLineaTnTotal?.[0]?.kgprogtotal || 0}
                   />
@@ -357,13 +357,13 @@ const TablaRecepcion = () => {
           </div>
 
           {/* KG EJECUTADO */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
             <div className="p-4 flex justify-between items-start">
               <div>
-                <h4 className="text-2xl font-bold text-black  uppercase tracking-wider">
+                <h4 className="text-2xl font-bold text-black dark:text-white  uppercase tracking-wider">
                   KG ejecutado
                 </h4>
-                <div className="text-3xl font-bold text-gray-800 mt-1">
+                <div className="text-3xl font-bold text-gray-800 dark:text-gray-200 mt-1">
                   <NumeroUnico
                     value={dataLineaTnTotal?.[0]?.kgejectotal || 0}
                   />
@@ -388,8 +388,8 @@ const TablaRecepcion = () => {
             <div className="px-4 pb-3 text-xs text-gray-500 border-t border-gray-100 pt-2"></div>
           </div>
           {/* 
-          <div className="inline-block bg-white p-4 rounded-lg shadow-md text-center">
-            <h4 className="text-lg font-semibold text-gray-700 mb-3 uppercase">
+          <div className="inline-block bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md text-center">
+            <h4 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase">
               kg ejecutado
             </h4>
             <div className="inline-block">
@@ -428,21 +428,21 @@ const TablaRecepcion = () => {
                     return (
                       <tr
                         key={index}
-                        className={`hover:bg-gray-50 transition-colors 
+                        className={`hover:bg-gray-50  dark:hover:bg-gray-800 transition-colors 
                             ? "font-bold text-blue-900 border-t-2 border-blue-400"
                             : "border-b-1 border-cyan-600 "
                         }`}
                       >
-                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 font-bold">
+                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold dark:-gray-100 ">
                           {row.variedad || "--"}
                         </td>
-                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 font-bold">
+                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold dark:-gray-100 ">
                           {row.kgprog || "--"}
                         </td>
-                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 font-bold">
+                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold dark:-gray-100">
                           {row.kgejec || "--"}
                         </td>
-                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 font-bold">
+                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold ">
                           {cumplimiento >= 100 ? "✅" : "❌"}{" "}
                           {cumplimiento.toFixed(2)} %
                         </td>

@@ -100,7 +100,7 @@ const TablaRecepcionNisira = () => {
   return (
     <div className="">
       {/* Selector de cultivo y sede */}
-      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full p-3 mt-1">
+      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full p-3 mt-1 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
         {/* SEDE */}
         <div className="w-full sm:w-auto">
           <Box sx={{ minWidth: 190, width: "100%" }}>
@@ -270,9 +270,10 @@ const TablaRecepcionNisira = () => {
       <div className="flex flex-col md:flex-row gap-4 w-full px-2 max-sm:px-1 max-sm:gap-2">
         {/* Tabla Variedad */}
         <div className="flex-1 overflow-x-auto rounded-xl shadow-lg max-sm:rounded-lg">
-          <div className="overflow-y-auto max-h-[calc(100vh-120px)] max-sm:max-h-[calc(844px-200px)]">
+          <div className="overflow-y-auto max-h-[calc(100vh-120px)] max-sm:max-h-[calc(844px-200px)] ">
             <table className="w-full min-w-[300px]  overflow-x-auto">
-              <thead className="sticky top-0 z-10 bg-blue-600 text-white">
+              <thead className="sticky top-0 z-10 bg-blue-600 text-white dark:bg-blue-800 dark:text-gray-100">
+                {" "}
                 <tr className="bg-blue-600 text-white">
                   <th className="px-2 py-2 text-center font-bold text-base sm:text-3xl uppercase max-sm:text-xs max-sm:px-1 max-sm:py-1">
                     <span className="max-sm:hidden">EMPAQUE</span>
@@ -292,7 +293,7 @@ const TablaRecepcionNisira = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-200  dark:divide-gray-700">
                 {(() => {
                   const totalRow = dataVariedad.find(
                     (row) => row.empaque?.toLowerCase() === "total"
@@ -312,22 +313,22 @@ const TablaRecepcionNisira = () => {
                       return (
                         <tr
                           key={index}
-                          className={`hover:bg-gray-50 transition-colors ${
+                          className={`hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
                             isTotalRow
                               ? "font-bold text-blue-900 border-t-4 border-blue-400"
                               : "border-b-1 border-cyan-600 "
                           }`}
                         >
-                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 dark:text-gray-200 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1 dark:text-gray-100">
                             {row.empaque}
                           </td>
-                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 dark:text-gray-200 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1 dark:text-gray-100">
                             {row.var}
                           </td>
-                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 dark:text-gray-200 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1 dark:text-gray-100">
                             {row.cabezal || ""}
                           </td>
-                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                          <td className="px-2 py-1 text-center text-sm sm:text-2xl text-gray-800 dark:text-gray-200 font-bold max-sm:text-xs max-sm:px-1 max-sm:py-1 dark:text-gray-100">
                             {row.pesoneto || "--"} Kg
                           </td>
                         </tr>
@@ -337,7 +338,7 @@ const TablaRecepcionNisira = () => {
                     <tr>
                       <td
                         colSpan="4"
-                        className="px-4 py-4 text-center text-sm sm:text-base text-gray-500 max-sm:text-xs max-sm:py-3"
+                        className="px-4 py-4 text-center text-sm sm:text-base text-gray-500 max-sm:text-xs max-sm:py-3 dark:text-gray-400"
                       >
                         No hay datos disponibles
                       </td>
@@ -376,13 +377,13 @@ const TablaRecepcionNisira = () => {
                 key={index}
                 className="hover:bg-gray-50 transition-colors"
               >
-                <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 dark:text-gray-200 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   {row.cabezal || "VACÍO"}
                 </td>
-                <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 dark:text-gray-200 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   {row.empaque || ""}
                 </td>
-                <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
+                <td className="px-2 py-2 text-center text-sm sm:text-2xl text-gray-800 dark:text-gray-200 font-medium max-sm:text-xs max-sm:px-1 max-sm:py-1">
                   {row.pesoneto || "--"} Kg
                 </td>
               </tr>
