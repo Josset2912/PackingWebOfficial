@@ -5,7 +5,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useTheme } from "../contexts/ThemeContext";
+
 const TablaEspera = () => {
+  const { isDarkMode } = useTheme();
+
   const [fruta, setFruta] = useState("ARANDANO");
   const [sedes, setSedes] = useState("FUNDO SANTA AZUL");
 
@@ -14,7 +18,7 @@ const TablaEspera = () => {
   const [dataEsperaVolcado, setDataEsperaVolcado] = useState([]);
 
   // Move fetchData outside so it's accessible in both useEffects
-  const fetchData = async () => {
+  const fetchData = async (hideProgress = false) => {
     try {
       // Convertir valores a minúsculas para la API si lo requiere
       const frutaLower = fruta.toLowerCase();
@@ -22,9 +26,9 @@ const TablaEspera = () => {
 
       // Llamadas paralelas
       const [resEspera, resSede, resCultivo] = await Promise.all([
-        fetchEspera(sedeParam, frutaLower),
-        fetchSedes(),
-        fetchCultivos(),
+        fetchEspera(sedeParam, frutaLower, hideProgress),
+        fetchSedes(hideProgress),
+        fetchCultivos(hideProgress),
       ]);
 
       // Las respuestas de axios ya traen el objeto data
@@ -45,8 +49,9 @@ const TablaEspera = () => {
 
   useEffect(() => {
     const intervaloId = setInterval(() => {
-      fetchData();
-    }, 10000);
+      fetchData(true); // Actualización automática - oculta progress bar
+      //cambiado a 60000 para 1 minuto
+    }, 60000);
 
     return () => clearInterval(intervaloId);
   }, [fruta, sedes]);
@@ -64,15 +69,26 @@ const TablaEspera = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
+                  backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+                  color: isDarkMode ? "#f3f4f6" : "#000000",
                   "& fieldset": {
-                    borderColor: "green",
+                    borderColor: isDarkMode ? "#4ade80" : "#4caf50",
                   },
                   "&:hover fieldset": {
-                    borderColor: "darkgreen",
+                    borderColor: isDarkMode ? "#22c55e" : "#388e3c",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "green",
+                    borderColor: isDarkMode ? "#10b981" : "#2e7d32",
                   },
+                },
+                "& .MuiInputLabel-root": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
+                  "&.Mui-focused": {
+                    color: isDarkMode ? "#10b981" : "#2e7d32",
+                  },
+                },
+                "& .MuiSelect-icon": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
                 },
               }}
             >
@@ -85,6 +101,26 @@ const TablaEspera = () => {
                 }
                 label="SEDE"
                 onChange={(e) => setSedes(e.target.value)}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      bgcolor: isDarkMode ? "#1f2937" : "#ffffff",
+                      "& .MuiMenuItem-root": {
+                        color: isDarkMode ? "#f3f4f6" : "#000000",
+                        "&:hover": {
+                          backgroundColor: isDarkMode ? "#374151" : "#f5f5f5",
+                        },
+                        "&.Mui-selected": {
+                          backgroundColor: isDarkMode ? "#4ade80" : "#4caf50",
+                          color: isDarkMode ? "#000000" : "#ffffff",
+                          "&:hover": {
+                            backgroundColor: isDarkMode ? "#22c55e" : "#388e3c",
+                          },
+                        },
+                      },
+                    },
+                  },
+                }}
               >
                 <MenuItem value="TODOS">TODOS</MenuItem>
                 {dataSedes.map((row, idx) => (
@@ -106,15 +142,26 @@ const TablaEspera = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
+                  backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+                  color: isDarkMode ? "#f3f4f6" : "#000000",
                   "& fieldset": {
-                    borderColor: "green",
+                    borderColor: isDarkMode ? "#4ade80" : "#4caf50",
                   },
                   "&:hover fieldset": {
-                    borderColor: "darkgreen",
+                    borderColor: isDarkMode ? "#22c55e" : "#388e3c",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "green",
+                    borderColor: isDarkMode ? "#10b981" : "#2e7d32",
                   },
+                },
+                "& .MuiInputLabel-root": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
+                  "&.Mui-focused": {
+                    color: isDarkMode ? "#10b981" : "#2e7d32",
+                  },
+                },
+                "& .MuiSelect-icon": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
                 },
               }}
             >
@@ -127,6 +174,26 @@ const TablaEspera = () => {
                 }
                 label="CULTIVO"
                 onChange={(e) => setFruta(e.target.value)}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      bgcolor: isDarkMode ? "#1f2937" : "#ffffff",
+                      "& .MuiMenuItem-root": {
+                        color: isDarkMode ? "#f3f4f6" : "#000000",
+                        "&:hover": {
+                          backgroundColor: isDarkMode ? "#374151" : "#f5f5f5",
+                        },
+                        "&.Mui-selected": {
+                          backgroundColor: isDarkMode ? "#4ade80" : "#4caf50",
+                          color: isDarkMode ? "#000000" : "#ffffff",
+                          "&:hover": {
+                            backgroundColor: isDarkMode ? "#22c55e" : "#388e3c",
+                          },
+                        },
+                      },
+                    },
+                  },
+                }}
               >
                 {dataCultivo.map((row, idx) => (
                   <MenuItem key={idx} value={row.cultivo}>
@@ -140,11 +207,11 @@ const TablaEspera = () => {
       </div>
 
       {/* Tabla */}
-      <div className="overflow-x-auto rounded-xl ">
+      <div className="overflow-x-auto rounded-xl bg-white dark:bg-gray-900 shadow-lg transition-colors duration-200">
         <div className="overflow-y-auto max-h-[calc(100vh-140px)]">
-          <table className="w-full min-w-[300px]  ">
+          <table className="w-full min-w-[300px]">
             <thead className="sticky top-0 z-10">
-              <tr className="bg-gradient-to-r from-cyan-600 to-blue-700 text-white">
+              <tr className="bg-gradient-to-r from-cyan-600 to-blue-700 dark:from-cyan-700 dark:to-blue-800 text-white transition-colors duration-200">
                 <th className="px-4 py-2 text-center font-bold text-base sm:text-4xl uppercase tracking-wider">
                   PALET
                 </th>
@@ -156,22 +223,24 @@ const TablaEspera = () => {
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {dataEsperaVolcado.length > 0 ? (
                 dataEsperaVolcado.map((row, index) => (
                   <tr
                     key={index}
-                    className={`border-b-1 border-cyan-600 transition duration-200 ${
-                      index % 2 === 0 ? "" : ""
-                    } hover:bg-cyan-50`}
+                    className={`transition-colors duration-200 ${
+                      index % 2 === 0
+                        ? "bg-white dark:bg-gray-900"
+                        : "bg-cyan-50 dark:bg-gray-800"
+                    } hover:bg-cyan-100 dark:hover:bg-gray-600`}
                   >
-                    <td className="px-4 py-2 text-center text-sm sm:text-3xl  font-bold">
+                    <td className="px-4 py-2 text-center text-sm sm:text-3xl font-bold text-gray-800 dark:text-gray-200">
                       {row.palet}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-3xl  font-bold">
+                    <td className="px-4 py-2 text-center text-sm sm:text-3xl font-bold text-gray-800 dark:text-gray-200">
                       {row.espera}
                     </td>
-                    <td className="px-4 py-2 text-center text-sm sm:text-3xl font-bold">
+                    <td className="px-4 py-2 text-center text-sm sm:text-3xl font-bold text-gray-800 dark:text-gray-200">
                       {row.total}
                     </td>
                   </tr>
@@ -179,8 +248,8 @@ const TablaEspera = () => {
               ) : (
                 <tr>
                   <td
-                    colSpan="4"
-                    className="px-4 py-3 text-center text-sm sm:text-base  italic text-red-500"
+                    colSpan="3"
+                    className="px-4 py-3 text-center text-sm sm:text-base italic text-red-500 dark:text-red-400"
                   >
                     Por el momento ningún dato disponible
                   </td>

@@ -4,6 +4,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useTheme } from "../contexts/ThemeContext";
+
 import {
   fetchCultivos,
   fetchSedes,
@@ -14,6 +16,7 @@ import {
 } from "../utils/api";
 
 const TablaRecepcionNisira = () => {
+  const { isDarkMode } = useTheme();
   const [empaqueFiltro, setEmpaqueFiltro] = useState("TODOS");
   const [dataEmpaqueFiltro, setDataEmpaqueFiltro] = useState([]);
 
@@ -27,10 +30,10 @@ const TablaRecepcionNisira = () => {
   const [dataSedes, setDataSedes] = useState([]);
 
   const [dataVariedad, setDataVariedad] = useState([]);
-  const [dataCabezal, setDataCabezal] = useState([]);
+  const [, setDataCabezal] = useState([]);
 
   // Función para cargar todos los datos
-  const fetchData = async () => {
+  const fetchData = async (hideProgress = false) => {
     try {
       // Convertir valores a minúsculas para la API si lo requiere
       const frutaLower = fruta.toLowerCase();
@@ -51,18 +54,20 @@ const TablaRecepcionNisira = () => {
           sedeParam,
           frutaLower,
           empaqueParam,
-          variedadFiltroParam
+          variedadFiltroParam,
+          hideProgress
         ),
         fetchCabezalNisira(
           sedeParam,
           frutaLower,
           empaqueParam,
-          variedadFiltroParam
+          variedadFiltroParam,
+          hideProgress
         ),
-        fetchSedes(),
-        fetchCultivos(),
-        fetchEmpaqFiltro(),
-        fetchVariedadFiltro(),
+        fetchSedes(hideProgress),
+        fetchCultivos(hideProgress),
+        fetchEmpaqFiltro(hideProgress),
+        fetchVariedadFiltro(hideProgress),
       ]);
 
       // Las respuestas de axios ya traen el objeto data
@@ -88,11 +93,12 @@ const TablaRecepcionNisira = () => {
   };
 
   useEffect(() => {
-    fetchData(); // Llamada inicial
+    fetchData(); // Llamada inicial - muestra progress bar
 
     const intervaloId = setInterval(() => {
-      fetchData(); // Actualización cada 10 segundos
-    }, 10000);
+      fetchData(true); // Actualización automática - oculta progress bar
+      //cambiado 60000 a 1 minuto
+    }, 60000);
 
     return () => clearInterval(intervaloId); // Limpieza del intervalo
   }, [fruta, sede, empaqueFiltro, variedadFiltro]);
@@ -107,7 +113,7 @@ const TablaRecepcionNisira = () => {
             <FormControl
               fullWidth
               size="small"
-              sx={{
+              /*  sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
                   "& fieldset": {
@@ -120,6 +126,31 @@ const TablaRecepcionNisira = () => {
                     borderColor: "green",
                   },
                 },
+              }} */
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+                  color: isDarkMode ? "#f3f4f6" : "#000000",
+                  "& fieldset": {
+                    borderColor: isDarkMode ? "#4ade80" : "#4caf50",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: isDarkMode ? "#22c55e" : "#388e3c",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: isDarkMode ? "#10b981" : "#2e7d32",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
+                  "&.Mui-focused": {
+                    color: isDarkMode ? "#10b981" : "#2e7d32",
+                  },
+                },
+                "& .MuiSelect-icon": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
+                },
               }}
             >
               <InputLabel id="sede-select-label">SEDE</InputLabel>
@@ -129,6 +160,27 @@ const TablaRecepcionNisira = () => {
                 value={sede}
                 label="SEDE"
                 onChange={(e) => setSede(e.target.value)}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+                      "& .MuiMenuItem-root": {
+                        color: isDarkMode ? "#f3f4f6" : "#000000",
+                        "&:hover": {
+                          backgroundColor: isDarkMode ? "#10b981" : "#4caf50",
+                          color: "#ffffff",
+                        },
+                        "&.Mui-selected": {
+                          backgroundColor: isDarkMode ? "#059669" : "#388e3c",
+                          color: "#ffffff",
+                          "&:hover": {
+                            backgroundColor: isDarkMode ? "#047857" : "#2e7d32",
+                          },
+                        },
+                      },
+                    },
+                  },
+                }}
               >
                 <MenuItem value="TODOS">TODOS</MenuItem>
                 {dataSedes.map((row, idx) => (
@@ -150,15 +202,26 @@ const TablaRecepcionNisira = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
+                  backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+                  color: isDarkMode ? "#f3f4f6" : "#000000",
                   "& fieldset": {
-                    borderColor: "green",
+                    borderColor: isDarkMode ? "#4ade80" : "#4caf50",
                   },
                   "&:hover fieldset": {
-                    borderColor: "darkgreen",
+                    borderColor: isDarkMode ? "#22c55e" : "#388e3c",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "green",
+                    borderColor: isDarkMode ? "#10b981" : "#2e7d32",
                   },
+                },
+                "& .MuiInputLabel-root": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
+                  "&.Mui-focused": {
+                    color: isDarkMode ? "#10b981" : "#2e7d32",
+                  },
+                },
+                "& .MuiSelect-icon": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
                 },
               }}
             >
@@ -171,6 +234,27 @@ const TablaRecepcionNisira = () => {
                 }
                 label="CULTIVO"
                 onChange={(e) => setFruta(e.target.value)}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+                      "& .MuiMenuItem-root": {
+                        color: isDarkMode ? "#f3f4f6" : "#000000",
+                        "&:hover": {
+                          backgroundColor: isDarkMode ? "#10b981" : "#4caf50",
+                          color: "#ffffff",
+                        },
+                        "&.Mui-selected": {
+                          backgroundColor: isDarkMode ? "#059669" : "#388e3c",
+                          color: "#ffffff",
+                          "&:hover": {
+                            backgroundColor: isDarkMode ? "#047857" : "#2e7d32",
+                          },
+                        },
+                      },
+                    },
+                  },
+                }}
               >
                 {dataCultivo.map((row, idx) => (
                   <MenuItem key={idx} value={row.cultivo}>
@@ -191,15 +275,26 @@ const TablaRecepcionNisira = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
+                  backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+                  color: isDarkMode ? "#f3f4f6" : "#000000",
                   "& fieldset": {
-                    borderColor: "green",
+                    borderColor: isDarkMode ? "#4ade80" : "#4caf50",
                   },
                   "&:hover fieldset": {
-                    borderColor: "darkgreen",
+                    borderColor: isDarkMode ? "#22c55e" : "#388e3c",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "green",
+                    borderColor: isDarkMode ? "#10b981" : "#2e7d32",
                   },
+                },
+                "& .MuiInputLabel-root": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
+                  "&.Mui-focused": {
+                    color: isDarkMode ? "#10b981" : "#2e7d32",
+                  },
+                },
+                "& .MuiSelect-icon": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
                 },
               }}
             >
@@ -210,6 +305,27 @@ const TablaRecepcionNisira = () => {
                 value={empaqueFiltro}
                 label="EMPAQUE"
                 onChange={(e) => setEmpaqueFiltro(e.target.value)}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+                      "& .MuiMenuItem-root": {
+                        color: isDarkMode ? "#f3f4f6" : "#000000",
+                        "&:hover": {
+                          backgroundColor: isDarkMode ? "#10b981" : "#4caf50",
+                          color: "#ffffff",
+                        },
+                        "&.Mui-selected": {
+                          backgroundColor: isDarkMode ? "#059669" : "#388e3c",
+                          color: "#ffffff",
+                          "&:hover": {
+                            backgroundColor: isDarkMode ? "#047857" : "#2e7d32",
+                          },
+                        },
+                      },
+                    },
+                  },
+                }}
               >
                 <MenuItem value="TODOS">TODOS</MenuItem>
                 {dataEmpaqueFiltro
@@ -233,15 +349,26 @@ const TablaRecepcionNisira = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
+                  backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+                  color: isDarkMode ? "#f3f4f6" : "#000000",
                   "& fieldset": {
-                    borderColor: "green",
+                    borderColor: isDarkMode ? "#4ade80" : "#4caf50",
                   },
                   "&:hover fieldset": {
-                    borderColor: "darkgreen",
+                    borderColor: isDarkMode ? "#22c55e" : "#388e3c",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "green",
+                    borderColor: isDarkMode ? "#10b981" : "#2e7d32",
                   },
+                },
+                "& .MuiInputLabel-root": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
+                  "&.Mui-focused": {
+                    color: isDarkMode ? "#10b981" : "#2e7d32",
+                  },
+                },
+                "& .MuiSelect-icon": {
+                  color: isDarkMode ? "#9ca3af" : "#666666",
                 },
               }}
             >
@@ -252,6 +379,27 @@ const TablaRecepcionNisira = () => {
                 value={variedadFiltro}
                 label="VARIEDAD"
                 onChange={(e) => setVariedadfiltro(e.target.value)}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+                      "& .MuiMenuItem-root": {
+                        color: isDarkMode ? "#f3f4f6" : "#000000",
+                        "&:hover": {
+                          backgroundColor: isDarkMode ? "#10b981" : "#4caf50",
+                          color: "#ffffff",
+                        },
+                        "&.Mui-selected": {
+                          backgroundColor: isDarkMode ? "#059669" : "#388e3c",
+                          color: "#ffffff",
+                          "&:hover": {
+                            backgroundColor: isDarkMode ? "#047857" : "#2e7d32",
+                          },
+                        },
+                      },
+                    },
+                  },
+                }}
               >
                 <MenuItem value="TODOS">TODOS</MenuItem>
                 {dataVariedadfiltro

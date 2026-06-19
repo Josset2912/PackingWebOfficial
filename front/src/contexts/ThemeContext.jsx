@@ -19,10 +19,14 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-    document.documentElement.setAttribute(
-      "data-theme",
-      isDarkMode ? "dark" : "light"
-    );
+    const themeValue = isDarkMode ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", themeValue);
+    // También mantenemos la clase `dark` para compatibilidad con variantes `dark:` de Tailwind
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   }, [isDarkMode]);
 
   const toggleTheme = () => {

@@ -8,8 +8,118 @@
   }
 }
 
+@keyframes blinkDark {
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.7;
+    filter: brightness(0.6);
+  }
+}
+
 .animate-blink {
   animation: blink 2s steps(2, start) infinite;
   -webkit-animation: blink 2s steps(2, start) infinite;
 }
 
+.dark .animate-blink {
+  animation: blinkDark 2s ease-in-out infinite;
+  -webkit-animation: blinkDark 2s ease-in-out infinite;
+}
+
+/* Estilos para el icono del calendario en modo oscuro */
+.dark .date-input-dark::-webkit-calendar-picker-indicator {
+  filter: brightness(0) invert(1);
+  cursor: pointer;
+}
+
+.dark .date-input-dark::-webkit-inner-spin-button,
+.dark .date-input-dark::-webkit-clear-button {
+  filter: invert(1);
+}
+
+/* Estilos de hover y focus para el input de fecha */
+.date-input-dark:hover {
+  border-color: #388e3c !important;
+}
+
+.dark .date-input-dark:hover {
+  border-color: #22c55e !important;
+}
+
+/* Estilos personalizados para NProgress */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #3b82f6 !important; /* Azul en modo claro */
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 7px;
+}
+
+.dark #nprogress .bar {
+  background: #3b82f6 !important; /* Verde más brillante en modo oscuro */
+}
+
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #22c55e, 0 0 5px #22c55e;
+  opacity: 1;
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+.dark #nprogress .peg {
+  box-shadow: 0 0 10px #10b981, 0 0 5px #10b981;
+}
+
+.date-input-dark:focus {
+  border-color: #2e7d32 !important;
+  border-width: 2px;
+}
+
+.dark .date-input-dark:focus {
+  border-color: #10b981 !important;
+  border-width: 2px;
+}
+
+/* @keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--move));
+  }
+}
+
+.group:hover .hover-scroll-left {
+  animation: scroll-left var(--duration) linear forwards;
+}
+ */
+
+@keyframes scroll-left-loop {
+  0% {
+    transform: translateX(0);
+  }
+  80% {
+    transform: translateX(var(--move));
+  }
+  100% {
+    transform: translateX(var(--move));
+  }
+}
+
+.group:hover .hover-scroll-loop {
+  animation: scroll-left-loop var(--duration) ease-in-out infinite;
+}

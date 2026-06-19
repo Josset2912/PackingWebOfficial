@@ -1,7 +1,11 @@
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { useTheme } from "../contexts/ThemeContext";
 
 export const GaugeChart = ({ value, max = 100, colors = {} }) => {
-  const { progress = "#4CAF50", remaining = "#F0F0F0" } = colors;
+  const { isDarkMode } = useTheme();
+  const defaultProgress = isDarkMode ? "#34D399" : "#4CAF50"; // verde más claro en dark
+  const defaultRemaining = isDarkMode ? "#1F2937" : "#F0F0F0"; // fondo oscuro en dark
+  const { progress = defaultProgress, remaining = defaultRemaining } = colors;
 
   // Para el color (máximo 100%)
   const adjustedValue = Math.min(Math.max(value, 0), max);
@@ -57,7 +61,7 @@ export const GaugeChart = ({ value, max = 100, colors = {} }) => {
           transform: "translate(-50%, -50%)",
           fontSize: "27px",
           fontWeight: "bold",
-          color: "#333",
+          color: isDarkMode ? "#E5E7EB" : "#333",
           lineHeight: 1,
         }}
       >

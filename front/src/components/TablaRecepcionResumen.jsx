@@ -4,391 +4,446 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Lineas from "./LineChartDual";
+import Lineas from "../medit/LineChartDual";
 import { ResponsiveContainer } from "recharts";
-import NumeroUnico from "./NumeroUnico";
+import { useTheme } from "../contexts/ThemeContext";
+
+import NumeroUnico from "../medit/NumeroUnico";
 import { Check, X } from "lucide-react"; // iconos
 
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
 } from "recharts";
-import GaugeChart from "./Medidor";
+import GaugeChart from "../medit/Medidor";
 import {
-  fetchSedes,
-  fetchCultivos,
-  fetchEmpaqFiltro,
-  fetchVariedadFiltro,
-  fetchRecepcionResumen,
-  fetchRecepcionVariedad,
-  fetchRecepcionRango,
+    fetchSedes,
+    fetchCultivos,
+    fetchEmpaqFiltro,
+    fetchVariedadFiltro,
+    fetchRecepcionResumen,
+    fetchRecepcionVariedad,
+    fetchRecepcionRango,
 } from "../utils/api";
 
-const TablaRecepcion = () => {
-  const [sede, setSede] = useState("TODOS");
-  const [dataSedes, setDataSedes] = useState([]);
+const TablaRecepcionResumen = () => {
+    const [sede, setSede] = useState("TODOS");
+    const [dataSedes, setDataSedes] = useState([]);
 
-  const [fruta, setFruta] = useState("ARANDANO");
-  const [dataCultivo, setDataCultivo] = useState([]);
+    const [fruta, setFruta] = useState("ARANDANO");
+    const [dataCultivo, setDataCultivo] = useState([]);
 
-  const [empaqueFiltro, setEmpaqueFiltro] = useState("TODOS");
-  const [dataEmpaqueFiltro, setDataEmpaqueFiltro] = useState([]);
+    const [empaqueFiltro, setEmpaqueFiltro] = useState("TODOS");
+    const [dataEmpaqueFiltro, setDataEmpaqueFiltro] = useState([]);
 
-  const [variedadFiltro, setVariedadfiltro] = useState("TODOS");
-  const [dataVariedadfiltro, setDataVariedadfiltro] = useState([]);
+    const [variedadFiltro, setVariedadfiltro] = useState("TODOS");
+    const [dataVariedadfiltro, setDataVariedadfiltro] = useState([]);
 
-  const [fecha, setFecha] = useState(() =>
-    new Date().toLocaleDateString("en-CA")
-  );
+    const [fecha, setFecha] = useState(() =>
+        new Date().toLocaleDateString("en-CA")
+    );
 
-  const [dataRecepcionVariedad, setDataRecepcionVariedad] = useState([]);
-  const [dataRecepcionRango, setDataRecepcionRango] = useState([]);
+    const [dataRecepcionVariedad, setDataRecepcionVariedad] = useState([]);
+    const [dataRecepcionRango, setDataRecepcionRango] = useState([]);
 
-  const [, setDataPorcentaje] = useState([]);
-  const [progressValue, setProgressValue] = useState(0);
+    const [, setDataPorcentaje] = useState([]);
+    const [progressValue, setProgressValue] = useState(0);
 
-  const [dataLineaTnTotal, setDataLineaTnTotal] = useState([]);
+    const [dataLineaTnTotal, setDataLineaTnTotal] = useState([]);
 
-  const colores = {
-    "Peso Neto": "#007bff", // Azul
-  };
-  // 1️⃣ Procesar datos para la gráfica
-  // 1️⃣ Procesar datos para la gráfica
-  // 1️⃣ Agrupar por hora y sumar Pesos Netos
-  // 1️⃣ Procesar datos para la gráfica
-  const tiposPeso = ["Peso Neto"]; // definimos directamente el tipo
+    const colores = {
+        "Peso Neto": "#007bff", // Azul
+    };
+    // 1️⃣ Procesar datos para la gráfica
+    // 1️⃣ Procesar datos para la gráfica
+    // 1️⃣ Agrupar por hora y sumar Pesos Netos
+    // 1️⃣ Procesar datos para la gráfica
+    const tiposPeso = ["Peso Neto"]; // definimos directamente el tipo
+    //Colocar tema oscuro
+    const { isDarkMode } = useTheme();
 
-  const dataAgrupada = [];
-  dataRecepcionRango.forEach(({ hora, pesoneto }) => {
-    if (!hora || !pesoneto) return;
+    const dataAgrupada = [];
+    dataRecepcionRango.forEach(({ hora, pesoneto }) => {
+        if (!hora || !pesoneto) return;
 
-    // Convertir "6,895.00" a número 6895.00
-    const valorNumerico = parseFloat(pesoneto.replace(/,/g, ""));
+        // Convertir "6,895.00" a número 6895.00
+        const valorNumerico = parseFloat(pesoneto.replace(/,/g, ""));
 
-    // Buscar si ya existe esa hora
-    let existente = dataAgrupada.find((item) => item.hora === hora);
-    if (!existente) {
-      existente = { hora };
-      dataAgrupada.push(existente);
-    }
+        // Buscar si ya existe esa hora
+        let existente = dataAgrupada.find((item) => item.hora === hora);
+        if (!existente) {
+            existente = { hora };
+            dataAgrupada.push(existente);
+        }
 
-    // Asignar valor al tipo
-    existente["Peso Neto"] = valorNumerico;
-  });
-
-  // Completar valores faltantes con 0
-  dataAgrupada.forEach((item) => {
-    tiposPeso.forEach((tipo) => {
-      if (!(tipo in item)) {
-        item[tipo] = 0;
-      }
+        // Asignar valor al tipo
+        existente["Peso Neto"] = valorNumerico;
     });
-  });
 
-  const selectSx = {
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "8px",
-      "& fieldset": { borderColor: "green" },
-      "&:hover fieldset": { borderColor: "darkgreen" },
-      "&.Mui-focused fieldset": { borderColor: "green" },
-    },
-  };
+    // Completar valores faltantes con 0
+    dataAgrupada.forEach((item) => {
+        tiposPeso.forEach((tipo) => {
+            if (!(tipo in item)) {
+                item[tipo] = 0;
+            }
+        });
+    });
 
-  const FiltroSelect = ({ id, label, value, options, onChange }) => (
-    <div className="w-full sm:w-auto">
-      <Box sx={{ minWidth: 190, width: "100%" }}>
-        <FormControl fullWidth size="small" sx={selectSx}>
-          <InputLabel id={`${id}-label`}>{label}</InputLabel>
-          <Select
-            labelId={`${id}-label`}
-            id={id}
-            value={value}
-            label={label}
-            onChange={(e) => onChange(e.target.value)}
-          >
-            {options.map((option, idx) => (
-              <MenuItem key={idx} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
-    </div>
-  );
-
-  const fetchData = async () => {
-    try {
-      const frutaLower = fruta.toLowerCase();
-      const sedeParam = sede === "TODOS" ? "" : sede;
-      const empaqueParam = empaqueFiltro === "TODOS" ? "" : empaqueFiltro;
-      const variedadFiltroParam =
-        variedadFiltro === "TODOS" ? "" : variedadFiltro;
-
-      const [
-        resSede,
-        resCultivo,
-        resEmpaque,
-        resVariedad,
-        resRecepcionResumen,
-        resRecepcionVariedad,
-        resRecepcionRango,
-      ] = await Promise.all([
-        fetchSedes(),
-        fetchCultivos(),
-        fetchEmpaqFiltro(),
-        fetchVariedadFiltro(),
-        fetchRecepcionResumen(
-          sedeParam,
-          frutaLower,
-          empaqueParam,
-          variedadFiltroParam,
-          fecha
-        ),
-        fetchRecepcionVariedad(
-          sedeParam,
-          frutaLower,
-          empaqueParam,
-          variedadFiltroParam,
-          fecha
-        ),
-        fetchRecepcionRango(
-          sedeParam,
-          frutaLower,
-          empaqueParam,
-          variedadFiltroParam,
-          fecha
-        ),
-      ]);
-
-      setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
-      setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
-      setDataEmpaqueFiltro(
-        Array.isArray(resEmpaque.data) ? resEmpaque.data : []
-      );
-      setDataVariedadfiltro(
-        Array.isArray(resVariedad.data) ? resVariedad.data : []
-      );
-      setDataPorcentaje(
-        Array.isArray(resRecepcionResumen.data) ? resRecepcionResumen.data : []
-      );    
-
-      const pct = parseFloat(resRecepcionResumen.data?.[0]?.cumplimientototal);
-      setProgressValue(!isNaN(pct) ? pct : 0);
-
-      setDataLineaTnTotal([
-        {
-          kgprogtotal:
-            parseFloat(
-              resRecepcionResumen.data?.[0]?.kgprogtotal?.replace(/,/g, "")
-            ) || 0,
-          kgejectotal:
-            parseFloat(
-              resRecepcionResumen.data?.[0]?.kgejectotal?.replace(/,/g, "")
-            ) || 0,
+    const selectSx = {
+        "& .MuiOutlinedInput-root": {
+            borderRadius: "8px",
+            backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+            color: isDarkMode ? "#f3f4f6" : "#000000",
+            "& fieldset": {
+                borderColor: isDarkMode ? "#4ade80" : "#4caf50",
+            },
+            "&:hover fieldset": {
+                borderColor: isDarkMode ? "#22c55e" : "#388e3c",
+            },
+            "&.Mui-focused fieldset": {
+                borderColor: isDarkMode ? "#10b981" : "#2e7d32",
+            },
         },
-      ]);
-      setDataRecepcionVariedad(
-        Array.isArray(resRecepcionVariedad.data)
-          ? resRecepcionVariedad.data
-          : []
-      );
-      setDataRecepcionRango(
-        Array.isArray(resRecepcionRango.data) ? resRecepcionRango.data : []
-      );
-    } catch (err) {
-      console.error("Error fetching data:", err);
-      setDataSedes([]);
-      setDataCultivo([]);
-      setDataEmpaqueFiltro([]);
-      setDataVariedadfiltro([]);
-      setDataPorcentaje([]);
-      setProgressValue(0);
-      setDataLineaTnTotal([]);
-      setDataRecepcionVariedad([]);
-      setDataRecepcionRango([]);
-    }
-  };
+        "& .MuiInputLabel-root": {
+            color: isDarkMode ? "#9ca3af" : "#666666",
+            "&.Mui-focused": {
+                color: isDarkMode ? "#10b981" : "#2e7d32",
+            },
+        },
+        "& .MuiSelect-icon": {
+            color: isDarkMode ? "#9ca3af" : "#666666",
+        },
+    };
 
-  useEffect(() => {
-    fetchData();
-    const intervaloId = setInterval(fetchData, 10000);
-    return () => clearInterval(intervaloId);
-  }, [sede, fruta, empaqueFiltro, variedadFiltro, fecha]);
-
-  return (
-    <div className="p-2">
-      {/* Selectores de filtro */}
-      <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
-        <div className="mb-0.5 flex flex-wrap  justify-end items-center gap-3">
-          {/* SEDE */}
-          <FiltroSelect
-            id="sede"
-            label="SEDE"
-            value={dataSedes.some((row) => row.sede === sede) ? sede : "TODOS"}
-            options={["TODOS", ...dataSedes.map((r) => r.sede)]}
-            onChange={setSede}
-          />
-
-          {/* CULTIVO */}
-          <FiltroSelect
-            id="cultivo"
-            label="CULTIVO"
-            value={
-              dataCultivo.some((row) => row.cultivo === fruta) ? fruta : ""
-            }
-            options={dataCultivo.map((r) => r.cultivo)}
-            onChange={setFruta}
-          />
-
-          {/* EMPAQUE */}
-          <FiltroSelect
-            id="empaque"
-            label="EMPAQUE"
-            value={
-              dataEmpaqueFiltro.some((row) => row.empaque === empaqueFiltro)
-                ? empaqueFiltro
-                : "TODOS"
-            }
-            options={["TODOS", ...dataEmpaqueFiltro.map((r) => r.empaque)]}
-            onChange={setEmpaqueFiltro}
-          />
-
-          {/* TURNO */}
-          <FiltroSelect
-            id="variedad"
-            label="VARIEDAD"
-            value={
-              dataVariedadfiltro.some((row) => row.variedad === variedadFiltro)
-                ? variedadFiltro
-                : "TODOS"
-            }
-            options={["TODOS", ...dataVariedadfiltro.map((r) => r.variedad)]}
-            onChange={setVariedadfiltro}
-          />
-
-          {/* FECHA */}
-          <div className="w-full sm:w-auto">
+    const FiltroSelect = ({ id, label, value, options, onChange }) => (
+        <div className="w-full sm:w-auto">
             <Box sx={{ minWidth: 190, width: "100%" }}>
-              <FormControl fullWidth size="small" sx={selectSx}>
-                <InputLabel shrink htmlFor="fecha-input">
-                  FECHA
-                </InputLabel>
-                <input
-                  id="fecha-input"
-                  type="date"
-                  value={fecha}
-                  onChange={(e) => setFecha(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    border: "1px solid #4caf50",
-                    fontSize: "16px",
-                  }}
-                />
-              </FormControl>
+                <FormControl fullWidth size="small" sx={selectSx}>
+                    <InputLabel id={`${id}-label`}>{label}</InputLabel>
+                    <Select
+                        labelId={`${id}-label`}
+                        id={id}
+                        value={value}
+                        label={label}
+                        onChange={(e) => onChange(e.target.value)}
+                        MenuProps={{
+                            PaperProps: {
+                                sx: {
+                                    backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
+                                    "& .MuiMenuItem-root": {
+                                        color: isDarkMode ? "#f3f4f6" : "#000000",
+                                        "&:hover": {
+                                            backgroundColor: isDarkMode ? "#10b981" : "#4caf50",
+                                            color: "#ffffff",
+                                        },
+                                        "&.Mui-selected": {
+                                            backgroundColor: isDarkMode ? "#059669" : "#388e3c",
+                                            color: "#ffffff",
+                                            "&:hover": {
+                                                backgroundColor: isDarkMode ? "#047857" : "#2e7d32",
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        }}
+                    >
+                        {options.map((option, idx) => (
+                            <MenuItem key={idx} value={option}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Box>
-          </div>
         </div>
-      </div>
-      {/* TABLAS Y LINEAS*/}
+    );
 
-      {/*MEDIDOR Y NÚMEROS UNICOS */}
+    const fetchData = async (hideProgress = false) => {
+        try {
+            const frutaLower = fruta.toLowerCase();
+            const sedeParam = sede === "TODOS" ? "" : sede;
+            const empaqueParam = empaqueFiltro === "TODOS" ? "" : empaqueFiltro;
+            const variedadFiltroParam =
+                variedadFiltro === "TODOS" ? "" : variedadFiltro;
 
-      <div className="mb-3">
-        {/* Contenedor flex responsive */}
-        <div className="flex flex-wrap justify-evenly items-center gap-4">
-          {/* Medidor */}
-          <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/4 max-w-full bg-white dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center ">
-            <h4 className="text-3xl font-bold text-black dark:text-white  uppercase tracking-wider text-center">
-              Porcentaje <br /> cumplimiento
-            </h4>
-            <GaugeChart
-              value={progressValue}
-              colors={{
-                progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                remaining: "#F5F5F5",
-                needle: "#E91E63",
-                text: progressValue > 80 ? "#4CAF50" : "#FFC107",
-                labelColor: "#757575",
-              }}
-              label="Progress"
-              fontSize="26px"
-              thickness="65%"
-            />
-          </div>
+            const [
+                resSede,
+                resCultivo,
+                resEmpaque,
+                resVariedad,
+                resRecepcionResumen,
+                resRecepcionVariedad,
+                resRecepcionRango,
+            ] = await Promise.all([
+                fetchSedes(hideProgress),
+                fetchCultivos(hideProgress),
+                fetchEmpaqFiltro(hideProgress),
+                fetchVariedadFiltro(hideProgress),
+                fetchRecepcionResumen(
+                    sedeParam,
+                    frutaLower,
+                    empaqueParam,
+                    variedadFiltroParam,
+                    fecha,
+                    hideProgress
+                ),
+                fetchRecepcionVariedad(
+                    sedeParam,
+                    frutaLower,
+                    empaqueParam,
+                    variedadFiltroParam,
+                    fecha,
+                    hideProgress
+                ),
+                fetchRecepcionRango(
+                    sedeParam,
+                    frutaLower,
+                    empaqueParam,
+                    variedadFiltroParam,
+                    fecha,
+                    hideProgress
+                ),
+            ]);
 
-          {/* KG PROGRAMADO */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
-            <div className="p-4 flex justify-between items-start">
-              <div>
-                <h4 className="text-2xl font-bold text-black dark:text-white  uppercase tracking-wider">
-                  KG PROGRAMADO
-                </h4>
-                <div className="text-3xl font-bold text-gray-800 dark:text-gray-200 mt-1">
-                  <NumeroUnico
-                    value={dataLineaTnTotal?.[0]?.kgprogtotal || 0}
-                  />
+            setDataSedes(Array.isArray(resSede.data) ? resSede.data : []);
+            setDataCultivo(Array.isArray(resCultivo.data) ? resCultivo.data : []);
+            setDataEmpaqueFiltro(
+                Array.isArray(resEmpaque.data) ? resEmpaque.data : []
+            );
+            setDataVariedadfiltro(
+                Array.isArray(resVariedad.data) ? resVariedad.data : []
+            );
+            setDataPorcentaje(
+                Array.isArray(resRecepcionResumen.data) ? resRecepcionResumen.data : []
+            );
+
+            const pct = parseFloat(resRecepcionResumen.data?.[0]?.cumplimientototal);
+            setProgressValue(!isNaN(pct) ? pct : 0);
+
+            setDataLineaTnTotal([
+                {
+                    kgprogtotal:
+                        parseFloat(
+                            resRecepcionResumen.data?.[0]?.kgprogtotal?.replace(/,/g, "")
+                        ) || 0,
+                    kgejectotal:
+                        parseFloat(
+                            resRecepcionResumen.data?.[0]?.kgejectotal?.replace(/,/g, "")
+                        ) || 0,
+                },
+            ]);
+            setDataRecepcionVariedad(
+                Array.isArray(resRecepcionVariedad.data)
+                    ? resRecepcionVariedad.data
+                    : []
+            );
+            setDataRecepcionRango(
+                Array.isArray(resRecepcionRango.data) ? resRecepcionRango.data : []
+            );
+        } catch (err) {
+            console.error("Error fetching data:", err);
+            setDataSedes([]);
+            setDataCultivo([]);
+            setDataEmpaqueFiltro([]);
+            setDataVariedadfiltro([]);
+            setDataPorcentaje([]);
+            setProgressValue(0);
+            setDataLineaTnTotal([]);
+            setDataRecepcionVariedad([]);
+            setDataRecepcionRango([]);
+        }
+    };
+
+    useEffect(() => {
+        fetchData(); // Carga inicial - muestra progress bar
+        const intervaloId = setInterval(() => fetchData(true), 60000); // Actualizaciones - oculta progress bar
+        return () => clearInterval(intervaloId);
+    }, [sede, fruta, empaqueFiltro, variedadFiltro, fecha]);
+
+    return (
+        <div className="p-2">
+            {/* Selectores de filtro */}
+            <div className="mb-1 flex flex-col sm:flex-row flex-wrap gap-3 justify-center sm:justify-end items-stretch sm:items-center w-full">
+                <div className="mb-0.5 flex flex-wrap  justify-end items-center gap-3">
+                    {/* SEDE */}
+                    <FiltroSelect
+                        id="sede"
+                        label="SEDE"
+                        value={dataSedes.some((row) => row.sede === sede) ? sede : "TODOS"}
+                        options={["TODOS", ...dataSedes.map((r) => r.sede)]}
+                        onChange={setSede}
+                    />
+
+                    {/* CULTIVO */}
+                    <FiltroSelect
+                        id="cultivo"
+                        label="CULTIVO"
+                        value={
+                            dataCultivo.some((row) => row.cultivo === fruta) ? fruta : ""
+                        }
+                        options={dataCultivo.map((r) => r.cultivo)}
+                        onChange={setFruta}
+                    />
+
+                    {/* EMPAQUE */}
+                    <FiltroSelect
+                        id="empaque"
+                        label="EMPAQUE"
+                        value={
+                            dataEmpaqueFiltro.some((row) => row.empaque === empaqueFiltro)
+                                ? empaqueFiltro
+                                : "TODOS"
+                        }
+                        options={["TODOS", ...dataEmpaqueFiltro.map((r) => r.empaque)]}
+                        onChange={setEmpaqueFiltro}
+                    />
+
+                    {/* TURNO */}
+                    <FiltroSelect
+                        id="variedad"
+                        label="VARIEDAD"
+                        value={
+                            dataVariedadfiltro.some((row) => row.variedad === variedadFiltro)
+                                ? variedadFiltro
+                                : "TODOS"
+                        }
+                        options={["TODOS", ...dataVariedadfiltro.map((r) => r.variedad)]}
+                        onChange={setVariedadfiltro}
+                    />
+
+                    {/* FECHA */}
+                    <div className="w-full sm:w-auto">
+                        <Box sx={{ minWidth: 190, width: "100%" }}>
+                            <FormControl fullWidth size="small" sx={selectSx}>
+                                <InputLabel shrink htmlFor="fecha-input">
+                                    FECHA
+                                </InputLabel>
+                                <input
+                                    id="fecha-input"
+                                    type="date"
+                                    value={fecha}
+                                    onChange={(e) => setFecha(e.target.value)}
+                                    onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                                    className="date-input-dark"
+                                    style={{
+                                        width: "100%",
+                                        padding: "8.5px 14px",
+                                        borderRadius: "8px",
+                                        border: isDarkMode
+                                            ? "1px solid #4ade80"
+                                            : "1px solid #4caf50",
+                                        background: isDarkMode ? "#1f2937" : "#ffffff",
+                                        color: isDarkMode ? "#e5e7eb" : "#000000",
+                                        fontSize: "16px",
+                                        outline: "none",
+                                        transition: "border-color 0.2s ease",
+                                        cursor: "pointer",
+                                        colorScheme: isDarkMode ? "dark" : "light",
+                                    }}
+                                />
+                            </FormControl>
+                        </Box>
+                    </div>
                 </div>
-              </div>
-              <div className="bg-green-50 text-green-800 text-xs px-2 py-1 rounded-full">
-                En tiempo real
-              </div>
             </div>
-            <div className="h-20 px-4 pb-3">
-              {/* Mini gráfico de tendencia */}
-              <div className="h-full flex items-end gap-1">
-                {[30, 45, 60, 52, 70, 85, 78].map((value, index) => (
-                  <div
-                    key={index}
-                    className="flex-1 bg-blue-100 hover:bg-blue-200 rounded-t-sm transition-colors"
-                    style={{ height: `${value}%` }}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="px-4 pb-3 text-xs text-gray-500 border-t border-gray-100 pt-2"></div>
-          </div>
+            {/* TABLAS Y LINEAS*/}
 
-          {/* KG EJECUTADO */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
-            <div className="p-4 flex justify-between items-start">
-              <div>
-                <h4 className="text-2xl font-bold text-black dark:text-white  uppercase tracking-wider">
-                  KG ejecutado
-                </h4>
-                <div className="text-3xl font-bold text-gray-800 dark:text-gray-200 mt-1">
-                  <NumeroUnico
-                    value={dataLineaTnTotal?.[0]?.kgejectotal || 0}
-                  />
-                </div>
-              </div>
-              <div className="bg-green-50 text-green-800 text-xs px-2 py-1 rounded-full">
-                En tiempo real
-              </div>
-            </div>
-            <div className="h-20 px-4 pb-3">
-              {/* Mini gráfico de tendencia */}
-              <div className="h-full flex items-end gap-1">
-                {[30, 45, 60, 52, 70, 85, 78].map((value, index) => (
-                  <div
-                    key={index}
-                    className="flex-1 bg-blue-100 hover:bg-blue-200 rounded-t-sm transition-colors"
-                    style={{ height: `${value}%` }}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="px-4 pb-3 text-xs text-gray-500 border-t border-gray-100 pt-2"></div>
-          </div>
-          {/* 
-          <div className="inline-block bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md text-center">
+            {/*MEDIDOR Y NÚMEROS UNICOS */}
+
+            <div className="mb-3">
+                {/* Contenedor flex responsive */}
+                <div className="flex flex-wrap justify-evenly items-center gap-4 ">
+                    {/* Medidor */}
+                    <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/4 max-w-full bg-white dark:bg-gray-900 rounded-lg shadow-md flex flex-col items-center order-2 lg:order-1 p-4  border-2 border-gray-300 dark:border-gray-700">
+                        <h4 className="text-3xl font-bold text-black dark:text-white  uppercase tracking-wider text-center">
+                            Porcentaje <br /> cumplimiento
+                        </h4>
+                        <GaugeChart
+                            value={progressValue}
+                            colors={{
+                                progress: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                                remaining: "#F5F5F5",
+                                needle: "#E91E63",
+                                text: progressValue > 80 ? "#4CAF50" : "#FFC107",
+                                labelColor: "#757575",
+                            }}
+                            label="Progress"
+                            fontSize="26px"
+                            thickness="65%"
+                        />
+                    </div>
+
+                    {/* KG PROGRAMADO */}
+                    <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
+                        <div className="p-4 flex justify-between items-start">
+                            <div>
+                                <h4 className="text-2xl font-bold text-black dark:text-white  uppercase tracking-wider">
+                                    KG PROGRAMADO
+                                </h4>
+                                <div className="text-3xl font-bold text-gray-800 dark:text-gray-200 mt-1">
+                                    <NumeroUnico
+                                        value={dataLineaTnTotal?.[0]?.kgprogtotal || 0}
+                                    />
+                                </div>
+                            </div>
+                            <div className="bg-green-50 text-green-800 text-xs px-2 py-1 rounded-full">
+                                En tiempo real
+                            </div>
+                        </div>
+                        <div className="h-20 px-4 pb-3">
+                            {/* Mini gráfico de tendencia */}
+                            <div className="h-full flex items-end gap-1">
+                                {[30, 45, 60, 52, 70, 85, 78].map((value, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex-1 bg-blue-100 hover:bg-blue-200 rounded-t-sm transition-colors"
+                                        style={{ height: `${value}%` }}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div className="px-4 pb-3 text-xs text-gray-500 border-t border-gray-100 pt-2"></div>
+                    </div>
+
+                    {/* KG EJECUTADO */}
+                    <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
+                        <div className="p-4 flex justify-between items-start">
+                            <div>
+                                <h4 className="text-2xl font-bold text-black dark:text-white  uppercase tracking-wider">
+                                    KG ejecutado
+                                </h4>
+                                <div className="text-3xl font-bold text-gray-800 dark:text-gray-200 mt-1">
+                                    <NumeroUnico
+                                        value={dataLineaTnTotal?.[0]?.kgejectotal || 0}
+                                    />
+                                </div>
+                            </div>
+                            <div className="bg-green-50 text-green-800 text-xs px-2 py-1 rounded-full">
+                                En tiempo real
+                            </div>
+                        </div>
+                        <div className="h-20 px-4 pb-3">
+                            {/* Mini gráfico de tendencia */}
+                            <div className="h-full flex items-end gap-1">
+                                {[30, 45, 60, 52, 70, 85, 78].map((value, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex-1 bg-blue-100 hover:bg-blue-200 rounded-t-sm transition-colors"
+                                        style={{ height: `${value}%` }}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div className="px-4 pb-3 text-xs text-gray-500 border-t border-gray-100 pt-2"></div>
+                    </div>
+                    {/* 
+          <div className="inline-block bg-white dark:bg-gray-900 p-4 rounded-lg shadow-md text-center">
             <h4 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase">
               kg ejecutado
             </h4>
@@ -396,146 +451,157 @@ const TablaRecepcion = () => {
               <NumeroUnico value={dataLineaTnTotal?.[0]?.kgejectotal || 0} />
             </div>
           </div> */}
-        </div>
-      </div>
+                </div>
+            </div>
 
-      <div className="flex flex-col lg:flex-row gap-4 w-full">
-        {/* TABLA VARIEDAD - IZQUIERDA */}
-        <div className="lg:w-1/2 w-full overflow-x-auto rounded-xl shadow-lg">
-          <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
-            <table className="w-full min-w-[300px] border-collapse">
-              <thead className="sticky top-0 z-10">
-                <tr className="bg-blue-600 text-white">
-                  <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
-                    VAR
-                  </th>
-                  <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
-                    KG PROG
-                  </th>
-                  <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
-                    KG EJEC
-                  </th>
-                  <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
-                    % CUMP
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {dataRecepcionVariedad.length > 0 ? (
-                  dataRecepcionVariedad.map((row, index) => {
-                    const cumplimiento = parseFloat(row.cumplimiento) || 0;
+            <div className="flex flex-col lg:flex-row gap-4 w-full">
+                {/* TABLA VARIEDAD - IZQUIERDA */}
+                <div className="lg:w-1/2 w-full overflow-x-auto rounded-xl shadow-lg border-2 border-gray-300 dark:border-gray-700">
+                    <div className="overflow-y-auto max-h-[calc(100vh-100px)]">
+                        <table className="w-full min-w-[300px] border-collapse">
+                            <thead className="sticky top-0 z-10">
+                                <tr className="bg-blue-600 text-white">
+                                    <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
+                                        VAR
+                                    </th>
+                                    <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
+                                        KG PROG
+                                    </th>
 
-                    return (
-                      <tr
-                        key={index}
-                        className={`hover:bg-gray-50  dark:hover:bg-gray-800 transition-colors 
+                                    <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
+                                        KG EJEC
+                                    </th>
+                                    <th className="px-1 py-2 text-center font-bold text-xs sm:text-lg lg:text-3xl xl:text-trxl uppercase">
+                                        % CUMP
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-200">
+                                {dataRecepcionVariedad.length > 0 ? (
+                                    dataRecepcionVariedad.map((row, index) => {
+                                        const cumplimiento = parseFloat(row.cumplimiento) || 0;
+
+                                        return (
+                                            <tr
+                                                key={index}
+                                                className={`hover:bg-gray-50  dark:hover:bg-gray-800 transition-colors 
                             ? "font-bold text-blue-900 border-t-2 border-blue-400"
                             : "border-b-1 border-cyan-600 "
                         }`}
-                      >
-                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold dark:-gray-100 ">
-                          {row.variedad || "--"}
-                        </td>
-                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold dark:-gray-100 ">
-                          {row.kgprog || "--"}
-                        </td>
-                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold dark:-gray-100">
-                          {row.kgejec || "--"}
-                        </td>
-                        <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold ">
-                          {cumplimiento >= 100 ? "✅" : "❌"}{" "}
-                          {cumplimiento.toFixed(2)} %
-                        </td>
-                      </tr>
-                    );
-                  })
-                ) : (
-                  <tr>
-                    <td
-                      colSpan="5"
-                      className="px-4 py-6 text-center text-xs sm:text-sm md:text-base text-gray-500"
-                    >
-                      No hay datos de recepción disponibles
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+                                            >
+                                                <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold dark:-gray-100 ">
+                                                    {row.variedad || "--"}
+                                                </td>
+                                                <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold dark:-gray-100 ">
+                                                    {row.kgprog || "--"}
+                                                </td>
+                                                <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold dark:-gray-100">
+                                                    {row.kgejec || "--"}
+                                                </td>
+                                                <td className="px-2 py-1 text-center text-xs sm:text-base lg:text-lg xl:text-2xl text-gray-800 dark:text-gray-200 font-bold ">
+                                                    {cumplimiento >= 100 ? "✅" : "❌"}{" "}
+                                                    {cumplimiento.toFixed(2)} %
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                ) : (
+                                    <tr>
+                                        <td
+                                            colSpan="5"
+                                            className="px-4 py-6 text-center text-xs sm:text-sm md:text-base text-gray-500"
+                                        >
+                                            No hay datos de recepción disponibles
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-        {/* TABLA LINEA - DERECHA */}
-        <div className="lg:w-1/2 w-full overflow-x-auto rounded-xl shadow-lg">
-          <div className="p-1 bg-blue-500 rounded-t-xl">
-            <h2 className="text-center text-sm sm:text-lg md:text-xl lg:text-3xl font-bold mb-1 uppercase text-white">
-              Porcentaje por rango de hora
-            </h2>
-          </div>
-          <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={dataAgrupada}
-                margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
-              >
-                <CartesianGrid strokeDasharray="10 10" opacity={0.1} />
-                <XAxis
+                {/* TABLA LINEA - DERECHA */}
+                <div className="lg:w-1/2 w-full overflow-x-auto rounded-xl shadow-lg  border-2 border-gray-300 dark:border-gray-700">
+                    <div className="p-1 bg-blue-500 rounded-t-xl">
+                        <h2 className="text-center text-sm sm:text-lg md:text-xl lg:text-3xl font-bold mb-1 uppercase text-white">
+                            Porcentaje por rango de hora
+                        </h2>
+                    </div>
+                    <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart
+                                data={dataAgrupada}
+                                margin={{ top: 20, right: 22, left: -35, bottom: 0 }}
+                            >
+                                <CartesianGrid strokeDasharray="10 10" opacity={0.1} />
+                                {/*  <XAxis
                   dataKey="hora"
                   tick={{ fontSize: "0.6rem", sm: "0.8rem", md: "1rem" }}
                 />
-                <YAxis tick={false} />
-                <Tooltip
-                  formatter={(value) => `${value.toLocaleString()} kg`}
-                  contentStyle={{
-                    borderRadius: "8px",
-                    background: "#ffffffdd",
-                    backdropFilter: "blur(4px)",
-                    border: "1px solid #dddddd",
-                    fontSize: "0.8rem",
-                    sm: "1rem",
-                  }}
-                />
-                <Legend
-                  align="center"
-                  layout="horizontal"
-                  verticalAlign="bottom"
-                  wrapperStyle={{
-                    textAlign: "center",
-                    width: "100%",
-                    left: 0,
-                    fontSize: "1.2rem",
-                    sm: "1rem",
-                  }}
-                />
-                {tiposPeso.map((tipo) => (
-                  <Line
-                    key={tipo}
-                    type="linear"
-                    dataKey={tipo}
-                    stroke={colores[tipo] || "#007bff"}
-                    strokeWidth={2}
-                    dot={{ r: 3 }}
-                    activeDot={{ r: 5 }}
-                    animationDuration={500}
-                    label={({ x, y, value }) => (
-                      <text
-                        x={x}
-                        y={y - 10}
-                        fill="#000"
-                        fontSize={12}
-                        textAnchor="middle"
-                      >
-                        {`${value.toLocaleString()} kg`}
-                      </text>
-                    )}
-                  />
-                ))}
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+                <YAxis tick={false} /> */}
+                                <XAxis
+                                    dataKey="hora"
+                                    stroke={isDarkMode ? "#e5e7eb" : "#374151"}
+                                    tick={{ fontSize: "0.6rem", sm: "0.8rem", md: "1rem" }}
+                                />
+
+                                <YAxis
+                                    tick={false}
+                                    stroke={isDarkMode ? "#e5e7eb" : "#374151"}
+                                />
+                                <Tooltip
+                                    formatter={(value) => `${value.toLocaleString()} kg`}
+                                    contentStyle={{
+                                        borderRadius: "8px",
+                                        background: "#ffffffdd",
+                                        backdropFilter: "blur(4px)",
+                                        border: "1px solid #dddddd",
+                                        fontSize: "0.8rem",
+                                        sm: "1rem",
+                                    }}
+                                />
+                                <Legend
+                                    align="center"
+                                    layout="horizontal"
+                                    verticalAlign="bottom"
+                                    wrapperStyle={{
+                                        textAlign: "center",
+                                        width: "100%",
+                                        left: 0,
+                                        fontSize: "1.2rem",
+                                        sm: "1rem",
+                                    }}
+                                />
+                                {tiposPeso.map((tipo) => (
+                                    <Line
+                                        key={tipo}
+                                        type="linear"
+                                        dataKey={tipo}
+                                        stroke={colores[tipo] || "#007bff"}
+                                        strokeWidth={2}
+                                        dot={{ r: 3 }}
+                                        activeDot={{ r: 5 }}
+                                        animationDuration={500}
+                                        label={({ x, y, value }) => (
+                                            <text
+                                                x={x}
+                                                y={y - 10}
+                                                fill={colores[tipo]}
+                                                fontSize={12}
+                                                textAnchor="middle"
+                                            >
+                                                {`${value.toLocaleString()} kg`}
+                                            </text>
+                                        )}
+                                    />
+                                ))}
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
-export default TablaRecepcion;
+export default TablaRecepcionResumen;
